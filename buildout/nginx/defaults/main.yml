@@ -1,0 +1,23 @@
+---
+  nginx_version: '1.7.7'
+  nginx_src_dir: '/usr/local/src'
+  nginx_prefix_dir: '/var/nginx'
+  nginx_bin_dir: '/usr/local/sbin'
+  nginx_conf_file: '/etc/nginx/nginx.conf'
+  nginx_pid_file: '/var/run/nginx.pid'
+  nginx_lock_file: '/var/run/nginx.lock'
+  nginx_error_log_file: '/var/log/nginx/error.log'
+  nginx_access_log_file: '/var/log/nginx/access.log'
+  nginx_sysconfig_file: '/etc/sysconfig/nginx'
+  nginx_service_file: '/etc/rc.d/init.d/nginx'
+  nginx_user: 'nginx'
+  nginx_dependent_packages:
+    - 'pcre-devel'
+    - 'openssl-devel'
+  nginx_ngx_devel_kit_repo: 'git://github.com/simpl/ngx_devel_kit.git'
+  nginx_ngx_devel_kit_src_dir: "{{ nginx_src_dir }}/ngx_devel_kit"
+  nginx_lua_module_repo: 'git://github.com/chaoslawful/lua-nginx-module.git'
+  nginx_lua_module_src_dir: "{{ nginx_src_dir }}/lua_nginx_module"
+  nginx_luaJIT_lib_dir: "{{ luaJIT_prefix_dir }}/lib"
+  nginx_luaJIT_inc_dir: "{{ luaJIT_prefix_dir }}/include/luajit-2.0"
+  nginx_configure_options: "--user={{ nginx_user }} --group={{ nginx_user }} --prefix={{ nginx_prefix_dir }} --sbin-path={{ nginx_bin_dir }} --conf-path={{ nginx_conf_file }} --pid-path={{ nginx_pid_file }} --lock-path={{ nginx_lock_file }} --error-log-path={{ nginx_error_log_file }} --http-log-path={{ nginx_access_log_file }} --add-module={{ nginx_lua_module_src_dir }} --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --with-http_gunzip_module"

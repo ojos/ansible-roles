@@ -1,0 +1,79 @@
+---
+- name: Create redis user.
+  user: >
+    name="{{ redis_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ redis_data_dir }}"
+    createhome=no
+  ignore_errors: True
+- name: Install dependent packages.
+  yum: >
+    name="{{ item }}"
+    state="present"
+  with_items: "{{ redis_dependent_packages }}"
+- name: Download redis source.
+  get_url: >
+    url=http://download.redis.io/releases/redis-{{ redis_version }}.tar.gz
+    dest="{{ redis_src_dir }}/redis-{{ redis_version }}.tar.gz"
+    force="yes"
+- name: Extract redis source.
+  unarchive: >
+    src="{{ redis_src_dir }}/redis-{{ redis_version }}.tar.gz"
+    dest="{{ redis_src_dir }}"
+    copy="no"
+- name: Make redis.
+  shell: >
+    /usr/bin/make
+    chdir={{ redis_src_dir }}/redis-{{ redis_version }}
+- name: Install redis.
+  shell: >
+    /usr/bin/make PREFIX={{ redis_prefix_dir }} install
+    chdir={{ redis_src_dir }}/redis-{{ redis_version }}
+- name: Create redis service file.
+  template: >
+    src=service.tpl
+    dest="{{ redis_service_file }}"
+    owner=root
+    group=root
+    mode=0755
+- name: Create redis conf directory.
+  file: >
+    path="{{ redis_conf_dir }}"
+    state=directory
+    owner={{ redis_user }}
+    group={{ redis_user }}
+    mode=0755
+- name: Create redis config file.
+  template: >
+    src=redis.conf.tpl
+    dest="{{ redis_conf_file }}"
+    owner=root
+    group=root
+    mode=0755
+- name: Create redis run directory.
+  file: >
+    path="{{ redis_pid_dir }}"
+    state=directory
+    owner={{ redis_user }}
+    group={{ redis_user }}
+    mode=0755
+- name: Create redis data directory.
+  file: >
+    path="{{ redis_data_dir }}"
+    state=directory
+    owner={{ redis_user }}
+    group={{ redis_user }}
+    mode=0755
+- name: Create redis log directory.
+  file: >
+    path="{{ redis_log_dir }}"
+    state=directory
+    owner={{ redis_user }}
+    group={{ redis_user }}
+    mode=0755
+- name: Register and Start redis service.
+  service: >
+    name=redis
+    state=started
+    enabled=yes

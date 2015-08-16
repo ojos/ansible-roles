@@ -1,0 +1,17 @@
+---
+- name: Set localtime.
+  copy: >
+    src="/usr/share/zoneinfo/{{ timezone }}"
+    dest="/etc/localtime"
+    owner=root
+    group=root
+    mode=0644
+- name: Change clock file.
+  template: >
+    src="clock.tpl"
+    dest="/etc/sysconfig/clock"
+    owner=root
+    group=root
+    mode=0644
+- name: Reflect clock file.
+  shell: source /etc/sysconfig/clock

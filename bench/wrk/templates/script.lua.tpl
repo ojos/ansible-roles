@@ -1,0 +1,1 @@
+{{ wrk_lua_script }}

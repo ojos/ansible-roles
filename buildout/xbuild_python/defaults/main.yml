@@ -1,0 +1,19 @@
+---
+  xbuild_python_dependent_packages:
+    - expat-devel
+    - db4-devel
+    - gdbm-devel
+    - sqlite-devel
+    - mysql-devel
+    - readline-devel
+    - zlib-devel
+    - bzip2-devel
+    - openssl-devel
+    - ncurses-devel
+    - libjpeg-turbo-devel
+    - libpng-devel
+    - glibc-devel
+    - libffi-devel
+    - valgrind-devel
+    - systemtap-sdt-devel
+  xbuild_python_version: 2.7.9

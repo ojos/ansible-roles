@@ -1,0 +1,4 @@
+---
+  xbuild_repo: git://github.com/tagomoris/xbuild.git
+  xbuild_install_dir_prefix: /usr/local
+  xbuild_update: yes

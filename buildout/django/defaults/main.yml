@@ -1,0 +1,12 @@
+---
+  django_app_name: 'app.wsgi'
+  django_app_dir: '/var/www/app'
+  django_gunicorn_command_option: ''
+  django_dependent_packages:
+    - 'Django'
+    - 'MySQL-python'
+    - 'django-redis'
+    - 'pycrypto'
+    - 'PyYAML'
+    - 'boto'
+    - 'pytz'

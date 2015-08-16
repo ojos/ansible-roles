@@ -1,0 +1,20 @@
+---
+- name: Install dependent packages.
+  yum: >
+    name="{{ item }}"
+    state="present"
+  with_items: "{{ xbuild_python_dependent_packages }}"
+- name: Install python in xbuild.
+  command: >
+    {{ xbuild_install_dir_prefix }}/xbuild/python-install {{ xbuild_python_version }}
+    {{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}
+    creates={{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}
+- name: Create .pythonstartup file.
+  copy: >
+    src=pythonstartup
+    dest=~/.pythonstartup
+- name: Insert pythonstartup in .bashrc.
+  blockinfile: >
+    dest=~/.bashrc
+    marker="# {mark} PYTHONSTARTUP"
+    content="export PYTHONSTARTUP=~/.pythonstartup"

@@ -1,0 +1,9 @@
+---
+- name: Update yum.
+  yum: >
+    name="*"
+    state="latest"
+- name: Install Development tools.
+  yum: >
+    name="@Development tools"
+    state="present"

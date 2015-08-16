@@ -1,0 +1,48 @@
+---
+- name: Stop supervisord service.
+  service: >
+    name=supervisord
+    state=stopped
+- name: Install celery in pip.
+  command: >
+    {{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}/bin/pip install celery
+- name: Create celery user.
+  user: >
+    name="{{ celery_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ celery_user_home }}"
+    createhome=no
+- name: Create celery conf directory.
+  file: >
+    path="{{ celery_conf_dir }}"
+    state=directory
+    owner="{{ celery_user }}"
+    group="{{ celery_user }}"
+    mode=0755
+- name: Create celery log directory.
+  file: >
+    path="{{ celery_log_dir }}"
+    state=directory
+    owner="{{ celery_user }}"
+    group="{{ celery_user }}"
+    mode=0755
+- name: Create celery pid directory.
+  file: >
+    path="{{ celery_pid_dir }}"
+    state=directory
+    owner="{{ celery_user }}"
+    group="{{ celery_user }}"
+    mode=0755
+- name: Create celery config file.
+  template: >
+    src=celery.tpl
+    dest="{{ celery_conf_dir }}/{{ celery_conf_file }}"
+    owner="{{ celery_user }}"
+    group="{{ celery_user }}"
+    mode=0644
+- name: Start supervisord service.
+  service: >
+    name=supervisord
+    state=started
+    enabled=yes

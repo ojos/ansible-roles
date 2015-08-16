@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: buildout/devtools }
+  - { role: buildout/xbuild }
+  - { role: yaegashi.blockinfile }

@@ -1,0 +1,13 @@
+---
+  flask_app_name: 'main:app'
+  flask_app_dir: '/var/www/app'
+  flask_gunicorn_command_option: ''
+  flask_dependent_packages:
+    - 'Flask'
+    - 'MySQL-python'
+    - 'Flask-SQLAlchemy'
+    - 'Flask-Redis'
+    - 'pycrypto'
+    - 'PyYAML'
+    - 'boto'
+    - 'pytz'

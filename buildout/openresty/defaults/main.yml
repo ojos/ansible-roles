@@ -1,0 +1,34 @@
+---
+  openresty_version: '1.7.4.1'
+  openresty_src_dir: '/usr/local/src'
+  openresty_prefix_dir: '/usr/local/openresty'
+  openresty_nginx_user: 'nginx'
+  openresty_nginx_bin_file: '/usr/local/sbin/nginx'
+  openresty_nginx_conf_dir: '/etc/nginx'
+  openresty_nginx_sub_conf_dir: "{{ openresty_nginx_conf_dir }}/conf.d"
+  openresty_nginx_conf_file: "{{ openresty_nginx_conf_dir }}/nginx.conf"
+  openresty_nginx_pid_file: '/var/run/nginx.pid'
+  openresty_nginx_lock_file: '/var/run/nginx.lock'
+  openresty_nginx_access_log_file: '/var/log/nginx/access.log'
+  openresty_nginx_error_log_file: '/var/log/nginx/error.log'
+  openresty_nginx_temp_dir: '/var/tmp/nginx'
+  openresty_nginx_client_body_temp_dir: "{{ openresty_nginx_temp_dir }}/client"
+  openresty_nginx_fastcgi_temp_dir: "{{ openresty_nginx_temp_dir }}/fastcgi"
+  openresty_nginx_uwsgi_temp_dir: "{{ openresty_nginx_temp_dir }}/uwsgi"
+  openresty_nginx_scgi_temp_dir: "{{ openresty_nginx_temp_dir }}/scgi"
+  openresty_nginx_proxy_temp_dir: "{{ openresty_nginx_temp_dir }}/proxy"
+  openresty_nginx_service_file: '/etc/rc.d/init.d/nginx'
+  openresty_nginx_worker_processes: 1
+  openresty_nginx_worker_connections: 1024
+  openresty_nginx_keepalive_timeout: 65
+  openresty_nginx_sendfile: 'on'
+  openresty_nginx_multi_accept: 'on'
+  openresty_nginx_resolver: '8.8.8.8'
+  openresty_nginx_server_tokens: 'off'
+  openresty_nginx_lua_check_client_abort: 'on'
+  openresty_nginx_lua_code_cache: 'on'
+  openresty_nginx_default_type: 'plain/text'
+  openresty_dependent_packages:
+    - 'pcre-devel'
+    - 'openssl-devel'
+  openresty_configure_options: "--prefix={{ openresty_prefix_dir }} --user={{ openresty_nginx_user }} --group={{ openresty_nginx_user }} --sbin-path={{ openresty_nginx_bin_file }} --conf-path={{ openresty_nginx_conf_file }} --pid-path={{ openresty_nginx_pid_file }} --lock-path={{ openresty_nginx_lock_file }} --error-log-path={{ openresty_nginx_error_log_file }} --http-log-path={{ openresty_nginx_access_log_file }} --http-client-body-temp-path={{ openresty_nginx_client_body_temp_dir }} --http-fastcgi-temp-path={{ openresty_nginx_fastcgi_temp_dir }} --http-uwsgi-temp-path={{ openresty_nginx_uwsgi_temp_dir }} --http-scgi-temp-path={{ openresty_nginx_scgi_temp_dir }} --http-proxy-temp-path={{ openresty_nginx_proxy_temp_dir }} --with-luajit"

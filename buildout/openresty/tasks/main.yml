@@ -1,0 +1,148 @@
+---
+- name: Create nginx user.
+  user: >
+    name="{{ openresty_nginx_user }}"
+    shell='/bin/false'
+    system='yes'
+    home="{{ openresty_prefix_dir }}/nginx"
+    createhome=no
+  ignore_errors: True
+- name: Create nginx temp directory.
+  file: >
+    path="{{ openresty_nginx_temp_dir }}"
+    state=directory
+    owner="root"
+    group="root"
+    mode=0777
+  ignore_errors: True
+- name: Install dependent packages.
+  yum: >
+    name="{{ item }}"
+    state="present"
+  with_items: "{{ openresty_dependent_packages }}"
+- name: Download openresty source.
+  get_url: >
+    url="http://openresty.org/download/ngx_openresty-{{ openresty_version }}.tar.gz"
+    dest="{{ openresty_src_dir }}/ngx_openresty-{{ openresty_version }}.tar.gz"
+    force="yes"
+- name: Extract openresty source.
+  unarchive: >
+    src="{{ openresty_src_dir }}/ngx_openresty-{{ openresty_version }}.tar.gz"
+    dest="{{ openresty_src_dir }}"
+    copy="no"
+- name: Configure openresty source.
+  shell: >
+    ./configure {{openresty_configure_options}}
+    chdir={{ openresty_src_dir }}/ngx_openresty-{{ openresty_version }}
+- name: Make openresty.
+  shell: >
+    /usr/bin/make
+    chdir={{ openresty_src_dir }}/ngx_openresty-{{ openresty_version }}
+- name: Install openresty.
+  shell: >
+    /usr/bin/make install
+    chdir={{ openresty_src_dir }}/ngx_openresty-{{ openresty_version }}
+- name: Copy favicon.ico.
+  copy: >
+    src=favicon.ico
+    dest={{ openresty_prefix_dir }}/nginx/html/favicon.ico
+    owner=root
+    group=root
+    mode=0644
+- name: Copy 404.html.
+  copy: >
+    src=404.html
+    dest={{ openresty_prefix_dir }}/nginx/html/404.html
+    owner=root
+    group=root
+    mode=0644
+- name: Copy 50x.html.
+  copy: >
+    src=50x.html
+    dest={{ openresty_prefix_dir }}/nginx/html/50x.html
+    owner=root
+    group=root
+    mode=0644
+- name: Create nginx.conf.
+  template: >
+    src=nginx.conf.tpl
+    dest={{ openresty_nginx_conf_file }}
+    owner=root
+    group=root
+    mode=0644
+- name: Create nginx configure sub directory.
+  file: >
+    path="{{ openresty_nginx_sub_conf_dir }}"
+    state=directory
+    owner="root"
+    group="root"
+    mode=0755
+- name: Create global.conf.
+  template: >
+    src=nginx.global.conf.tpl
+    dest={{ openresty_nginx_sub_conf_dir }}/global.conf
+    owner=root
+    group=root
+    mode=0644
+- name: Create http.conf.
+  template: >
+    src=nginx.http.conf.tpl
+    dest={{ openresty_nginx_sub_conf_dir }}/http.conf
+    owner=root
+    group=root
+    mode=0644
+- name: Extract resolver.
+  shell: "grep nameserver /etc/resolv.conf | awk '{print $2}'"
+  register: openresty_extract_resolver
+- name: Replace nginx http server resolver.
+  replace: >
+    dest="{{ openresty_nginx_sub_conf_dir }}/http.conf"
+    regexp='^(\s+resolver\s+).+;'
+    replace="    resolver           {{ openresty_extract_resolver['stdout'] }};"
+- name: Create http.server.conf.
+  template: >
+    src=nginx.http.server.conf.tpl
+    dest={{ openresty_nginx_sub_conf_dir }}/http.server.conf
+    owner=root
+    group=root
+    mode=0644
+- name: Create http.lua.conf.
+  template: >
+    src=nginx.http.lua.conf.tpl
+    dest={{ openresty_nginx_sub_conf_dir }}/http.lua.conf
+    owner=root
+    group=root
+    mode=0644
+- name: Create http.server.location.conf.
+  template: >
+    src=nginx.http.server.location.conf.tpl
+    dest={{ openresty_nginx_sub_conf_dir }}/http.server.location.conf
+    owner=root
+    group=root
+    mode=0644
+- name: Create lua directory.
+  file: >
+    path="{{ openresty_nginx_conf_dir }}/lua"
+    state=directory
+    owner="root"
+    group="root"
+    mode=0755
+- name: Copy current_time.lua.
+  copy: >
+    src=current_time.lua
+    dest={{ openresty_nginx_conf_dir }}/lua/current_time.lua
+    owner=root
+    group=root
+    mode=0644
+- name: Create nginx service file.
+  template: >
+    src=nginx.service.tpl
+    dest="{{ openresty_nginx_service_file }}"
+    owner=root
+    group=root
+    mode=0755
+- name: Register and Start nginx service.
+  service: >
+    name=nginx
+    state=started
+    enabled=yes

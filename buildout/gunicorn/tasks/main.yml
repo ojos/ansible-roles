@@ -1,0 +1,50 @@
+---
+- name: Stop supervisord service.
+  service: >
+    name=supervisord
+    state=stopped
+- name: Install gunicorn in pip.
+  command: >
+    {{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}/bin/pip install {{ item }}
+  with_items: "{{ gunicorn_dependent_packages }}"
+- name: Create gunicorn user.
+  user: >
+    name="{{ gunicorn_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ gunicorn_user_home }}"
+    createhome=no
+  ignore_errors: True
+- name: Create gunicorn conf directory.
+  file: >
+    path="{{ gunicorn_conf_dir }}"
+    state=directory
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_user }}"
+    mode=0755
+- name: Create gunicorn log directory.
+  file: >
+    path="{{ gunicorn_log_dir }}"
+    state=directory
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_user }}"
+    mode=0755
+- name: Create gunicorn pid directory.
+  file: >
+    path="{{ gunicorn_pid_dir }}"
+    state=directory
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_user }}"
+    mode=0755
+- name: Create gunicorn config file.
+  template: >
+    src=gunicorn.conf.tpl
+    dest="{{ gunicorn_conf_dir }}/{{ gunicorn_conf_file }}"
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_user }}"
+    mode=0644
+- name: Start supervisord service.
+  service: >
+    name=supervisord
+    state=started
+    enabled=yes
