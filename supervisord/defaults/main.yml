@@ -1,8 +1,9 @@
 ---
   supervisord_user: root
-  supervisord_group: "{{ supervisord_user }}"
+  supervisord_group: root
   supervisord_conf_dir: /etc/supervisord
   supervisord_conf_file: supervisord.conf
+  supervisord_include_conf_dir: "{{ supervisord_conf_dir }}/conf.d/*.conf"
   supervisord_log_dir: /var/log/supervisord
   supervisord_log_file: main.log
   supervisord_log_file_maxbytes: 50MB
@@ -10,7 +11,9 @@
   supervisord_log_level: info
   supervisord_pid_dir: /var/run/supervisord
   supervisord_pid_file: supervisord.pid
-  supervisord_unix_http_server_socket_file: /tmp/supervisor.sock
+  supervisord_pid_dir: /var/run/supervisord
+  supervisord_unix_http_server_socket_dir: /tmp
+  supervisord_unix_http_server_socket_file: supervisor.sock
   supervisord_nodaemon: false
   supervisord_minfds: 1024
   supervisord_minprocs: 200

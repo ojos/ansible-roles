@@ -6,7 +6,7 @@
   celery_pid_dir: /var/run/celery
   celery_pid_file: "%N.pid"
   celery_user: celery
-  celery_group: "{{ celery_user }}"
+  celery_group: celery
   celery_user_home: "{{ celery_conf_dir }}"
   celery_nodes: worker1 worker2 worker3
   celery_app: proj

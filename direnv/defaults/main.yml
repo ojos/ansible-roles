@@ -1,0 +1,5 @@
+---
+  direnv_bin_url: https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64
+  direnv_install_dir_prefix: /usr/local/bin
+  direnv_user: root
+  direnv_group: root

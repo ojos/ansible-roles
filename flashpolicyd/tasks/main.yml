@@ -1,7 +1,7 @@
 ---
 - name: Install dependen packages in pip.
   command: >
-    {{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}/bin/pip install {{ item }}
+    {{ xbuild_python_install_dir_prefix }}/bin/pip install {{ item }}
   with_items: "{{ flashpolicyd_dependent_packages }}"
 - name: Create flashpolicyd script file.
   copy: >

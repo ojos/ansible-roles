@@ -1,2 +1,2 @@
 ---
-  supervisord_binary: "{{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}/bin/supervisord"
+  supervisord_binary: "{{ xbuild_python_install_dir_prefix }}/bin/supervisord"

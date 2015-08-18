@@ -1,5 +1,5 @@
 [unix_http_server]
-file={{ supervisord_unix_http_server_socket_file }}
+file={{supervisord_unix_http_server_socket_dir}}/{{ supervisord_unix_http_server_socket_file }}
 chmod=0777
 
 [supervisord]
@@ -20,4 +20,4 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 serverurl=unix://{{ supervisord_unix_http_server_socket_file }}
 
 [include]
-files = {{ supervisord_conf_dir }}/conf.d/*.conf
+files = {{ supervisord_include_conf_dir }}/*.conf

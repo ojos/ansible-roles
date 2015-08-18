@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: buildout/devtools }
-  - { role: buildout/luaJIT }

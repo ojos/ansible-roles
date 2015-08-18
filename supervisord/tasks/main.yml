@@ -1,7 +1,7 @@
 ---
 - name: Install supervisor in pip.
   command: >
-    {{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}/bin/pip install supervisor
+    {{ xbuild_python_install_dir_prefix }}/bin/pip install supervisor
 - name: Create supervisord user.
   user: >
     name="{{ supervisord_user }}"
@@ -27,6 +27,13 @@
 - name: Create supervisord pid directory.
   file: >
     path="{{ supervisord_pid_dir }}"
+    state=directory
+    owner="{{ supervisord_user }}"
+    group="{{ supervisord_group }}"
+    mode=0755
+- name: Create supervisord http server socket directory.
+  file: >
+    path="{{ supervisord_unix_http_server_socket_dir }}"
     state=directory
     owner="{{ supervisord_user }}"
     group="{{ supervisord_group }}"

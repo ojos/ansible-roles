@@ -5,7 +5,7 @@
     state=stopped
 - name: Install celery in pip.
   command: >
-    {{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}/bin/pip install celery
+    {{ xbuild_python_install_dir_prefix }}/bin/pip install celery
 - name: Create celery user.
   user: >
     name="{{ celery_user }}"
@@ -13,6 +13,7 @@
     system=yes
     home="{{ celery_user_home }}"
     createhome=no
+  ignore_errors: True
 - name: Create celery conf directory.
   file: >
     path="{{ celery_conf_dir }}"
