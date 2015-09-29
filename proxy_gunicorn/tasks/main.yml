@@ -1,0 +1,18 @@
+---
+- name: Stop nginx service.
+  service: >
+    name=nginx
+    state=stopped
+    enabled=yes
+- name: Change nginx.conf.
+  template: >
+    src=nginx.conf.tpl
+    dest=/etc/nginx/nginx.conf
+    owner=root
+    group=root
+    mode=0644
+- name: Start nginx service.
+  service: >
+    name=nginx
+    state=started
+    enabled=yes

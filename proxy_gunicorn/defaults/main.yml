@@ -1,0 +1,4 @@
+---
+  proxy_gunicorn_static_dir: '/var/www/app/static'
+  proxy_gunicorn_ssl_redirect: False
+  proxy_gunicorn_domain: 'example.co.jp'

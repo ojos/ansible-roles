@@ -2,9 +2,9 @@
   celery_conf_dir: /usr/local/etc/celery
   celery_conf_file: celeryd
   celery_log_dir: /var/log/celery
-  celery_log_file: "%N.log"
+  celery_log_file: "%N.celery.log"
   celery_pid_dir: /var/run/celery
-  celery_pid_file: "%N.pid"
+  celery_pid_file: "%N.celery.pid"
   celery_user: celery
   celery_group: celery
   celery_user_home: "{{ celery_conf_dir }}"

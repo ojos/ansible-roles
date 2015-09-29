@@ -1,5 +1,5 @@
 ---
-  redis_version: '2.8.6'
+  redis_version: '2.8.21'
   redis_src_dir: '/usr/local/src'
   redis_prefix_dir: '/usr/local'
   redis_bin_dir: "{{ redis_prefix_dir }}/bin"

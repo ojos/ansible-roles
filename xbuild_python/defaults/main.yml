@@ -18,5 +18,5 @@
     - libffi-devel
     - valgrind-devel
     - systemtap-sdt-devel
-  xbuild_python_version: 2.7.9
+  xbuild_python_version: 2.7.10
   xbuild_python_install_dir_prefix: "{{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}"
