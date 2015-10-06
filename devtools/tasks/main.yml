@@ -3,6 +3,7 @@
   yum: >
     name="*"
     state="latest"
+  ignore_errors: True
 - name: Install Development tools.
   yum: >
     name="@Development tools"

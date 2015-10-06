@@ -1,0 +1,14 @@
+---
+- name: Install golang in xbuild.
+  command: >
+    {{ xbuild_install_dir_prefix }}/xbuild/go-install {{ xbuild_go_version }}
+    {{ xbuild_go_install_dir_prefix }} {{ xbuild_go_os }} {{ xbuild_go_arch }}
+    creates={{ xbuild_python_install_dir_prefix }}
+- name: Change go directory owner.
+  file: >
+    path="{{ xbuild_go_install_dir_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ xbuild_go_user }}"
+    group="{{ xbuild_go_group }}"
+    mode=0755

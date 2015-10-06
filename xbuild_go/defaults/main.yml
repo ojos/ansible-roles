@@ -1,0 +1,7 @@
+---
+  xbuild_go_user: root
+  xbuild_go_group: root
+  xbuild_go_version: 1.5.1
+  xbuild_go_os: linux
+  xbuild_go_arch: amd64
+  xbuild_go_install_dir_prefix: "{{ xbuild_install_dir_prefix }}/go-{{ xbuild_go_version }}"
