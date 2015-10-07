@@ -7,7 +7,4 @@
     - 'Django'
     - 'MySQL-python'
     - 'django-redis'
-    - 'pycrypto'
-    - 'PyYAML'
-    - 'boto'
     - 'pytz'
