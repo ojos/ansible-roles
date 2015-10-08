@@ -5,3 +5,4 @@
     dest="{{ xbuild_install_dir_prefix }}/xbuild"
     update="{{ xbuild_update }}"
     accept_hostkey="yes"
+  ignore_errors: True
