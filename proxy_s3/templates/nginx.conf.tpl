@@ -35,7 +35,7 @@ http {
                 return origin
             ';
 
-            set $s3_bucket "{{ s3_bucket }}.s3.amazonaws.com";
+            set $s3_bucket "{{ proxy_s3_bucket }}.s3.amazonaws.com";
 
             proxy_http_version     1.1;
             proxy_set_header       Host $s3_bucket;

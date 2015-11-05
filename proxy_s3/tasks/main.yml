@@ -11,8 +11,6 @@
     owner=root
     group=root
     mode=0644
-- name: Install pip.
-  shell: curl -kL https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
 - name: Install passlib.
   pip: name=passlib
 - name: Create htpassword.

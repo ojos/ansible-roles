@@ -1,4 +1,5 @@
 ---
   proxy_s3_htpassword: '/etc/nginx/htpassword'
-  proxy_s3_username: 'appdev'
-  proxy_s3_password: 'vedppa'
+  proxy_s3_bucket: 'vagrant'
+  proxy_s3_username: 'vagrant'
+  proxy_s3_password: 'vagrant'
