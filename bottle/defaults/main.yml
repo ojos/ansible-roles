@@ -4,7 +4,7 @@
   bottle_gunicorn_command_option: ''
   bottle_dependent_packages:
     - 'bottle'
-    - 'MySQL-python'
+    - 'mysqlclient'
     - 'SQLAlchemy'
     - 'bottle-sqlalchemy'
     - 'redis'

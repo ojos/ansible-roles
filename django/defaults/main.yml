@@ -5,6 +5,6 @@
   django_gunicorn_command_option: ''
   django_dependent_packages:
     - 'Django'
-    - 'MySQL-python'
+    - 'mysqlclient'
     - 'django-redis'
     - 'pytz'

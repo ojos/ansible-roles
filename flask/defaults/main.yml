@@ -4,7 +4,7 @@
   flask_gunicorn_command_option: ''
   flask_dependent_packages:
     - 'Flask'
-    - 'MySQL-python'
+    - 'mysqlclient'
     - 'Flask-SQLAlchemy'
     - 'Flask-Redis'
     - 'pycrypto'
