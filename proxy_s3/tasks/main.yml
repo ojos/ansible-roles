@@ -1,16 +1,24 @@
 ---
 - name: Stop nginx service.
-  service: >
-    name=nginx
-    state=stopped
-    enabled=yes
+  command: >
+    service nginx stop
 - name: Change nginx.conf.
   template: >
     src=nginx.conf.tpl
-    dest=/etc/nginx/nginx.conf
+    dest={{ openresty_nginx_conf_dir }}/nginx.conf
     owner=root
     group=root
     mode=0644
+- name: Create replace_resolver.sh.
+  template: >
+    src=replace_resolver.sh.tpl
+    dest={{ openresty_nginx_conf_dir }}/replace_resolver.sh
+    owner=root
+    group=root
+    mode=0755
+- name: Exec replace_resolver.sh.
+  command: >
+    {{ openresty_nginx_conf_dir }}/replace_resolver.sh
 - name: Install passlib.
   pip: name=passlib
 - name: Create htpassword.
@@ -22,7 +30,5 @@
     group=nginx
     mode=0640
 - name: Start nginx service.
-  service: >
-    name=nginx
-    state=started
-    enabled=yes
+  command: >
+    service nginx start

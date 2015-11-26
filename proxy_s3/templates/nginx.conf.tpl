@@ -27,13 +27,13 @@ http {
                 end
             ';
 
-            access_by_lua '
+<!--             access_by_lua '
                 auth_header = ngx.req.get_headers().authorization
                 if not auth_header or auth_header == '' or not string.match(auth_header, '^[Bb]asic ') then
                     ngx.header['WWW-Authenticate'] = 'Restricted'
                     ngx.exit(ngx.HTTP_UNAUTHORIZED)
                 end
-            ';
+            '; -->
 
             set_by_lua $orgn '
                 local origin = ngx.req.get_headers()["origin"]
@@ -43,7 +43,7 @@ http {
                 return origin
             ';
 
-            set $s3_bucket "{{ proxy_s3_bucket }}.s3.amazonaws.com";
+            set $s3_bucket "{{ proxy_s3_bucket }}.s3-ap-northeast-1.amazonaws.com";
 
             proxy_http_version     1.1;
             proxy_set_header       Host $s3_bucket;
@@ -63,8 +63,8 @@ http {
 
             proxy_pass https://$s3_bucket;
 
-<!--             auth_basic "Restricted";
-            auth_basic_user_file "{{ proxy_s3_htpassword }}"; -->
+            auth_basic "Restricted";
+            auth_basic_user_file "{{ proxy_s3_htpassword }}";
 
             if ($request_method = OPTIONS ) {
                 add_header Access-Control-Allow-Origin *;

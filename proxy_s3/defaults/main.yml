@@ -3,3 +3,5 @@
   proxy_s3_bucket: 'vagrant'
   proxy_s3_username: 'vagrant'
   proxy_s3_password: 'vagrant'
+  proxy_s3_resolver_ip: '8.8.8.8'
+  proxy_s3_resolv_file: '/etc/resolv.conf'
