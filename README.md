@@ -1,6 +1,6 @@
-# ansible-playbooks
+# ansible-modules
 
-Ansible playbook collection
+Ansible module collection
 
 ## TODO
 
