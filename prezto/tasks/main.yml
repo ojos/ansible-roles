@@ -1,0 +1,28 @@
+---
+- name: Check Prezto Directory.
+  stat: >
+    path="{{ prezto_dir }}/.zprezto"
+  register: res
+- name: Checkout Repository.
+  git: >
+    repo="{{ prezto_repo }}"
+    dest="{{ prezto_dir }}/.zprezto"
+    force=yes
+    recursive=yes
+  when: not res.stat.exists
+- name: Copy bootstrap.
+  template: >
+    src=bootstrap.tpl
+    dest={{ prezto_dir }}/bootstrap
+    mode=0755
+  when: not res.stat.exists
+- name: Excute bootstrap.sh.
+  shell: >
+    ./bootstrap
+    chdir={{ prezto_dir }}
+  when: not res.stat.exists
+- name: Remove bootstrap.
+  file: >
+    path={{ prezto_dir }}/bootstrap
+    state=absent
+  when: not res.stat.exists

@@ -1,0 +1,28 @@
+---
+- name: Copy .pythonstartup.
+  copy: >
+    src=dot.pythonstartup
+    dest="{{ dotfiles_home_dir }}/.pythonstartup"
+    mode=0644
+- name: Copy .zpreztorc.
+  copy: >
+    src=dot.zpreztorc
+    dest="{{ dotfiles_home_dir }}/.zpreztorc"
+    mode=0644
+    force=yes
+- name: Copy .zshrc.
+  copy: >
+    src=dot.zshrc
+    dest="{{ dotfiles_home_dir }}/.zshrc"
+    mode=0644
+    force=yes
+- name: Copy .gitconfig.
+  copy: >
+    src=dot.gitconfig
+    dest="{{ dotfiles_home_dir }}/.gitconfig"
+    mode=0644
+- name: Copy .gitignore.
+  copy: >
+    src=dot.gitignore
+    dest="{{ dotfiles_home_dir }}/.gitignore"
+    mode=0644
