@@ -32,6 +32,7 @@ if [ -x "`which go`" ]; then
 fi
 
 # peco
+# https://github.com/peco/peco
 function peco-select-history() {
         local tac
         if which tac > /dev/null; then
@@ -47,7 +48,20 @@ zle -N peco-select-history
 bindkey '^r' peco-select-history
 
 # direnv
+# https://github.com/direnv/direnv
 eval "$(direnv hook zsh)"
+
+# git-flow
+# https://github.com/nvie/gitflow
+source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
+
+# hub
+# https://github.com/github/hub
+source /usr/local/share/zsh/site-functions/_hub
+
+# gibo
+# https://github.com/simonwhitaker/gibo
+source /usr/local/share/zsh/site-functions/_gibo
 
 # Google Cloud SDK
 FPATH="${HOME}/opt/gcloud-zsh-completion/src:${FPATH}"
