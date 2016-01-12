@@ -1,0 +1,11 @@
+---
+  osx_homebrew_github_api_token: 
+  osx_aws_access_key_id: 
+  osx_aws_secret_access_key: 
+  osx_git_name: 
+  osx_git_email: 
+  osx_ssh_private_key: 
+  osx_ssh_public_key: 
+  osx_restore_time_machine: 
+  osx_time_machine_root: 
+  osx_time_machine_directories:

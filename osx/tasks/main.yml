@@ -1,0 +1,63 @@
+---
+- name: Replace HOMEBREW_GITHUB_API_TOKEN.
+  lineinfile: >
+    dest="{{ ansible_env.HOME }}/.zshrc"
+    state=present
+    backrefs=yes
+    regexp='^#?\s*export\s*HOMEBREW_GITHUB_API_TOKEN=\w+'
+    line="export HOMEBREW_GITHUB_API_TOKEN={{ osx_homebrew_github_api_token }}"
+- name: Replace AWS_ACCESS_KEY_ID.
+  lineinfile: >
+    dest="{{ ansible_env.HOME }}/.zshrc"
+    state=present
+    backrefs=yes
+    regexp='^#?\s*export\s*AWS_ACCESS_KEY_ID=\w+'
+    line="export AWS_ACCESS_KEY_ID={{ osx_aws_access_key_id }}"
+- name: Replace AWS_SECRET_ACCESS_KEY.
+  lineinfile: >
+    dest="{{ ansible_env.HOME }}/.zshrc"
+    state=present
+    backrefs=yes
+    regexp='^#?\s*export\s*AWS_SECRET_ACCESS_KEY=\w+'
+    line="export AWS_SECRET_ACCESS_KEY={{ osx_aws_secret_access_key }}"
+- name: Replace git user name.
+  lineinfile: >
+    dest="{{ ansible_env.HOME }}/.gitconfig"
+    state=present
+    backrefs=yes
+    regexp='^\s*#?\s*name\s=\s\w+'
+    line="  name = {{ osx_git_name }}"
+- name: Replace git user email.
+  lineinfile: >
+    dest="{{ ansible_env.HOME }}/.gitconfig"
+    state=present
+    backrefs=yes
+    regexp='^\s*#?\s*email\s=\s\w+'
+    line="  email = {{ osx_git_email }}"
+- name: Create .ssh Directory.
+  file: >
+    path="{{ ansible_env.HOME }}/.ssh"
+    state=directory
+    mode=0700
+- name: Copy ssh private key file.
+  copy: >
+    content="{{ osx_ssh_private_key }}"
+    dest="{{ ansible_env.HOME }}/.ssh/id_rsa"
+    mode=0600
+- name: Copy ssh public key file.
+  copy: >
+    content="{{ osx_ssh_public_key }}"
+    dest="{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    mode=0644
+- name: Time Machine Drive.
+  stat: >
+    path={{ osx_time_machine_root }}
+  register: is_mount
+  when: osx_restore_time_machine
+- name: Restore from the time machine.
+  shell: >
+    tmutil restore {{ osx_time_machine_root }}{{ item }} `dirname {{ item }}`
+  with_items: osx_time_machine_directories
+  when: osx_restore_time_machine and is_mount.stat.exists and osx_time_machine_directories|length > 0 
+
+
