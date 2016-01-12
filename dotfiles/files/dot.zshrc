@@ -57,8 +57,8 @@ source /usr/local/share/zsh/site-functions/git-flow-completion.zsh
 
 # hub
 # https://github.com/github/hub
-eval "$(hub alias -s)"
-source /usr/local/share/zsh/site-functions/_hub
+# eval "$(hub alias -s)"
+# source /usr/local/share/zsh/site-functions/_hub
 
 # gibo
 # https://github.com/simonwhitaker/gibo
