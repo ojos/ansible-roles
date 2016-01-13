@@ -1,8 +1,10 @@
 ---
-- name: Check Prezto Directory.
+- name: Prezto directory.
   stat: >
     path="{{ prezto_dir }}/.zprezto"
   register: res
+  changed_when: False
+  always_run: yes
 - name: Checkout Repository.
   git: >
     repo="{{ prezto_repo }}"
