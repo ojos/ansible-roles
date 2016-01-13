@@ -16,4 +16,4 @@
     state={{ item.state | default('latest') }}
     install_options={{ item.install_option | default('') }}
   with_items: homebrew_packages
-  when: homebrew_repositories|length > 0
+  when: homebrew_packages|length > 0
