@@ -19,3 +19,5 @@
     state={{ item.state | default('present') }}
   with_items: homebrew_cask_packages
   when: homebrew_cask_repositories|length > 0
+  environment: 
+    HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
