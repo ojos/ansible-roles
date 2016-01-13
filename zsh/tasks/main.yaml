@@ -1,0 +1,4 @@
+---
+- name: Change shell to zsh.
+  command: >
+    chsh -s {{ zsh_bin_file }}
