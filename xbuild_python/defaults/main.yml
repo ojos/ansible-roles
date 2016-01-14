@@ -1,6 +1,6 @@
 ---
-  xbuild_python_user: ansible_user_uid
-  xbuild_python_group: ansible_user_gid
+  xbuild_python_user: "{{ ansible_user_uid }}"
+  xbuild_python_group: "{{ ansible_user_gid }}"
   xbuild_python_dependent_packages:
     - expat-devel
     - db4-devel
