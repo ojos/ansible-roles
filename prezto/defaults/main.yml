@@ -1,4 +1,2 @@
 ---
-  prezto_repo: "https://github.com/sorin-ionescu/prezto.git"
-  prezto_dir: "{{ ansible_env.HOME }}"
-
+  prezto_repository: "https://github.com/sorin-ionescu/prezto.git"

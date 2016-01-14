@@ -1,30 +1,30 @@
 ---
 - name: Prezto directory.
   stat: >
-    path="{{ prezto_dir }}/.zprezto"
+    path={{ ansible_user_dir }}/.zprezto
   register: res
   changed_when: False
   always_run: yes
 - name: Checkout Repository.
   git: >
-    repo="{{ prezto_repo }}"
-    dest="{{ prezto_dir }}/.zprezto"
+    repo=prezto_repository
+    dest={{ ansible_user_dir }}/.zprezto
     force=yes
     recursive=yes
   when: not res.stat.exists
 - name: Copy bootstrap.
   template: >
     src=bootstrap.tpl
-    dest={{ prezto_dir }}/bootstrap
+    dest={{ ansible_user_dir }}/bootstrap
     mode=0755
   when: not res.stat.exists
 - name: Excute bootstrap.sh.
   shell: >
     ./bootstrap
-    chdir={{ prezto_dir }}
+    chdir=ansible_user_dir
   when: not res.stat.exists
 - name: Remove bootstrap.
   file: >
-    path={{ prezto_dir }}/bootstrap
+    path={{ ansible_user_dir }}/bootstrap
     state=absent
   when: not res.stat.exists

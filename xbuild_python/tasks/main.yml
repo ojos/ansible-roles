@@ -23,10 +23,10 @@
     {{ xbuild_install_directory }}/python-install {{ xbuild_python_version }}
     {{ xbuild_python_install_directory }}
   when: not res.stat.exists
-# - name: Change python directory owner.
-#   file: >
-#     path=xbuild_python_install_directory
-#     state=directory
-#     recurse=yes
-#     owner=xbuild_python_user
-#     group=xbuild_python_group
+- name: Change python directory owner.
+  file: >
+    path=xbuild_python_install_directory
+    state=directory
+    recurse=yes
+    owner=xbuild_python_user
+    group=xbuild_python_group

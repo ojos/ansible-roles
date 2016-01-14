@@ -1,2 +1,0 @@
----
-  prezto_dir: "{{ dotfiles_home_dir }}"
