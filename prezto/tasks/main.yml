@@ -7,7 +7,7 @@
   always_run: yes
 - name: Checkout Repository.
   git: >
-    repo=prezto_repository
+    repo={{ prezto_repository }}
     dest={{ ansible_user_dir }}/.zprezto
     force=yes
     recursive=yes
@@ -21,7 +21,7 @@
 - name: Excute bootstrap.sh.
   shell: >
     ./bootstrap
-    chdir=ansible_user_dir
+    chdir={{ ansible_user_dir }}
   when: not res.stat.exists
 - name: Remove bootstrap.
   file: >

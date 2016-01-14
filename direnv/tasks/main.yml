@@ -1,10 +1,10 @@
 ---
 - name: Install direnv.
   get_url: >
-    url="{{ direnv_bin_url }}"
-    dest="{{ direnv_install_dir_prefix }}/direnv"
-    owner="{{ direnv_user }}"
-    group="{{ direnv_group }}"
+    url={{ direnv_bin_url }}
+    dest={{ direnv_install_dir_prefix }}/direnv
+    owner={{ direnv_user }}
+    group={{ direnv_group }}
     mode=0755
 - name: Insert direnv in .bashrc.
   lineinfile: >
