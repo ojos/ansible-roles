@@ -1,0 +1,13 @@
+---
+- name: Clone project directory.
+  git: >
+    repo="{{ project_repository }}"
+    dest="{{ project_directory }}"
+    update=yes
+  when: project_repository
+- name: Create project directory.
+  file: >
+    path="{{ project_directory }}"
+    state=directory
+    mode=0755
+  when: not project_repository

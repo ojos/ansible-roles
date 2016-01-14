@@ -1,8 +1,6 @@
 ---
-- name: Install xbuild.
+- name: Clone xbuild directory.
   git: >
-    repo="{{ xbuild_repo }}"
-    dest="{{ xbuild_install_dir_prefix }}/xbuild"
-    update="{{ xbuild_update }}"
-    accept_hostkey="yes"
-  ignore_errors: True
+    repo="{{ xbuild_repository }}"
+    dest="{{ xbuild_install_directory }}"
+    update=yes
