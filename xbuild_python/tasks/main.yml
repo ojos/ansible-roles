@@ -29,7 +29,16 @@
 #     state=absent
 #   when: xbuild_python_remove_xbuild
 - name: Change python directory owner.
-  command: >
-    chown -R {{ xbuild_python_user }}:{{ xbuild_python_group }} {{ xbuild_python_install_directory }}
+  file: >
+    path="{{ xbuild_python_install_directory }}"
+    state=directory
+    recurse=yes
+    owner="{{ xbuild_python_user }}"
+    group="{{ xbuild_python_group }}"
+  become: yes
+# - name: Change python directory owner.
+#   command: >
+#     chown -R {{ xbuild_python_user }}:{{ xbuild_python_group }} {{ xbuild_python_install_directory }}
+#   become: yes
   become: yes
 
