@@ -1,19 +1,32 @@
 ---
-- name: Install dependent packages.
+- name: Install dependent packages(RedHat).
   yum: >
-    name="{{ item }}"
-    state="present"
-  with_items: "{{ xbuild_python_dependent_packages }}"
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: xbuild_python_dependent_packages
+  when: ansible_os_family == 'RedHat' or xbuild_python_dependent_packages|length > 0
+- name: Install dependent packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: xbuild_python_dependent_packages
+  when: ansible_os_family == 'Darwin' or xbuild_python_dependent_packages|length > 0
+- name: Python directory.
+  stat: >
+    path=xbuild_python_install_directory
+  register: res
+  changed_when: False
+  always_run: yes
 - name: Install python in xbuild.
   command: >
-    {{ xbuild_install_dir_prefix }}/xbuild/python-install {{ xbuild_python_version }}
-    {{ xbuild_python_install_dir_prefix }}
-    creates={{ xbuild_python_install_dir_prefix }}
-- name: Change python directory owner.
-  file: >
-    path="{{ xbuild_python_install_dir_prefix }}"
-    state=directory
-    recurse=yes
-    owner="{{ xbuild_python_user }}"
-    group="{{ xbuild_python_group }}"
-    mode=0755
+    {{ xbuild_install_directory }}/python-install {{ xbuild_python_version }}
+    {{ xbuild_python_install_directory }}
+  when: not res.stat.exists
+# - name: Change python directory owner.
+#   file: >
+#     path=xbuild_python_install_directory
+#     state=directory
+#     recurse=yes
+#     owner=xbuild_python_user
+#     group=xbuild_python_group

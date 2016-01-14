@@ -1,6 +1,6 @@
 ---
-  xbuild_python_user: root
-  xbuild_python_group: root
+  xbuild_python_user: ansible_user_uid
+  xbuild_python_group: ansible_user_gid
   xbuild_python_dependent_packages:
     - expat-devel
     - db4-devel
@@ -19,4 +19,4 @@
     - valgrind-devel
     - systemtap-sdt-devel
   xbuild_python_version: 2.7.10
-  xbuild_python_install_dir_prefix: "{{ xbuild_install_dir_prefix }}/python-{{ xbuild_python_version }}"
+  xbuild_python_install_directory: "/usr/local/python-{{ xbuild_python_version }}"
