@@ -32,7 +32,7 @@
     line="export {{ item }}"
     insertafter=EOF
     state=present
-    regexp="{{ item }}"
+    regexp='{{ item }}'
   with_items: project_environment_variables
 
 - name: direnv allow.
