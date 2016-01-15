@@ -5,4 +5,4 @@
     - value: PROJECT_HOME=$PWD
       regexp: PROJECT_HOME=\$PWD
     - value: PATH=$PROJECT_HOME/python/bin:$PATH
-      regexp: python/bin
+      regexp: \$PROJECT_HOME/python/bin\:\$PATH
