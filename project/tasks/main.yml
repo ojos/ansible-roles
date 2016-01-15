@@ -34,3 +34,9 @@
     state=present
     regexp="{{ item }}"
   with_items: project_environment_variables
+
+- name: direnv allow.
+  command: >
+    direnv allow
+  args:
+    chdir: "{{ project_directory }}"
