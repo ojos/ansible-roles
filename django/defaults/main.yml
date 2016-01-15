@@ -8,3 +8,8 @@
     - 'mysqlclient'
     - 'django-redis'
     - 'pytz'
+    - 'django-extensions'
+    - 'django-requestlogging'
+    - 'django-devserver'
+    - 'guppy'
+    - 'line-profiler'

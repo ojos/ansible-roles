@@ -11,7 +11,7 @@
 [push]
   default = tracking       # defaultのpush先はtrackingしているリポジトリ
 [core]
-  excludesfile = /Users/aizu/.gitignore
+  excludesfile = ~/.gitignore
   autocrlf = input                 # CRLFを自動変換
   editor = vi
   quotepath = false
@@ -149,3 +149,6 @@
 
 [credential]
   helper = osxkeychain
+
+[commit]
+  template = ~/.gitmessage

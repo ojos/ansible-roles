@@ -26,3 +26,8 @@
     src=dot.gitignore
     dest={{ ansible_user_dir }}/.gitignore
     mode=0644
+- name: Copy .gitignore.
+  copy: >
+    src=dot.gitmessage
+    dest={{ ansible_user_dir }}/.gitmessage
+    mode=0644
