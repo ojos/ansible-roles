@@ -20,7 +20,7 @@
     path={{ xbuild_go_install_directory }}
     state=directory
     recurse=yes
-    owner={{ xbuild_python_user }}
-    group={{ xbuild_python_group }}
+    owner={{ xbuild_go_user }}
+    group={{ xbuild_go_group }}
   become: yes
 
