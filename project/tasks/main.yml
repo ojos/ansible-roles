@@ -29,7 +29,7 @@
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ project_directory }}/.envrc
-    line="expert {{ item }}"
+    line="export {{ item }}"
     insertafter=EOF
     state=present
     regexp="{{ item }}"
