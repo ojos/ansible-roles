@@ -1,3 +1,6 @@
 ---
   project_repository: ""
   project_directory: /var/www/app
+  project_environment_variables:
+    - PROJECT_HOME=$PWD
+    - PATH=$PROJECT_HOME/python/bin:$PATH

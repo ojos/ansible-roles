@@ -11,3 +11,26 @@
     state=directory
     mode=0755
   when: not project_repository
+
+- name: .envrc file.
+  stat: >
+    path={{ project_directory }}
+  register: envrc_file
+  changed_when: no
+  always_run: yes
+- name: Create .envrc file.
+  file: >
+    state=touch
+    path={{ project_directory }}/.envrc
+    owner={{ ansible_user_uid }}
+    group={{ ansible_user_gid }}
+    mode=0644
+  when: not envrc_file.stat.exists
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ project_directory }}/.envrc
+    line="expert {{ item }}"
+    insertafter=EOF
+    state=present
+    regexp="{{ item }}"
+  with_items: project_environment_variables
