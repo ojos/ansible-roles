@@ -2,5 +2,7 @@
   project_repository: ""
   project_directory: /var/www/app
   project_environment_variables:
-    - PROJECT_HOME=$PWD
-    - PATH=$PROJECT_HOME/python/bin:$PATH
+    - value: PROJECT_HOME=$PWD
+      regexp: PROJECT_HOME
+    - value: PATH=$PROJECT_HOME/python/bin:$PATH
+      regexp: python/bin

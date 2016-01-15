@@ -29,10 +29,10 @@
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ project_directory }}/.envrc
-    line="export {{ item }}"
+    line="export {{ item.value }}"
     insertafter=EOF
     state=present
-    regexp='{{ item }}'
+    regexp={{ item.regexp }}
   with_items: project_environment_variables
 
 - name: direnv allow.
