@@ -26,8 +26,9 @@
   when: not python_dir.stat.exists
 - name: Install python packages.
   command: >
-    {{ xbuild_python_install_directory }}/bin/pip install {{ item.name }}
-  with_items: xbuild_python_packages|length > 0
+    {{ xbuild_python_install_directory }}/bin/pip install {{ item }}
+  with_items: xbuild_python_packages
+  when: xbuild_python_packages|length > 0
 - name: Change python directory owner.
   file: >
     path={{ xbuild_python_install_directory }}
