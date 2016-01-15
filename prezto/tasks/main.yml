@@ -21,7 +21,8 @@
 - name: Excute bootstrap.sh.
   shell: >
     ./bootstrap
-    chdir={{ ansible_user_dir }}
+  args:
+    chdir: {{ ansible_user_dir }}
   when: not res.stat.exists
 - name: Remove bootstrap.
   file: >
