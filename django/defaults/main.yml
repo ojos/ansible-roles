@@ -1,9 +1,12 @@
 ---
-  django_app_name: 'app.wsgi'
-  django_app_dir: '/var/www/app'
-  django_gunicorn_conf_replace: 'yes'
-  django_gunicorn_command_option: ''
-  django_dependent_packages:
+  django_repository: ""
+  django_directory: /var/www
+  django_project_name: app
+  django_app_names:
+    - app
+  django_user: "{{ xbuild_python_user }}"
+  django_group: "{{ xbuild_python_group }}"
+  django_install_packages:
     - 'Django'
     - 'mysqlclient'
     - 'django-redis'

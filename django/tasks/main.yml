@@ -1,31 +1,29 @@
 ---
-- name: Stop supervisord service.
-  service: >
-    name=supervisord
-    state=stopped
-    enabled=yes
-- name: Install Django in pip.
+- name: Install dependent packages.
   command: >
-    {{ xbuild_python_install_dir_prefix }}/bin/pip install {{ item }}
-  with_items: "{{ django_dependent_packages }}"
-- name: Create app directory.
-  file: >
-    path="{{ django_app_dir }}"
-    state=directory
-    owner="{{ gunicorn_user }}"
-    group="{{ gunicorn_user }}"
-    mode=0755
-- name: Create gunicorn config file for supervisord.
-  template: >
-    src=gunicorn.conf.tpl
-    dest="{{ supervisord_include_conf_dir }}/gunicorn-django.conf"
-    owner="{{ supervisord_user }}"
-    group="{{ supervisord_user }}"
-    mode=0644
-    force = "{{ django_gunicorn_conf_replace }}"
-  ignore_errors: True
-- name: Start supervisord service.
-  service: >
-    name=supervisord
-    state=started
-    enabled=yes
+    {{ xbuild_python_install_directory }}/bin/pip install {{ item }}
+  with_items: django_install_packages
+  when: django_install_packages|length > 0
+
+- name: Clone project directory.
+  git: >
+    repo="{{ django_repository }}"
+    dest="{{ django_directory }}/{{ django_project_name }}"
+    update=yes
+  when: django_repository
+# - name: Create project directory.
+#   file: >
+#     path="{{ project_directory }}"
+#     state=directory
+#     mode=0755
+#   when: not django_repository
+
+# - name: Create gunicorn config file for supervisord.
+#   template: >
+#     src=gunicorn.conf.tpl
+#     dest="{{ supervisord_include_conf_dir }}/gunicorn-django.conf"
+#     owner="{{ supervisord_user }}"
+#     group="{{ supervisord_user }}"
+#     mode=0644
+#     force = "{{ django_gunicorn_conf_replace }}"
+#   ignore_errors: yes
