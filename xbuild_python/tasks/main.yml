@@ -34,8 +34,8 @@
     path={{ xbuild_python_install_directory }}
     state=directory
     recurse=yes
-    owner={{ xbuild_python_user }}
-    group={{ xbuild_python_group }}
+    owner={{ django_user }}
+    group={{ django_group }}
   become: yes
 
 - name: Remove xbuild directory.

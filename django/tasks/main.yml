@@ -1,5 +1,5 @@
 ---
-- name: Install dependent packages.
+- name: Install django packages.
   command: >
     {{ xbuild_python_install_directory }}/bin/pip install {{ item }}
   with_items: django_install_packages
@@ -8,15 +8,33 @@
 - name: Clone project directory.
   git: >
     repo="{{ django_repository }}"
-    dest="{{ django_directory }}/{{ django_project_name }}"
+    dest="{{ django_directory }}/{{ django_project }}"
     update=yes
   when: django_repository
-# - name: Create project directory.
-#   file: >
-#     path="{{ project_directory }}"
-#     state=directory
-#     mode=0755
-#   when: not django_repository
+- name: Create project directory.
+  command: >
+    {{ django_directory }}/bin/django-admin startproject {{ django_project }}
+  args:
+    chdir: "{{ django_directory }}"
+    creates: "{{ django_directory }}/{{ django_project }}"
+  when: not django_repository
+
+- name: Create app directory.
+  command: >
+    ./manage.py startapp {{ item }}
+  args:
+    chdir: "{{ django_directory }}/{{ django_project }}"
+    creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
+  with_items: django_apps
+
+- name: Change django directory owner.
+  file: >
+    path="{{ django_directory }}/{{ django_project }}"
+    state=directory
+    recurse=yes
+    owner={{ xbuild_python_user }}
+    group={{ xbuild_python_group }}
+  become: yes
 
 # - name: Create gunicorn config file for supervisord.
 #   template: >
