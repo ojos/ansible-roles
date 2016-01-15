@@ -1,7 +1,9 @@
 ---
-  xbuild_go_user: root
-  xbuild_go_group: root
-  xbuild_go_version: 1.5.1
+  xbuild_go_user: "{{ ansible_user_uid }}"
+  xbuild_go_group: "{{ ansible_user_gid }}"
+  xbuild_go_version: 1.5.3
   xbuild_go_os: linux
   xbuild_go_arch: amd64
-  xbuild_go_install_dir_prefix: "{{ xbuild_install_dir_prefix }}/go-{{ xbuild_go_version }}"
+  xbuild_go_install_directory: "/usr/local/go-{{ xbuild_python_version }}"
+  xbuild_go_remove_xbuild: yes
+
