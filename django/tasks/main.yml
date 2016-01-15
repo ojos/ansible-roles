@@ -21,7 +21,7 @@
 
 - name: Create app directory.
   command: >
-    ./manage.py startapp {{ item }}
+    {{ django_directory }}/bin/django-admin startapp {{ item }}
   args:
     chdir: "{{ django_directory }}/{{ django_project }}"
     creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
