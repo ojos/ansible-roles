@@ -13,7 +13,7 @@
   when: django_repository
 - name: Create project directory.
   command: >
-    {{ django_directory }}/bin/django-admin startproject {{ django_project }}
+    {{ xbuild_python_install_directory }}/bin/django-admin startproject {{ django_project }}
   args:
     chdir: "{{ django_directory }}"
     creates: "{{ django_directory }}/{{ django_project }}"
@@ -21,7 +21,7 @@
 
 - name: Create app directory.
   command: >
-    {{ django_directory }}/bin/django-admin startapp {{ item }}
+    {{ xbuild_python_install_directory }}/bin/django-admin startapp {{ item }}
   args:
     chdir: "{{ django_directory }}/{{ django_project }}"
     creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
