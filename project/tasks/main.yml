@@ -14,7 +14,7 @@
 
 - name: .envrc file.
   stat: >
-    path={{ project_directory }}
+    path={{ project_directory }}/.envrc
   register: envrc_file
   changed_when: no
   always_run: yes
