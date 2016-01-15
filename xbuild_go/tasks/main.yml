@@ -3,7 +3,7 @@
   stat: >
     path={{ xbuild_go_install_directory }}
   register: go_dir
-  changed_when: False
+  changed_when: no
   always_run: yes
 - name: Install go in xbuild.
   command: >

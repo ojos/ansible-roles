@@ -12,11 +12,12 @@
     install_options={{ item.install_option | default('') }}
   with_items: xbuild_python_dependent_packages
   when: ansible_os_family == 'Darwin' and xbuild_python_dependent_packages|length > 0
+
 - name: Python directory.
   stat: >
     path={{ xbuild_python_install_directory }}
   register: python_dir
-  changed_when: False
+  changed_when: no
   always_run: yes
 - name: Install python in xbuild.
   command: >
