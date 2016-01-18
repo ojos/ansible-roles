@@ -3,12 +3,15 @@
   stat: >
     path={{ invoke_python_bin_directory }}
   register: custom_bin_dir
+  changed_when: no
+  always_run: yes
   when: invoke_python_bin_directory != ''
 
 - name: Install invoke(default).
   pip: >
     name=invoke
     state=latest
+  become: yes
   when: invoke_python_bin_directory != '' or not custom_bin_dir.stat.exists
 
 - name: Install invoke(custom).
