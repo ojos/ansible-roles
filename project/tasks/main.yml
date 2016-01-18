@@ -51,5 +51,3 @@
     direnv allow
   args:
     chdir: "{{ project_directory }}"
-  become: yes
-  become_user: "#{{ project_user }}"
