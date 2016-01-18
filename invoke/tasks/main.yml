@@ -1,0 +1,20 @@
+---
+- name: custom bin directory.
+  stat: >
+    path={{ invoke_python_bin_directory }}
+  register: custom_bin_dir
+  when: invoke_python_bin_directory != ''
+
+- name: Install invoke(default).
+  pip: >
+    name=invoke
+    state=latest
+  when: invoke_python_bin_directory != '' or not custom_bin_dir.stat.exists
+
+- name: Install invoke(custom).
+  pip: >
+    name=invoke
+    state=latest
+  environment:
+    PATH: "{{ invoke_python_bin_directory }}:$PATH"
+  when: custom_bin_dir.stat.exists

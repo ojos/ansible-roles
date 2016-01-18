@@ -24,11 +24,6 @@
     {{ xbuild_install_directory }}/python-install {{ xbuild_python_version }}
     {{ xbuild_python_install_directory }}
   when: not python_dir.stat.exists
-- name: Install python packages.
-  command: >
-    {{ xbuild_python_install_directory }}/bin/pip install {{ item }}
-  with_items: xbuild_python_packages
-  when: xbuild_python_packages|length > 0
 - name: Change python directory owner.
   file: >
     path={{ xbuild_python_install_directory }}
@@ -62,10 +57,19 @@
 - name: Insert python bin Path.
   lineinfile: >
     dest={{ xbuild_python_resource_file }}
-    line="export PATH={{ xbuild_python_bin_dir }}:$PATH"
+    line="export PATH={{ xbuild_python_bin_directory }}:$PATH"
     insertafter=EOF
     state=present
-    regexp="{{ xbuild_python_bin_dir }}\:\$PATH"
+    regexp="{{ xbuild_python_bin_regexp }}\:\$PATH"
   when: xbuild_python_resource_file != ''
+
+- name: Install python packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: xbuild_python_packages
+  when: xbuild_python_packages|length > 0
+  environment:
+    PATH: "{{ xbuild_python_install_directory }}/bin:$PATH"
 
 
