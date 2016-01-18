@@ -46,6 +46,8 @@
 
 - name: direnv allow.
   command: >
-    sudo -u #{{ project_user }} direnv allow
+    direnv allow
   args:
     chdir: "{{ project_directory }}"
+  become: yes
+  become_user: "#{{ project_user }}"
