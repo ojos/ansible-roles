@@ -1,0 +1,41 @@
+---
+- name: custom bin directory.
+  stat: >
+    path={{ cmdtools_python_bin_directory }}
+  register: custom_bin_dir
+  changed_when: no
+  always_run: yes
+  when: cmdtools_python_bin_directory != ''
+
+- name: Install invoke(default).
+  pip: >
+    name=invoke
+    state=latest
+  become: yes
+  when: cmdtools_python_bin_directory == '' or not custom_bin_dir.stat.exists
+
+- name: Install ansible(default).
+  command: >
+    pip install -U ansible
+  become: yes
+  when: cmdtools_python_bin_directory == '' or not custom_bin_dir.stat.exists
+
+- name: Install invoke(custom python).
+  pip: >
+    name=invoke
+    state=latest
+  environment:
+    PATH: "{{ cmdtools_python_bin_directory }}:$PATH"
+  when: cmdtools_python_bin_directory != '' and custom_bin_dir.stat.exists
+
+- name: Install ansible(custom python).
+  command: >
+    {{ cmdtools_python_bin_directory }}/pip install -U ansible
+  when: cmdtools_python_bin_directory != '' and custom_bin_dir.stat.exists
+
+- name: Copy tasks.py.
+  copy: >
+    src=tasks.py
+    dest={{ cmdtools_tasks_file_directory }}/tasks.py
+    mode=0644
+    force=yes
