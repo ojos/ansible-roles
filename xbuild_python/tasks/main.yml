@@ -46,7 +46,7 @@
 
 - name: Resource File.
   stat: >
-    path={{ xbuild_python_resource_file }}
+    path="{{ xbuild_python_resource_file }}"
   register: rc_file
   when: xbuild_python_resource_file
 
