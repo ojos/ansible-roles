@@ -20,4 +20,4 @@
     state=latest
   environment:
     PATH: "{{ invoke_python_bin_directory }}:$PATH"
-  when: custom_bin_dir.stat.exists
+  when: invoke_python_bin_directory != '' and custom_bin_dir.stat.exists
