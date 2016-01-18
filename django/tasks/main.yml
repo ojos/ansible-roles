@@ -38,7 +38,6 @@
   args:
     chdir: "{{ django_directory }}"
     creates: "{{ django_directory }}/{{ django_project }}"
-  when: 
   when: not django_repository and (invoke_python_bin_directory == '' or not custom_bin_dir.stat.exists)
 
 - name: Create project directory(custom python).
