@@ -21,7 +21,7 @@
     state=latest
   with_items: django_install_packages
   environment:
-    PATH: "{{ django_python_bin_directory }}:$PATH"
+    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: django_install_packages|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Clone project directory.
@@ -47,7 +47,7 @@
     chdir: "{{ django_directory }}"
     creates: "{{ django_directory }}/{{ django_project }}"
   environment:
-    PATH: "{{ django_python_bin_directory }}:$PATH"
+    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: not django_repository and django_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Create app directory(default).
@@ -67,7 +67,7 @@
     creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
   with_items: django_apps
   environment:
-    PATH: "{{ django_python_bin_directory }}:$PATH"
+    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: not django_apps|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Change django project directory owner.

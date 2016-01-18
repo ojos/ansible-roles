@@ -25,7 +25,7 @@
     name=invoke
     state=latest
   environment:
-    PATH: "{{ cmdtools_python_bin_directory }}:$PATH"
+    PATH: "{{ cmdtools_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: cmdtools_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Install ansible(custom python).
