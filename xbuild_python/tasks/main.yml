@@ -48,7 +48,7 @@
   stat: >
     path="{{ xbuild_python_resource_file }}"
   register: rc_file
-  when: xbuild_python_resource_file
+  when: xbuild_python_resource_file != ''
 
 - name: "Create {{ xbuild_python_resource_file }}."
   file: >
@@ -57,7 +57,7 @@
     owner={{ xbuild_python_user }}
     group={{ xbuild_python_user }}
     mode=0644
-  when: xbuild_python_resource_file
+  when: xbuild_python_resource_file != '' and not xbuild_python_resource_file.stat.exists
 
 - name: Add python bin Path.
   lineinfile: >
@@ -66,6 +66,6 @@
     insertafter=EOF
     state=present
     regexp="/python/bin\:\$PATH"
-  when: xbuild_python_resource_file
+  when: xbuild_python_resource_file != ''
 
 
