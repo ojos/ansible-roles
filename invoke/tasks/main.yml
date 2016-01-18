@@ -15,9 +15,8 @@
   when: invoke_python_bin_directory == '' or not custom_bin_dir.stat.exists
 
 - name: Install ansible(default).
-  pip: >
-    name=ansible
-    state=latest
+  command: >
+    pip install -U ansible
   become: yes
   when: invoke_python_bin_directory == '' or not custom_bin_dir.stat.exists
 
@@ -30,11 +29,8 @@
   when: invoke_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Install ansible(custom directory).
-  pip: >
-    name=ansible
-    state=latest
-  environment:
-    PATH: "{{ invoke_python_bin_directory }}:$PATH"
+  command: >
+    {{ invoke_python_bin_directory }}/pip install -U ansible
   when: invoke_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Copy tasks.py.
