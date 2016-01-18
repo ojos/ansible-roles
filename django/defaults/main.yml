@@ -1,4 +1,5 @@
 ---
+  django_pip_file: "/usr/bin/pip"
   django_repository: ""
   django_directory: /var/www
   django_project: app

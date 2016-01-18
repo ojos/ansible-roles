@@ -35,13 +35,3 @@
     owner={{ xbuild_python_user }}
     group={{ xbuild_python_group }}
   become: yes
-
-# - name: Create gunicorn config file for supervisord.
-#   template: >
-#     src=gunicorn.conf.tpl
-#     dest="{{ supervisord_include_conf_dir }}/gunicorn-django.conf"
-#     owner="{{ supervisord_user }}"
-#     group="{{ supervisord_user }}"
-#     mode=0644
-#     force = "{{ django_gunicorn_conf_replace }}"
-#   ignore_errors: yes

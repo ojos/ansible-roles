@@ -1,0 +1,11 @@
+---
+- name: installed packages.
+  command: >
+    {{ xbuild_python_install_directory }}/bin/pip freeze
+  register: installed_packages  
+  changed_when: false  
+  always_run: yes 
+
+- name: Install ansible.
+  command: >
+    {{ xbuild_python_install_directory }}/bin/pip install ansible

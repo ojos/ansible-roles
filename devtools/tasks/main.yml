@@ -1,10 +1,39 @@
 ---
-- name: Update yum.
+- name: External Yum repositories(RedHat).
+  yum: >
+    tap={{ item }}
+    state=present
+  with_items: devtools_repositories
+  when: ansible_os_family == 'RedHat' and devtools_repositories|length > 0
+- name: Update Yum(RedHat).
   yum: >
     name="*"
     state="latest"
   ignore_errors: True
-- name: Install Development tools.
-  yum: >
-    name="@Development tools"
-    state="present"
+  when: ansible_os_family == 'RedHat'
+- name: Install/Upgrade devtools packages(RedHat).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: devtools_packages
+  when: ansible_os_family == 'RedHat' and devtools_packages|length > 0
+
+
+- name: External Homebrew repositories(Darwin).
+  homebrew_tap: >
+    tap={{ item }}
+    state=present
+  with_items: devtools_repositories
+  when: ansible_os_family == 'Darwin' and devtools_repositories|length > 0
+- name: Update Homebrew(Darwin).
+  homebrew: >
+    update_homebrew=yes
+  when: ansible_os_family == 'Darwin'
+- name: Install/Upgrade devtools packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: devtools_packages
+  when: ansible_os_family == 'Darwin' and devtools_packages|length > 0
