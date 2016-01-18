@@ -13,7 +13,7 @@
     state=latest
   with_items: django_install_packages
   become: yes
-  when: django_install_packages|length > 0 and (invoke_python_bin_directory == '' or not custom_bin_dir.stat.exists)
+  when: django_install_packages|length > 0 and (django_python_bin_directory == '' or not custom_bin_dir.stat.exists)
 
 - name: Install django packages(custom python).
   pip: >
@@ -22,7 +22,7 @@
   with_items: django_install_packages
   environment:
     PATH: "{{ django_python_bin_directory }}:$PATH"
-  when: django_install_packages|length > 0 and invoke_python_bin_directory != '' and custom_bin_dir.stat.exists
+  when: django_install_packages|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Clone project directory.
   git: >
@@ -38,7 +38,7 @@
   args:
     chdir: "{{ django_directory }}"
     creates: "{{ django_directory }}/{{ django_project }}"
-  when: not django_repository and (invoke_python_bin_directory == '' or not custom_bin_dir.stat.exists)
+  when: not django_repository and (django_python_bin_directory == '' or not custom_bin_dir.stat.exists)
 
 - name: Create project directory(custom python).
   command: >
@@ -48,7 +48,7 @@
     creates: "{{ django_directory }}/{{ django_project }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:$PATH"
-  when: not django_repository and invoke_python_bin_directory != '' and custom_bin_dir.stat.exists
+  when: not django_repository and django_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Create app directory(default).
   command: >
@@ -57,7 +57,7 @@
     chdir: "{{ django_directory }}/{{ django_project }}"
     creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
   with_items: django_apps
-  when: django_apps|length > 0 and (invoke_python_bin_directory == '' or not custom_bin_dir.stat.exists)
+  when: django_apps|length > 0 and (django_python_bin_directory == '' or not custom_bin_dir.stat.exists)
 
 - name: Create project directory(custom python).
   command: >
@@ -68,7 +68,7 @@
   with_items: django_apps
   environment:
     PATH: "{{ django_python_bin_directory }}:$PATH"
-  when: not django_apps|length > 0 and invoke_python_bin_directory != '' and custom_bin_dir.stat.exists
+  when: not django_apps|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Change django project directory owner.
   file: >
