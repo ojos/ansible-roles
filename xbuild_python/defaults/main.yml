@@ -24,3 +24,4 @@
   xbuild_python_packages: 
     - ipython
   xbuild_python_resource_file: ""
+  xbuild_python_bin_dir: "{{ xbuild_python_install_directory }}/bin"

@@ -62,10 +62,10 @@
 - name: Insert python bin Path.
   lineinfile: >
     dest={{ xbuild_python_resource_file }}
-    line="export PATH={{ xbuild_python_install_directory }}/bin:$PATH"
+    line="export PATH={{ xbuild_python_bin_dir }}:$PATH"
     insertafter=EOF
     state=present
-    regexp="{{ xbuild_python_install_directory }}/bin\:\$PATH"
+    regexp="{{ xbuild_python_bin_dir }}\:\$PATH"
   when: xbuild_python_resource_file != ''
 
 
