@@ -59,13 +59,13 @@
     mode=0644
   when: xbuild_python_resource_file != '' and not rc_file.stat.exists
 
-- name: Add python bin Path.
+- name: Insert python bin Path.
   lineinfile: >
-    dest={{ rc_file }}
+    dest={{ xbuild_python_resource_file }}
     line="export PATH={{ xbuild_python_install_directory }}/bin:$PATH"
     insertafter=EOF
     state=present
-    regexp="/python/bin\:\$PATH"
+    regexp="{{ xbuild_python_install_directory }}/bin\:\$PATH"
   when: xbuild_python_resource_file != ''
 
 
