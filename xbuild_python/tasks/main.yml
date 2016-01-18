@@ -57,7 +57,7 @@
     owner={{ xbuild_python_user }}
     group={{ xbuild_python_user }}
     mode=0644
-  when: xbuild_python_resource_file != '' and not xbuild_python_resource_file.stat.exists
+  when: xbuild_python_resource_file != '' and not rc_file.stat.exists
 
 - name: Add python bin Path.
   lineinfile: >
