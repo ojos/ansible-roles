@@ -50,7 +50,7 @@
   register: rc_file
   when: xbuild_python_resource_file != ''
 
-- name: "Create {{ xbuild_python_resource_file }}."
+- name: "Create Resource File."
   file: >
     state=touch
     path={{ xbuild_python_resource_file }}
