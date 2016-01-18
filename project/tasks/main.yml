@@ -4,14 +4,13 @@
     repo="{{ project_repository }}"
     dest="{{ project_directory }}"
     update=yes
+  become: yes
   when: project_repository
 - name: Create project directory.
   file: >
     path="{{ project_directory }}"
     state=directory
     mode=0755
-    owner={{ project_user }}
-    group={{ project_group }}
   become: yes
   when: not project_repository
 
@@ -38,8 +37,19 @@
     regexp={{ item.regexp }}
   with_items: project_environment_variables
 
+- name: Change project directory owner.
+  file: >
+    path="{{ project_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ project_user }}
+    group={{ project_group }}
+  become: yes
+
 - name: direnv allow.
   command: >
     direnv allow
   args:
     chdir: "{{ project_directory }}"
+  become: yes
+  become_user: "#{{ project_user }}"
