@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
+import os
+
 from invoke import run, task
 
 
@@ -12,4 +14,4 @@ def Hello():
 @task
 def subl():
     """Sublime Textでプロジェクトを開く"""
-    local('subl %s' % os.environ['PROJECT_HOME'])
+    run('subl %s' % os.environ['PROJECT_HOME'])

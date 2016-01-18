@@ -1,6 +1,8 @@
 ---
   project_repository: ""
-  project_directory: /var/www/app
+  project_directory: /var/www
   project_environment_variables:
     - value: PROJECT_HOME=$PWD
       regexp: PROJECT_HOME=\$PWD
+  project_user: "{{ ansible_user_uid }}"
+  project_group: "{{ ansible_user_gid }}"

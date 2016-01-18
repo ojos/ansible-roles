@@ -1,12 +1,12 @@
 ---
-  django_pip_file: "/usr/bin/pip"
+  django_python_bin_directory: ''
   django_repository: ""
   django_directory: /var/www
   django_project: app
   django_apps:
     - api
-  django_user: "{{ xbuild_python_user }}"
-  django_group: "{{ xbuild_python_group }}"
+  django_user: "{{ ansible_user_uid }}"
+  django_group: "{{ ansible_user_gid }}"
   django_install_packages:
     - 'Django'
     - 'mysqlclient'

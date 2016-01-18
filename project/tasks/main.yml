@@ -35,8 +35,17 @@
     regexp={{ item.regexp }}
   with_items: project_environment_variables
 
+- name: Change project directory owner.
+  file: >
+    path="{{ project_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ project_user }}
+    group={{ project_group }}
+  become: yes
+
 - name: direnv allow.
   command: >
-    direnv allow
+    sudo -u #{{ project_user }} direnv allow
   args:
     chdir: "{{ project_directory }}"
