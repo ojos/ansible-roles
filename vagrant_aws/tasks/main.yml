@@ -23,6 +23,21 @@
   command: >
     vagrant box add --force {{ vagrant_aws_box_name }} {{ vagrant_aws_box_url }}
 
+- name: Vagrant directory.
+  stat: >
+    path={{ vagrant_aws_vagarant_directory }}
+  register: vagarant_directory 
+  changed_when: no
+  always_run: yes
+
+- name: Create vagrant directory.
+  file: >
+    path="{{ vagrant_aws_vagarant_directory }}"
+    state=directory
+    mode=0755
+  become: yes
+  when: not vagarant_directory.stat.exists
+
 - name: Create Vagrantfile.
   template: >
     src=Vagrantfile.tpl
