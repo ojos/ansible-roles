@@ -4,11 +4,11 @@
   vagrant_aws_vagarant_directory: "/usr/local/vagrant"
   vagrant_aws_vagarant_cwd: "{{ vagrant_aws_vagarant_directory }}"
   vagrant_aws_ami: ami-383c1956
-  vagrant_aws_elastic_ip: ""
+  vagrant_aws_elastic_ip: "VAGRANT_ELASTIC_IP"
   vagrant_aws_instance_type: t2.nano
   vagrant_aws_keypair_name: "$PROJECT_NAME-vagrant"
-  vagrant_aws_security_groups: ""
-  vagrant_aws_subnet_id: ""
+  vagrant_aws_security_groups: "VAGRANT_SECURITY_GROUPS"
+  vagrant_aws_subnet_id: "VAGRANT_SUBNET_ID"
   vagrant_aws_username: ec2-user
   vagrant_aws_private_key_path: "$PROJECT_HOME/key/vagrant.pem"
   vagrant_aws_tags: |
@@ -35,6 +35,8 @@
       regexp: VAGRANT_SUBNET_ID
     - value: VAGRANT_USERNAME={{ vagrant_aws_username }}
       regexp: VAGRANT_USERNAME
-    - value: VAGRANT_PRIVATE_KEY_PATH={{ vagrant_aws_private_key_path }}
+    - value: |
+        VAGRANT_PRIVATE_KEY_PATH={{ vagrant_aws_private_key_path }}
+
       regexp: VAGRANT_PRIVATE_KEY_PATH
 
