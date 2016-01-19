@@ -1,4 +1,5 @@
 ---
 dependencies:
+  - { role: keygen }
   - { role: vagrant_aws }
   - { role: xbuild_python }

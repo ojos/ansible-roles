@@ -1,0 +1,30 @@
+---
+- name: Key directory.
+  stat: >
+    path={{ keygen_key_directory }}
+  register: key_directory
+  changed_when: no
+  always_run: yes
+
+- name: Create key directory.
+  file: >
+    path="{{ keygen_key_directory }}"
+    state=directory
+    mode=0755
+  become: yes
+  when: not key_directory
+
+- name: Change project directory owner.
+  file: >
+    path="{{ keygen_key_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ keygen_user }}
+    group={{ keygen_group }}
+  become: yes
+
+- name: Generate ssh key.
+  command: >
+    ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ keygen_key_directory }}/{{ item }}.pem
+  with_items: keygen_environment_keys
+  when: keygen_environment_keys|length > 0

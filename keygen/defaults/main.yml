@@ -1,0 +1,11 @@
+---
+  keygen_key_directory: /var/www/key
+  keygen_user: "{{ ansible_user_uid }}"
+  keygen_group: "{{ ansible_user_gid }}"
+  keygen_bits: 2048
+  keygen_type: rsa
+  keygen_environment_keys:
+    - vagrant
+    - develop
+    - staging
+    - production
