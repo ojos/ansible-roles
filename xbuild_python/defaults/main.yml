@@ -19,12 +19,10 @@
     - valgrind-devel
     - systemtap-sdt-devel
   xbuild_python_version: 2.7.10
-  xbuild_python_install_directory: "/usr/local/python-{{ xbuild_python_version }}"
+  xbuild_python_install_directory: "{{ project_directory }}/python"
   xbuild_python_remove_xbuild: yes
   xbuild_python_packages: 
     - ipython
-  xbuild_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
-  xbuild_python_bin_regexp: "{{ xbuild_python_bin_dir }}"
   xbuild_python_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_python_environment_variables:
     - value: "#python"

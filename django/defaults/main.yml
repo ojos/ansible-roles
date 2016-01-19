@@ -1,7 +1,7 @@
 ---
-  django_python_bin_directory: '/usr/bin'
+  django_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   django_repository: ""
-  django_directory: /var/www
+  django_directory: "{{ project_directory }}"
   django_project: app
   django_apps:
     - api

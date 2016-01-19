@@ -1,3 +1,2 @@
 ---
-  orchestration_python_bin_directory: '/usr/bin'
-  orchestration_tasks_file_directory: '/var/www'
+  orchestration_tasks_file_directory: "{{ project_directory }}"

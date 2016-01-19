@@ -1,0 +1,44 @@
+---
+- name: Install ansible.
+  command: >
+    {{ ansible_python_bin_directory }}/pip install -U ansible
+
+- name: Ansible directory.
+  stat: >
+    path={{ ansible_directory }}
+  register: ansb_directory 
+  changed_when: no
+  always_run: yes
+
+- name: Create ansible directory.
+  file: >
+    path="{{ ansible_directory }}"
+    state=directory
+    mode=0755
+  when: not ansb_directory.stat.exists
+
+- name: Clone project directory.
+  git: >
+    repo="{{ project_repository }}"
+    dest="{{ project_directory }}"
+    update=yes
+  become: yes
+  when: project_repository
+
+- name: Clone roles.
+  git: >
+    repo="{{ item.repository }}"
+    dest="{{ ansible_directory }}/{{ item.directory }}"
+    update=yes
+  with_items: ansible_roles_path
+  when: ansible_roles_path|length > 0
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ ansible_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: ansible_environment_variables
+  when: ansible_envrc_directory != '' and ansible_environment_variables|length > 0
