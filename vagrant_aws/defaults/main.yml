@@ -1,0 +1,3 @@
+---
+  vagrant_aws_box_name: dummy
+  vagrant_aws_box_url: https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
