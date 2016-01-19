@@ -68,7 +68,7 @@
   with_items: django_apps
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: not django_apps|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
+  when: django_apps|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
 
 - name: Change django project directory owner.
   file: >
