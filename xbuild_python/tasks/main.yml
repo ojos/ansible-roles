@@ -61,7 +61,7 @@
     insertafter=EOF
     state=present
     regexp="{{ xbuild_python_bin_regexp }}\:\$PATH"
-  when: when: direnv_envrc_directory != ''
+  when: direnv_envrc_directory != ''
 
 - name: Install python packages.
   pip: >
