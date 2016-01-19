@@ -25,6 +25,6 @@
 
 - name: Generate ssh key.
   command: >
-    ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ keygen_key_directory }}/{{ item }}.pem -N {{ keygen_passphrase }}
+    ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ keygen_key_directory }}/{{ item }}.pem -N '{{ keygen_passphrase }}'
   with_items: keygen_environment_keys
   when: keygen_environment_keys|length > 0
