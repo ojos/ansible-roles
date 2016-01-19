@@ -35,7 +35,6 @@
     path="{{ vagrant_aws_vagarant_directory }}"
     state=directory
     mode=0755
-  become: yes
   when: not vagarant_directory.stat.exists
 
 - name: Create Vagrantfile.
