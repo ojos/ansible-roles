@@ -54,14 +54,24 @@
 #     mode=0644
 #   when: xbuild_python_resource_file != '' and not rc_file.stat.exists
 
-- name: Insert python bin Path.
+# - name: Insert python bin Path.
+#   lineinfile: >
+#     dest={{ direnv_envrc_directory }}/.envrc
+#     line="export PATH={{ xbuild_python_bin_directory }}:$PATH"
+#     insertafter=EOF
+#     state=present
+#     regexp="{{ xbuild_python_bin_regexp }}\:\$PATH"
+#   when: direnv_envrc_directory != ''
+
+- name: Insert env in .envrc.
   lineinfile: >
-    dest={{ direnv_envrc_directory }}/.envrc
-    line="export PATH={{ xbuild_python_bin_directory }}:$PATH"
+    dest={{ xbuild_python_envrc_directory }}/.envrc
+    line="export {{ item.value }}"
     insertafter=EOF
     state=present
-    regexp="{{ xbuild_python_bin_regexp }}\:\$PATH"
-  when: direnv_envrc_directory != ''
+    regexp={{ item.regexp }}
+  with_items: xbuild_python_environment_variables
+  when: xbuild_python_envrc_directory != '' and xbuild_python_environment_variables|length > 0
 
 - name: Install python packages.
   pip: >

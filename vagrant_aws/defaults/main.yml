@@ -11,31 +11,29 @@
   vagrant_aws_username: ec2-user
   vagrant_aws_private_key_path: "$PROJECT_HOME/key/vagrant.pem"
   vagrant_aws_tags: |
-    {
-      "Name" => ENV["PROJECT_NAME"] + "-vagrant",
+    {"Name" => ENV["PROJECT_NAME"] + "-vagrant",
       "Environment" => "vagrant",
       "Project" => ENV["PROJECT_NAME"],
       "Roles" => "app",
-      "Owner" => "admin"
-    }
+      "Owner" => "admin"}
   vagrant_aws_envrc_directory: "{{ direnv_envrc_directory }}"
   vagrant_aws_environment_variables: 
-    - value: VAGRANT_CWD="{{ vagrant_aws_vagarant_directory }}"
+    - value: VAGRANT_CWD={{ vagrant_aws_vagarant_directory }}
       regexp: VAGRANT_CWD
-    - value: VAGRANT_AMI="{{ vagrant_aws_ami }}"
+    - value: VAGRANT_AMI={{ vagrant_aws_ami }}
       regexp: VAGRANT_AMI
-    - value: VAGRANT_ELASTIC_IP="{{ vagrant_aws_elastic_ip }}"
+    - value: VAGRANT_ELASTIC_IP={{ vagrant_aws_elastic_ip }}
       regexp: VAGRANT_ELASTIC_IP
-    - value: VAGRANT_INSTANCE_TYPE="{{ vagrant_aws_instance_type }}"
+    - value: VAGRANT_INSTANCE_TYPE={{ vagrant_aws_instance_type }}
       regexp: VAGRANT_INSTANCE_TYPE
-    - value: VAGRANT_KEYPAIR_NAME="{{ vagrant_aws_keypair_name }}"
+    - value: VAGRANT_KEYPAIR_NAME={{ vagrant_aws_keypair_name }}
       regexp: VAGRANT_KEYPAIR_NAME
-    - value: VAGRANT_SECURITY_GROUPS="{{ vagrant_aws_security_groups }}"
+    - value: VAGRANT_SECURITY_GROUPS={{ vagrant_aws_security_groups }}
       regexp: VAGRANT_SECURITY_GROUPS
-    - value: VAGRANT_SUBNET_ID="{{ vagrant_aws_subnet_id }}"
+    - value: VAGRANT_SUBNET_ID={{ vagrant_aws_subnet_id }}
       regexp: VAGRANT_SUBNET_ID
-    - value: VAGRANT_USERNAME="{{ vagrant_aws_username }}"
+    - value: VAGRANT_USERNAME={{ vagrant_aws_username }}
       regexp: VAGRANT_USERNAME
-    - value: VAGRANT_PRIVATE_KEY_PATH="{{ vagrant_aws_private_key_path }}"
+    - value: VAGRANT_PRIVATE_KEY_PATH={{ vagrant_aws_private_key_path }}
       regexp: VAGRANT_PRIVATE_KEY_PATH
 
