@@ -20,7 +20,7 @@
     }
   vagrant_aws_envrc_directory: "{{ direnv_envrc_directory }}"
   vagrant_aws_environment_variables: 
-    - value: VAGRANT_CWD="{{ vagrant_aws_directory }}"
+    - value: VAGRANT_CWD="{{ vagrant_aws_vagarant_directory }}"
       regexp: VAGRANT_CWD
     - value: VAGRANT_AMI="{{ vagrant_aws_ami }}"
       regexp: VAGRANT_AMI
