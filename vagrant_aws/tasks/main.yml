@@ -23,18 +23,18 @@
   command: >
     vagrant box add --force {{ vagrant_aws_box_name }} {{ vagrant_aws_box_url }}
 
-# - name: Create Vagrantfile.
-#   template: >
-#     src=Vagrantfile.tpl
-#     dest="{{ vagrant_aws_vagarant_directory }}/Vagrantfile"
-#     mode=0644
+- name: Create Vagrantfile.
+  template: >
+    src=Vagrantfile.tpl
+    dest="{{ vagrant_aws_vagarant_directory }}/Vagrantfile"
+    mode=0644
 
 - name: Insert env in .envrc.
   lineinfile: >
-    dest={{ direnv_envrc_directory }}/.envrc
+    dest={{ vagrant_aws_envrc_directory }}/.envrc
     line="export {{ item.value }}"
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
   with_items: vagrant_aws_environment_variables
-  when: direnv_envrc_directory != '' and vagrant_aws_environment_variables|length > 0
+  when: vagrant_aws_envrc_directory != '' and vagrant_aws_environment_variables|length > 0
