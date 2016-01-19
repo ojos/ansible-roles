@@ -1,5 +1,5 @@
 ---
-- name: vagrant binary. 
+- name: Vagrant binary. 
   command: >
     which vagrant
   register: vagrant_bin
@@ -16,3 +16,15 @@
 - name: Install/Update vagrant-aws plug-in.
   command: >
     vagrant plugin install vagrant-aws
+
+- name: Vagrant box list.
+  command: >
+    vagrant box list
+  register: vagrant_box_list
+  changed_when: false
+  always_run: yes
+
+- name: Add vagrant-aws box.
+  command: >
+    vagrant box add {{ vagrant_aws_box_name }} {{ vagrant_aws_box_url }}
+  when: vagrant_box_list.stdout_lines.count(vagrant_aws_box_name) < 1 
