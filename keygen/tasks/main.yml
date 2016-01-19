@@ -14,7 +14,15 @@
   become: yes
   when: not key_directory
 
-- name: Change project directory owner.
+- name: Generate ssh key.
+  command: >
+    ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ keygen_key_directory }}/{{ item }}.pem -N '{{ keygen_passphrase }}'
+  args:
+    creates: "{{ keygen_key_directory }}/{{ item }}.pem"
+  with_items: keygen_environment_keys
+  when: keygen_environment_keys|length > 0
+
+- name: Change key directory owner.
   file: >
     path="{{ keygen_key_directory }}"
     state=directory
@@ -22,9 +30,3 @@
     owner={{ keygen_user }}
     group={{ keygen_group }}
   become: yes
-
-- name: Generate ssh key.
-  command: >
-    ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ keygen_key_directory }}/{{ item }}.pem -N '{{ keygen_passphrase }}'
-  with_items: keygen_environment_keys
-  when: keygen_environment_keys|length > 0
