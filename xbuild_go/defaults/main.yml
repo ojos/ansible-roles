@@ -4,6 +4,6 @@
   xbuild_go_version: 1.5.3
   xbuild_go_os: linux
   xbuild_go_arch: amd64
-  xbuild_go_install_directory: "/usr/local/go-{{ xbuild_go_version }}"
+  xbuild_go_install_directory: "{{ project_directory }}/go"
   xbuild_go_remove_xbuild: yes
 
