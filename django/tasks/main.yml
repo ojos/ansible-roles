@@ -1,28 +1,12 @@
 ---
-- name: custom bin directory.
-  stat: >
-    path={{ django_python_bin_directory }}
-  register: custom_bin_dir
-  changed_when: no
-  always_run: yes
-  when: django_python_bin_directory != ''
-
-- name: Install django packages(default).
-  pip: >
-    name={{ item }}
-    state=latest
-  with_items: django_install_packages
-  become: yes
-  when: django_install_packages|length > 0 and (django_python_bin_directory == '' or not custom_bin_dir.stat.exists)
-
-- name: Install django packages(custom python).
+- name: Install django packages.
   pip: >
     name={{ item }}
     state=latest
   with_items: django_install_packages
   environment:
-    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: django_install_packages|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
+    PATH: "{{ xbuild_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: django_install_packages|length > 0
 
 - name: Clone project directory.
   git: >
@@ -31,35 +15,17 @@
     update=yes
   when: django_repository
 
-
-- name: Create project directory(default).
-  command: >
-    django-admin startproject {{ django_project }}
-  args:
-    chdir: "{{ django_directory }}"
-    creates: "{{ django_directory }}/{{ django_project }}"
-  when: not django_repository and (django_python_bin_directory == '' or not custom_bin_dir.stat.exists)
-
-- name: Create project directory(custom python).
+- name: Create project directory.
   command: >
     django-admin startproject {{ django_project }}
   args:
     chdir: "{{ django_directory }}"
     creates: "{{ django_directory }}/{{ django_project }}"
   environment:
-    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: not django_repository and django_python_bin_directory != '' and custom_bin_dir.stat.exists
+    PATH: "{{ xbuild_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: not django_repository
 
-- name: Create app directory(default).
-  command: >
-    django-admin startapp {{ item }}
-  args:
-    chdir: "{{ django_directory }}/{{ django_project }}"
-    creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
-  with_items: django_apps
-  when: django_apps|length > 0 and (django_python_bin_directory == '' or not custom_bin_dir.stat.exists)
-
-- name: Create project directory(custom python).
+- name: Create project directory.
   command: >
     django-admin startapp {{ item }}
   args:
@@ -67,8 +33,8 @@
     creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
   with_items: django_apps
   environment:
-    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: django_apps|length > 0 and django_python_bin_directory != '' and custom_bin_dir.stat.exists
+    PATH: "{{ xbuild_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: django_apps|length > 0
 
 - name: Change django project directory owner.
   file: >
