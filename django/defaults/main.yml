@@ -1,5 +1,5 @@
 ---
-  django_python_bin_directory: ''
+  django_python_bin_directory: '/usr/bin'
   django_repository: ""
   django_directory: /var/www
   django_project: app
