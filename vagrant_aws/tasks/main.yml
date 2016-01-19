@@ -29,7 +29,7 @@
 - name: Add vagrant-aws box.
   command: >
     vagrant box add {{ vagrant_aws_box_name }} {{ vagrant_aws_box_url }}
-  when: vagrant_box_list.stdout_lines.count(vagrant_aws_box_name) < 1
+  when: vagrant_box_list.stdout_lines.count({{ vagrant_aws_box_name }}) < 1
 
 # - name: Create Vagrantfile.
 #   template: >
