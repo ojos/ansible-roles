@@ -23,6 +23,5 @@
   xbuild_python_remove_xbuild: yes
   xbuild_python_packages: 
     - ipython
-  xbuild_python_resource_file: ""
   xbuild_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   xbuild_python_bin_regexp: "{{ xbuild_python_bin_dir }}"

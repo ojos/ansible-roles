@@ -22,32 +22,3 @@
     owner={{ project_user }}
     group={{ project_group }}
   become: yes
-
-- name: .envrc file.
-  stat: >
-    path={{ project_directory }}/.envrc
-  register: envrc_file
-  changed_when: no
-  always_run: yes
-- name: Create .envrc file.
-  file: >
-    state=touch
-    path={{ project_directory }}/.envrc
-    owner={{ ansible_user_uid }}
-    group={{ ansible_user_gid }}
-    mode=0644
-  when: not envrc_file.stat.exists
-- name: Insert env in .envrc.
-  lineinfile: >
-    dest={{ project_directory }}/.envrc
-    line="export {{ item.value }}"
-    insertafter=EOF
-    state=present
-    regexp={{ item.regexp }}
-  with_items: project_environment_variables
-
-- name: direnv allow.
-  command: >
-    direnv allow
-  args:
-    chdir: "{{ project_directory }}"

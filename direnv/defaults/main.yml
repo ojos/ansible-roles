@@ -1,3 +1,8 @@
 ---
   direnv_repository: https://github.com/direnv/direnv.git
   direnv_install_directory: /usr/local/direnv
+  direnv_envrc_directory: ''
+  direnv_environment_variables: []
+  # direnv_environment_variables:
+  #   - value: PROJECT_HOME=$PWD
+  #     regexp: PROJECT_HOME=\$PWD

@@ -76,3 +76,28 @@
     state=present
     regexp="direnv hook zsh"
   when: login_shell.stdout == "zsh"
+
+- name: Copy .envrc.
+  copy: >
+    src=dot.envrc
+    dest={{ direnv_envrc_directory }}/.envrc
+    mode=0644
+    force=no
+  when: direnv_envrc_directory != ''
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ direnv_envrc_directory }}/.envrc
+    line="export {{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: direnv_environment_variables
+  when: direnv_envrc_directory != '' and direnv_environment_variables|length > 0
+
+- name: direnv allow.
+  command: >
+    direnv allow
+  args:
+    chdir: "{{ direnv_envrc_directory }}"
+  when: direnv_envrc_directory != ''

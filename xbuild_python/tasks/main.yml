@@ -39,29 +39,29 @@
     state=absent
   when: xbuild_python_remove_xbuild
 
-- name: Resource File.
-  stat: >
-    path="{{ xbuild_python_resource_file }}"
-  register: rc_file
-  when: xbuild_python_resource_file != ''
+# - name: envrc directory.
+#   stat: >
+#     path="{{ xbuild_python_envrc_directory }}"
+#   register: rc_file
+#   when: xbuild_python_envrc_directory != ''
 
-- name: "Create Resource File."
-  file: >
-    state=touch
-    path={{ xbuild_python_resource_file }}
-    owner={{ xbuild_python_user }}
-    group={{ xbuild_python_user }}
-    mode=0644
-  when: xbuild_python_resource_file != '' and not rc_file.stat.exists
+# - name: Create Resource File.
+#   file: >
+#     state=touch
+#     path={{ xbuild_python_resource_file }}
+#     owner={{ xbuild_python_user }}
+#     group={{ xbuild_python_user }}
+#     mode=0644
+#   when: xbuild_python_resource_file != '' and not rc_file.stat.exists
 
 - name: Insert python bin Path.
   lineinfile: >
-    dest={{ xbuild_python_resource_file }}
+    dest={{ direnv_envrc_directory }}/.envrc
     line="export PATH={{ xbuild_python_bin_directory }}:$PATH"
     insertafter=EOF
     state=present
     regexp="{{ xbuild_python_bin_regexp }}\:\$PATH"
-  when: xbuild_python_resource_file != ''
+  when: when: direnv_envrc_directory != ''
 
 - name: Install python packages.
   pip: >
