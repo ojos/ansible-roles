@@ -10,20 +10,12 @@
   changed_when: no
   always_run: yes
 
-- name: Create ansible directory.
-  file: >
-    path="{{ ansible_directory }}"
-    state=directory
-    mode=0755
-  when: not ansb_directory.stat.exists
-
-- name: Clone roles.
+- name: Clone buildout repository.
   git: >
-    repo="{{ item.repository }}"
-    dest="{{ ansible_directory }}/{{ item.directory }}"
+    repo="{{ ansible_buildout_repository }}"
+    dest="{{ ansible_directory }}"
     update=yes
-  with_items: ansible_roles_path
-  when: ansible_roles_path|length > 0
+  when: not ansb_directory.stat.exists
 
 - name: Insert env in .envrc.
   lineinfile: >

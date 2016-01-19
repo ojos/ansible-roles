@@ -1,13 +1,11 @@
 ---
   ansible_directory: "{{ project_directory }}/orchestration/ansible"
+  ansible_buildout_repository: "https://github.com/ojos/buildout.git"
   ansible_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   ansible_home_directory: "$PROJECT_HOME/orchestration/ansible"
   ansible_config_file: "$PROJECT_HOME/orchestration/ansible/ansible.cfg"
   ansible_forks: 64
-  ansible_ssh_args: \"-F ../../key/ssh_config\"
-  ansible_roles_path: 
-    - repository: https://github.com/ojos/ansible-roles.git
-      directory: roles
+  ansible_ssh_args: '"-F ../../key/ssh_config"'
   ansible_envrc_directory: "{{ direnv_envrc_directory }}"
   ansible_environment_variables: 
     - value: "#ansible"
