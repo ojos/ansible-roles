@@ -1,3 +1,4 @@
 ---
 dependencies:
+  - { role: devtools }
   - { role: direnv }
