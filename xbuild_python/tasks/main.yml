@@ -42,7 +42,7 @@
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ xbuild_python_envrc_directory }}/.envrc
-    line="export {{ item.value }}"
+    line="{{ item.value }}"
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}

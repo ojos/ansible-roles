@@ -46,7 +46,7 @@
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ vagrant_aws_envrc_directory }}/.envrc
-    line="export {{ item.value }}"
+    line="{{ item.value }}"
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
