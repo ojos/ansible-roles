@@ -4,6 +4,7 @@
   keygen_group: "{{ ansible_user_gid }}"
   keygen_bits: 2048
   keygen_type: rsa
+  keygen_passphrase: ''
   keygen_environment_keys:
     - vagrant
     - develop
