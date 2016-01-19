@@ -4,10 +4,10 @@
   ansible_home_directory: "$PROJECT_HOME/orchestration/ansible"
   ansible_config_file: "$PROJECT_HOME/orchestration/ansible/ansible.cfg"
   ansible_forks: 64
-  ansible_ssh_args: ssh_args = -F ../../key/ssh_config
+  ansible_ssh_args: \"-F ../../key/ssh_config\"
   ansible_roles_path: 
     - repository: https://github.com/ojos/ansible-roles.git
-      directory: .roles
+      directory: roles
   ansible_envrc_directory: "{{ direnv_envrc_directory }}"
   ansible_environment_variables: 
     - value: "#ansible"
@@ -16,7 +16,7 @@
       regexp: ANSIBLE_HOME
     - value: export DEFAULT_FORKS={{ ansible_forks }}
       regexp: DEFAULT_FORKS
-    - value: export DEFAULT_ROLES_PATH=./.roles
+    - value: export DEFAULT_ROLES_PATH=./roles
       regexp: DEFAULT_ROLES_PATH
     - value: export RETRY_FILES_ENABLED=no
       regexp: RETRY_FILES_ENABLED

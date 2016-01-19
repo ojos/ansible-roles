@@ -17,14 +17,6 @@
     mode=0755
   when: not ansb_directory.stat.exists
 
-- name: Clone project directory.
-  git: >
-    repo="{{ project_repository }}"
-    dest="{{ project_directory }}"
-    update=yes
-  become: yes
-  when: project_repository
-
 - name: Clone roles.
   git: >
     repo="{{ item.repository }}"
