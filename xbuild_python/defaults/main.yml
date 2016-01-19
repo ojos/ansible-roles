@@ -27,5 +27,9 @@
   xbuild_python_bin_regexp: "{{ xbuild_python_bin_dir }}"
   xbuild_python_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_python_environment_variables:
-    - value: PATH=$PROJECT_HOME/python/bin:$PATH
+    - value: "#python"
+      regexp: "^#python$"
+    - value: |
+        export PATH=$PROJECT_HOME/python/bin:$PATH
+
       regexp: PATH=\$PROJECT_HOME/python/bin\:\$PATH
