@@ -1,0 +1,24 @@
+---
+- name: Clone orchestration directory.
+  git: >
+    repo="{{ orchestration_repository }}"
+    dest="{{ orchestration_directory }}"
+    update=yes
+  become: yes
+  when: orchestration_repository
+- name: Create orchestration directory.
+  file: >
+    path="{{ orchestration_directory }}"
+    state=directory
+    mode=0755
+  become: yes
+  when: not orchestration_repository
+
+- name: Change orchestration directory owner.
+  file: >
+    path="{{ orchestration_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ orchestration_user }}
+    group={{ orchestration_group }}
+  become: yes

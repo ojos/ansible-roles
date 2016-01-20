@@ -2,4 +2,5 @@
 dependencies:
   - { role: homebrew_cask }
   - { role: keygen }
+  - { role: orchestration }
   - { role: direnv }

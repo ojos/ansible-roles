@@ -1,0 +1,5 @@
+---
+  orchestration_repository: ""
+  orchestration_directory: "{{ project_directory }}"
+  orchestration_user: "{{ project_user }}"
+  orchestration_group: "{{ project_group }}"
