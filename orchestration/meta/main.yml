@@ -1,5 +1,0 @@
----
-dependencies:
-  - { role: ansible }
-  - { role: vagrant_aws }
-

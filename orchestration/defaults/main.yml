@@ -1,2 +1,0 @@
----
-  orchestration_tasks_file_directory: "{{ project_directory }}"

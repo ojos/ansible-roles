@@ -1,0 +1,3 @@
+---
+  invoke_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
+  invoke_tasks_file_directory: "{{ project_directory }}"

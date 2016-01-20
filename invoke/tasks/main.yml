@@ -4,11 +4,11 @@
     name=invoke
     state=latest
   environment:
-    PATH: "{{ orchestration_python_bin_directory }}:{{ ansible_env.PATH }}"
+    PATH: "{{ invoke_python_bin_directory }}:{{ ansible_env.PATH }}"
 
 - name: Copy tasks.py.
   copy: >
     src=tasks.py
-    dest={{ orchestration_tasks_file_directory }}/tasks.py
+    dest={{ invoke_tasks_file_directory }}/tasks.py
     mode=0644
     force=yes
