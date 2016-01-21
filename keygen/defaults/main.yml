@@ -5,7 +5,7 @@
   keygen_bits: 2048
   keygen_type: rsa
   keygen_passphrase: ''
-  keygen_environment_keys:
+  keygen_environments: "{{ project_environments }}"
     - vagrant
     - develop
     - staging

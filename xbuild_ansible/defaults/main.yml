@@ -1,5 +1,7 @@
 ---
   xbuild_ansible_directory: "{{ orchestration_directory }}/ansible"
+  xbuild_ansible_user: "{{ project_user }}"
+  xbuild_ansible_group: "{{ project_group }}"
   xbuild_ansible_library_roles_repository: "https://github.com/ojos/ansible-roles.git"
   xbuild_ansible_library_roles_directory_name: ".roles"
   xbuild_ansible_default_roles_directory_name: "roles"
@@ -10,8 +12,6 @@
   xbuild_ansible_buildout_script_url: "https://raw.github.com/ojos/buildout/master/bootstrap"
   xbuild_ansible_buildout_script: "{{ xbuild_ansible_directory }}/bootstrap"
   xbuild_ansible_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
-  xbuild_ansible_user: "{{ project_user }}"
-  xbuild_ansible_group: "{{ project_group }}"
   xbuild_ansible_home_directory: "$ORCHESTRATION_HOME/ansible"
   xbuild_ansible_forks: 64
   xbuild_ansible_ssh_args: '"-F ../../key/ssh_config"'

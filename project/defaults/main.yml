@@ -1,5 +1,12 @@
 ---
   project_repository: ""
   project_directory: /var/www
+  project_owner: admin
+  project_aws_default_ec2_ami: ami-383c1956
   project_user: "{{ ansible_user_uid }}"
   project_group: "{{ ansible_user_gid }}"
+  project_environments:
+    - vagrant
+    - develop
+    - staging
+    - production

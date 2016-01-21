@@ -5,7 +5,7 @@
   vagrant_aws_user: "{{ project_user }}"
   vagrant_aws_group: "{{ project_group }}"
   vagrant_aws_vagarant_cwd: "$ORCHESTRATION_HOME/vagrant"
-  vagrant_aws_ami: ami-383c1956
+  vagrant_aws_ami: "$AWS_DEFAULT_EC2_AMI"
   vagrant_aws_elastic_ip: "VAGRANT_ELASTIC_IP"
   vagrant_aws_instance_type: t2.nano
   vagrant_aws_keypair_name: "$PROJECT_NAME-vagrant"
@@ -13,12 +13,13 @@
   vagrant_aws_subnet_id: "VAGRANT_SUBNET_ID"
   vagrant_aws_username: ec2-user
   vagrant_aws_private_key_path: "$PROJECT_HOME/key/vagrant.pem"
+  vagrant_aws_roles_tag: "app"
   vagrant_aws_tags: |
     {"Name" => ENV["PROJECT_NAME"] + "-vagrant",
       "Environment" => "vagrant",
       "Project" => ENV["PROJECT_NAME"],
-      "Roles" => "app",
-      "Owner" => "admin"}
+      "Roles" => "{{ vagrant_aws_roles_tag }}",
+      "Owner" => ENV["PROJECT_OWNER"]}
   vagrant_aws_envrc_directory: "{{ direnv_envrc_directory }}"
   vagrant_aws_environment_variables: 
     - value: "# vagrant"

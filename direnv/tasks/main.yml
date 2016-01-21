@@ -77,10 +77,10 @@
     regexp="direnv hook zsh"
   when: login_shell.stdout == "zsh"
 
-- name: Copy .envrc.
-  copy: >
-    src=dot.envrc
-    dest={{ direnv_envrc_directory }}/.envrc
+- name: Create .envrc.
+  template: >
+    src=.envrc.tpl
+    dest="{{ direnv_envrc_directory }}/.envrc"
     mode=0644
     force=no
   when: direnv_envrc_directory != ''

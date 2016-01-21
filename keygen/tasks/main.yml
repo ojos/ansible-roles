@@ -19,7 +19,7 @@
   args:
     creates: "{{ keygen_key_directory }}/{{ item }}.pem"
   with_items: keygen_environment_keys
-  when: keygen_environment_keys|length > 0
+  when: keygen_environments|length > 0
 
 - name: Change key directory owner.
   file: >

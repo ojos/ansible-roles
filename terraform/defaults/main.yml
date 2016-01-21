@@ -1,0 +1,34 @@
+---
+  terraform_directory: "{{ orchestration_directory }}/terraform"
+  terraform_environments: "{{ project_environments }}"
+  terraform_skel_repository: "https://github.com/ojos/terraform-aws.git"
+  terraform_user: "{{ project_user }}"
+  terraform_group: "{{ project_group }}"
+  terraform_home_directory: "$ORCHESTRATION_HOME/terraform"
+  terraform_aws_access_key: "$AWS_ACCESS_KEY_ID"
+  terraform_aws_secret_key: "$AWS_SECRET_ACCESS_KEY"
+  terraform_aws_region: "$AWS_DEFAULT_REGION"
+  terraform_project_name: "$PROJECT_NAME"
+  terraform_project_owner: "$PROJECT_OWNER"
+  terraform_default_ec2_ami: "$AWS_DEFAULT_EC2_AMI"
+  terraform_envrc_directory: "{{ direnv_envrc_directory }}"
+  terraform_environment_variables: 
+    - value: "# terraform"
+      regexp: "^# terraform$"
+    - value: export TF_HOME={{ terraform_home_directory }}
+      regexp: TF_HOME
+    - value: export TF_VAR_access_key={{ terraform_aws_access_key }}
+      regexp: TF_VAR_access_key
+    - value: export TF_VAR_secret_key={{ terraform_aws_secret_key }}
+      regexp: TF_VAR_secret_key
+    - value: export TF_VAR_region={{ terraform_aws_region }}
+      regexp: TF_VAR_region
+    - value: export TF_VAR_project={{ terraform_project_name }}
+      regexp: TF_VAR_project
+    - value: export TF_VAR_owner={{ terraform_project_owner }}
+      regexp: TF_VAR_owner
+    - value: |
+        export TF_VAR_ec2_ami={{ terraform_default_ec2_ami }}
+
+      regexp: TF_VAR_ec2_ami
+

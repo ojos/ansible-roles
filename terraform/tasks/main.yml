@@ -1,0 +1,47 @@
+---
+- name: Install/Update terraform.
+  homebrew_cask: >
+    name=terraform
+    state=present
+  environment: 
+    HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
+
+- name: Terraform directory.
+  stat: >
+    path={{ terraform_directory }}
+  register: tf_directory 
+  changed_when: no
+  always_run: yes
+
+- name: Create terraform directory.
+  file: >
+    path="{{ terraform_directory }}"
+    state=directory
+    mode=0755
+  when: not tf_directory.stat.exists
+
+- name: Clone skel.
+  git: >
+    repo="{{ terraform_skel_repository }}"
+    dest="{{ terraform_directory }}/{{ terraform_environments }}"
+    update=no
+  with_items: terraform_environments
+
+- name: Change terraform directory owner.
+  file: >
+    path="{{ terraform_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ terraform_user }}
+    group={{ terraform_group }}
+  become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ terraform_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: terraform_environment_variables
+  when: terraform_envrc_directory != '' and terraform_environment_variables|length > 0
