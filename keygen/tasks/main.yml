@@ -11,7 +11,6 @@
     path="{{ keygen_key_directory }}"
     state=directory
     mode=0755
-  become: yes
   when: not key_directory.stat.exists
 
 - name: Generate ssh key.
