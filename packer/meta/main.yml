@@ -1,0 +1,4 @@
+---
+dependencies:
+  - { role: homebrew_cask }
+  - { role: ansible }

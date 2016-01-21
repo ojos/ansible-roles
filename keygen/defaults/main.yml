@@ -1,7 +1,7 @@
 ---
   keygen_key_directory: "{{ project_directory }}/key"
-  keygen_user: "{{ ansible_user_uid }}"
-  keygen_group: "{{ ansible_user_gid }}"
+  keygen_user: "{{ project_user }}"
+  keygen_group: "{{ project_group }}"
   keygen_bits: 2048
   keygen_type: rsa
   keygen_passphrase: ''
@@ -10,3 +10,12 @@
     - develop
     - staging
     - production
+  keygen_home_directory: "$PROJECT_HOME/key"
+  keygen_envrc_directory: "{{ direnv_envrc_directory }}"
+  keygen_environment_variables: 
+    - value: "# key"
+      regexp: "^# key$"
+    - value: |
+        export KEY_HOME={{ keygen_home_directory }}
+
+      regexp: KEY_HOME

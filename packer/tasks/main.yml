@@ -1,0 +1,66 @@
+---
+- name: Install/Update packer.
+  homebrew_cask: >
+    name=packer
+    state=present
+  environment: 
+    HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
+
+- name: Packer directory.
+  stat: >
+    path={{ packer_directory }}
+  register: pckr_directory 
+  changed_when: no
+  always_run: yes
+
+- name: Create packer directory.
+  file: >
+    path="{{ packer_directory }}"
+    state=directory
+    mode=0755
+  when: not pckr_directory.stat.exists
+
+- name: Template json.
+  stat: >
+    path="{{ packer_template_file }}"
+  register: template_file
+  changed_when: no
+  always_run: yes
+- name: Create template json.
+  template: >
+    src=main.json.tpl
+    dest="{{ packer_template_file }}"
+    mode=0644
+  when: not template_file.stat.exists
+
+- name: Change packer directory owner.
+  file: >
+    path="{{ packer_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ packer_user }}
+    group={{ packer_group }}
+  become: yes
+
+- name: Playbook.
+  stat: >
+    path="{{ packer_playbook_file }}"
+  register: playbook_file
+  changed_when: no
+  always_run: yes
+- name: Create Playbook.
+  template: >
+    src=local.yml.tpl
+    dest="{{ packer_playbook_file }}"
+    mode=0644
+  when: not playbook_file.stat.exists
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ packer_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: packer_environment_variables
+  when: packer_envrc_directory != '' and packer_environment_variables|length > 0

@@ -6,16 +6,85 @@
 - name: Ansible directory.
   stat: >
     path={{ ansible_directory }}
-  register: ansb_directory 
+  register: home_directory
+  changed_when: no
+  always_run: yes
+- name: Create ansible directory.
+  file: >
+    path="{{ ansible_directory }}"
+    state=directory
+    mode=0755
+  when: not home_directory.stat.exists
+
+- name: Clone library roles repository.
+  git: >
+    repo="{{ ansible_library_roles_repository }}"
+    dest="{{ ansible_directory }}/{{ ansible_library_roles_directory_name }}"
+    update=yes
+
+- name: Default roles directory.
+  stat: >
+    path="{{ ansible_default_roles_directory }}"
+  register: default_directory
   changed_when: no
   always_run: yes
 
-- name: Clone buildout repository.
+- name: Create default roles directory.
+  file: >
+    path="{{ ansible_default_roles_directory }}"
+    state=directory
+    mode=0755
+  when: not default_directory.stat.exists
+
+- name: Clone main role repository.
   git: >
-    repo="{{ ansible_buildout_repository }}"
-    dest="{{ ansible_directory }}"
+    repo="{{ ansible_main_role_repository }}"
+    dest="{{ ansible_default_roles_directory }}/{{ ansible_main_role_name }}"
     update=yes
-  when: not ansb_directory.stat.exists
+  when: ansible_main_role_repository
+
+- name: Main role directory.
+  stat: >
+    path="{{ ansible_default_roles_directory }}/{{ ansible_main_role_name }}"
+  register: main_role_directory
+  changed_when: no
+  always_run: yes
+  when: not ansible_main_role_repository and ansible_main_roles_directory_name
+- name: Create Main role directory.
+  file: >
+    path="{{ ansible_default_roles_directory }}/{{ ansible_main_roles_directory_name }}"
+    state=directory
+    mode=0755
+  when: not ansible_main_roles_repository and ansible_main_roles_directory_name and not main_role_directory.stat.exists
+
+- name: Playbook.
+  stat: >
+    path="{{ ansible_playbook_file }}"
+  register: playbook_file
+  changed_when: no
+  always_run: yes
+- name: Create Playbook.
+  template: >
+    src=remote.yml.tpl
+    dest="{{ ansible_playbook_file }}"
+    mode=0644
+  when: not playbook_file.stat.exists
+
+- name: Download buildout script.
+  get_url: >
+    url="{{ ansible_buildout_script_url }}"
+    dest="{{ ansible_buildout_script }}"
+    mode=755
+    force=yes
+
+- name: Change ansible directory owner.
+  file: >
+    path="{{ ansible_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ ansible_user }}
+    group={{ ansible_group }}
+  become: yes
 
 - name: Insert env in .envrc.
   lineinfile: >

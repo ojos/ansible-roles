@@ -22,3 +22,14 @@
     owner={{ orchestration_user }}
     group={{ orchestration_group }}
   become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ orchestration_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: orchestration_environment_variables
+  when: orchestration_envrc_directory != '' and orchestration_environment_variables|length > 0
+

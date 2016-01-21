@@ -1,19 +1,10 @@
 ---
-- name: Vagrant binary. 
-  command: >
-    which vagrant
-  register: vagrant_bin
-  ignore_errors: yes
-  changed_when: no
-  always_run: yes
-
-- name: Install vagrant(Darwin).
+- name: Install/Update vagrant.
   homebrew_cask: >
     name=vagrant
     state=present
   environment: 
     HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
-  when: vagrant_bin.rc == 1
 
 - name: Install/Update vagrant-aws plug-in.
   command: >
@@ -42,6 +33,15 @@
     src=Vagrantfile.tpl
     dest="{{ vagrant_aws_vagarant_directory }}/Vagrantfile"
     mode=0644
+
+- name: Change vagrant directory owner.
+  file: >
+    path="{{ vagrant_aws_vagarant_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ vagrant_aws_user }}
+    group={{ vagrant_aws_group }}
+  become: yes
 
 - name: Insert env in .envrc.
   lineinfile: >
