@@ -5,7 +5,7 @@
   xbuild_ansible_default_roles_directory_name: "roles"
   xbuild_ansible_default_roles_directory: "{{ xbuild_ansible_directory }}/{{ xbuild_ansible_default_roles_directory_name }}"
   xbuild_ansible_main_role_repository: ""
-  xbuild_ansible_main_role_name: "main"
+  xbuild_ansible_main_role_name: "app"
   xbuild_ansible_playbook_file: "{{ xbuild_ansible_directory }}/remote.yml"
   xbuild_ansible_buildout_script_url: "https://raw.github.com/ojos/buildout/master/bootstrap"
   xbuild_ansible_buildout_script: "{{ xbuild_ansible_directory }}/bootstrap"

@@ -49,13 +49,13 @@
   register: main_role_directory
   changed_when: no
   always_run: yes
-  when: not xbuild_ansible_main_role_repository and xbuild_ansible_default_roles_directory_name
+  when: not xbuild_ansible_main_role_repository and xbuild_ansible_main_role_name
 - name: Create Main role directory.
   file: >
-    path="{{ xbuild_ansible_default_roles_directory }}/{{ xbuild_ansible_default_roles_directory_name }}"
+    path="{{ xbuild_ansible_default_roles_directory }}/{{ xbuild_ansible_main_role_name }}"
     state=directory
     mode=0755
-  when: not xbuild_ansible_main_role_repository and xbuild_ansible_default_roles_directory_name and not main_role_directory.stat.exists
+  when: not xbuild_ansible_main_role_repository and xbuild_ansible_main_role_name and not main_role_directory.stat.exists
 
 - name: Playbook.
   stat: >
