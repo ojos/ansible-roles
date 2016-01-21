@@ -6,10 +6,6 @@
   keygen_type: rsa
   keygen_passphrase: ''
   keygen_environments: "{{ project_environments }}"
-    - vagrant
-    - develop
-    - staging
-    - production
   keygen_home_directory: "$PROJECT_HOME/key"
   keygen_envrc_directory: "{{ direnv_envrc_directory }}"
   keygen_environment_variables: 
