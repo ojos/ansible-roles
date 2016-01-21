@@ -27,9 +27,9 @@
   changed_when: no
   always_run: yes
 - name: Create template json.
-  template: >
-    src=main.json.tpl
-    dest="{{ packer_template_file }}"
+  copy: >
+    src=templates.json
+    dest={{ packer_template_file }}
     mode=0644
   when: not template_file.stat.exists
 

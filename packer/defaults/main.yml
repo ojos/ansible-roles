@@ -4,7 +4,7 @@
   packer_user: "{{ project_user }}"
   packer_group: "{{ project_group }}"
   packer_envrc_directory: "{{ direnv_envrc_directory }}"
-  packer_template_file: "{{ packer_directory }}/main.json"
+  packer_template_file: "{{ packer_directory }}/templates.json"
   packer_ansible_main_role_name: "{{ xbuild_ansible_main_role_name }}"
   packer_playbook_file_name: "local.yml"
   packer_playbook_file: "{{ xbuild_ansible_directory }}/{{ packer_playbook_file_name }}"
