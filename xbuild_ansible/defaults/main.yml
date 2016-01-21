@@ -19,15 +19,15 @@
   xbuild_ansible_environment_variables: 
     - value: "# ansible"
       regexp: "^# ansible$"
-    - value: export xbuild_ansible_HOME={{ xbuild_ansible_home_directory }}
-      regexp: xbuild_ansible_HOME
+    - value: export ANSIBLE_HOME={{ xbuild_ansible_home_directory }}
+      regexp: ANSIBLE_HOME
     - value: export DEFAULT_FORKS={{ xbuild_ansible_forks }}
       regexp: DEFAULT_FORKS
-    - value: export DEFAULT_ROLES_PATH=$xbuild_ansible_HOME/{{ xbuild_ansible_library_roles_directory_name }}:$xbuild_ansible_HOME/{{ xbuild_ansible_default_roles_directory_name }}
+    - value: export DEFAULT_ROLES_PATH=$ANSIBLE_HOME/{{ xbuild_ansible_library_roles_directory_name }}:$ANSIBLE_HOME/{{ xbuild_ansible_default_roles_directory_name }}
       regexp: DEFAULT_ROLES_PATH
     - value: export RETRY_FILES_ENABLED=no
       regexp: RETRY_FILES_ENABLED
     - value: |
-        export xbuild_ansible_SSH_ARGS={{ xbuild_ansible_ssh_args }}
+        export ANSIBLE_SSH_ARGS={{ xbuild_ansible_ssh_args }}
 
-      regexp: xbuild_ansible_SSH_ARGS
+      regexp: ANSIBLE_SSH_ARGS
