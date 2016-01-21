@@ -23,7 +23,7 @@
 - name: Clone skel.
   git: >
     repo="{{ terraform_skel_repository }}"
-    dest="{{ terraform_directory }}/{{ terraform_environments }}"
+    dest="{{ terraform_directory }}/{{ item }}"
     update=no
   with_items: terraform_environments
 

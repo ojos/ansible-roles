@@ -18,7 +18,7 @@
     ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ keygen_key_directory }}/{{ item }}.pem -N '{{ keygen_passphrase }}'
   args:
     creates: "{{ keygen_key_directory }}/{{ item }}.pem"
-  with_items: keygen_environment_keys
+  with_items: keygen_environments
   when: keygen_environments|length > 0
 
 - name: Change key directory owner.
