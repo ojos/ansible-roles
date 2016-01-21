@@ -16,19 +16,19 @@
     - value: "# terraform"
       regexp: "^# terraform$"
     - value: export TF_HOME={{ terraform_home_directory }}
-      regexp: TF_HOME
+      regexp: "^export TF_HOME"
     - value: export TF_VAR_access_key={{ terraform_aws_access_key }}
-      regexp: TF_VAR_access_key
+      regexp: "^export TF_VAR_access_key"
     - value: export TF_VAR_secret_key={{ terraform_aws_secret_key }}
-      regexp: TF_VAR_secret_key
+      regexp: "^export TF_VAR_secret_key"
     - value: export TF_VAR_region={{ terraform_aws_region }}
-      regexp: TF_VAR_region
+      regexp: "^export TF_VAR_region"
     - value: export TF_VAR_project={{ terraform_project_name }}
-      regexp: TF_VAR_project
+      regexp: "^export TF_VAR_project"
     - value: export TF_VAR_owner={{ terraform_project_owner }}
-      regexp: TF_VAR_owner
+      regexp: "^export TF_VAR_owner"
     - value: |
         export TF_VAR_ec2_ami={{ terraform_default_ec2_ami }}
 
-      regexp: TF_VAR_ec2_ami
+      regexp: "^export TF_VAR_ec2_ami"
 

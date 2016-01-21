@@ -25,23 +25,23 @@
     - value: "# vagrant"
       regexp: "^# vagrant$"
     - value: export VAGRANT_CWD={{ vagrant_aws_vagarant_cwd }}
-      regexp: VAGRANT_CWD
+      regexp: "^export VAGRANT_CWD"
     - value: export VAGRANT_AMI={{ vagrant_aws_ami }}
-      regexp: VAGRANT_AMI
+      regexp: "^export VAGRANT_AMI"
     - value: export VAGRANT_ELASTIC_IP={{ vagrant_aws_elastic_ip }}
-      regexp: VAGRANT_ELASTIC_IP
+      regexp: "^export VAGRANT_ELASTIC_IP"
     - value: export VAGRANT_INSTANCE_TYPE={{ vagrant_aws_instance_type }}
-      regexp: VAGRANT_INSTANCE_TYPE
+      regexp: "^export VAGRANT_INSTANCE_TYPE"
     - value: export VAGRANT_KEYPAIR_NAME={{ vagrant_aws_keypair_name }}
-      regexp: VAGRANT_KEYPAIR_NAME
+      regexp: "^export VAGRANT_KEYPAIR_NAME"
     - value: export VAGRANT_SECURITY_GROUPS={{ vagrant_aws_security_groups }}
-      regexp: VAGRANT_SECURITY_GROUPS
+      regexp: "^export VAGRANT_SECURITY_GROUPS"
     - value: export VAGRANT_SUBNET_ID={{ vagrant_aws_subnet_id }}
-      regexp: VAGRANT_SUBNET_ID
+      regexp: "^export VAGRANT_SUBNET_ID"
     - value: export VAGRANT_USERNAME={{ vagrant_aws_username }}
-      regexp: VAGRANT_USERNAME
+      regexp: "^export VAGRANT_USERNAME"
     - value: |
         export VAGRANT_PRIVATE_KEY_PATH={{ vagrant_aws_private_key_path }}
 
-      regexp: VAGRANT_PRIVATE_KEY_PATH
+      regexp: "^export VAGRANT_PRIVATE_KEY_PATH"
 

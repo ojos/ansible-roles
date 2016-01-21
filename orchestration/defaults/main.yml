@@ -11,4 +11,4 @@
     - value: |
         export ORCHESTRATION_HOME={{ orchestration_home_directory }}
 
-      regexp: ORCHESTRATION_HOME
+      regexp: "^export ORCHESTRATION_HOME"
