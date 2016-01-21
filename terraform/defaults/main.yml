@@ -1,6 +1,6 @@
 ---
   terraform_directory: "{{ orchestration_directory }}/terraform"
-  terraform_environments: "{{ project_environments }}"
+  terraform_environments: {{ project_environments }}
   terraform_skel_repository: "https://github.com/ojos/terraform-aws.git"
   terraform_user: "{{ project_user }}"
   terraform_group: "{{ project_group }}"
