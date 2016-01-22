@@ -36,39 +36,32 @@
 
 - name: Clone app directory.
   git: >
-    repo="{{ item.repository }}"
-    dest="{{ django_directory }}/{{ django_project }}/{{ item.name }}"
+    repo="{{ django_app_repository }}"
+    dest="{{ django_directory }}/{{ django_project }}/{{ django_app }}"
     update=yes
-  when: item.repository
-  with_items: django_apps
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: django_apps|length > 0
+  when: django_app_repository
 
 
 - name: Create app directory(custom template).
   command: >
-    django-admin startapp --template={{ django_app_template_repository }} {{ item.name }}
+    python manage.py startapp --template={{ django_app_template_repository }} {{ django_app }}
   args:
     chdir: "{{ django_directory }}/{{ django_project }}"
-    creates: "{{ django_directory }}/{{ django_project }}/{{ item.name }}"
-  when: django_app_template_repository
-  with_items: django_apps
+    creates: "{{ django_directory }}/{{ django_project }}/{{ django_app }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: django_apps|length > 0
-
+  when: not django_app_repository and django_app_template_repository
 - name: Create app directory(default).
   command: >
-    django-admin startapp {{ item.name }}
+    python manage.py startapp {{ django_app }}
   args:
     chdir: "{{ django_directory }}/{{ django_project }}"
-    creates: "{{ django_directory }}/{{ django_project }}/{{ item.name }}"
-  when: not django_app_template_repository
-  with_items: django_apps
+    creates: "{{ django_directory }}/{{ django_project }}/{{ django_app }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: django_apps|length > 0
+  when: not django_app_repository and not django_app_template_repository
 
 - name: Change django project directory owner.
   file: >
