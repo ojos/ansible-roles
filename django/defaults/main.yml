@@ -3,8 +3,11 @@
   django_repository: ""
   django_directory: "{{ project_directory }}"
   django_project: app
+  django_project_template_repository: https://github.com/ojos/django-project-skel/zipball/master
   django_apps:
-    - api
+    - name: app
+      repository: ""
+  django_app_template_repository: https://github.com/ojos/django-app-skel/zipball/master
   django_user: "{{ ansible_user_uid }}"
   django_group: "{{ ansible_user_gid }}"
   django_install_packages:

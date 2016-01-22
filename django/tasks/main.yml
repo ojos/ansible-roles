@@ -15,7 +15,16 @@
     update=yes
   when: django_repository
 
-- name: Create project directory.
+- name: Create project directory(custom template).
+  command: >
+    django-admin startproject --template={{ django_project_template_repository }} {{ django_project }}
+  args:
+    chdir: "{{ django_directory }}"
+    creates: "{{ django_directory }}/{{ django_project }}"
+  environment:
+    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: not django_repository and django_project_template_repository
+- name: Create project directory(default).
   command: >
     django-admin startproject {{ django_project }}
   args:
@@ -23,14 +32,39 @@
     creates: "{{ django_directory }}/{{ django_project }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: not django_repository
+  when: not django_repository and not django_project_template_repository
 
-- name: Create project directory.
+- name: Clone app directory.
+  git: >
+    repo="{{ item.repository }}"
+    dest="{{ django_directory }}/{{ django_project }}/{{ item.name }}"
+    update=yes
+  when: item.repository
+  with_items: django_apps
+  environment:
+    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: django_apps|length > 0
+
+
+- name: Create app directory(custom template).
   command: >
-    django-admin startapp {{ item }}
+    django-admin startapp --template={{ django_app_template_repository }} {{ item.name }}
   args:
     chdir: "{{ django_directory }}/{{ django_project }}"
-    creates: "{{ django_directory }}/{{ django_project }}/{{ item }}"
+    creates: "{{ django_directory }}/{{ django_project }}/{{ item.name }}"
+  when: django_app_template_repository
+  with_items: django_apps
+  environment:
+    PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: django_apps|length > 0
+
+- name: Create app directory(default).
+  command: >
+    django-admin startapp {{ item.name }}
+  args:
+    chdir: "{{ django_directory }}/{{ django_project }}"
+    creates: "{{ django_directory }}/{{ django_project }}/{{ item.name }}"
+  when: not django_app_template_repository
   with_items: django_apps
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
