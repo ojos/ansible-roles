@@ -14,8 +14,5 @@
     - 'pytz'
     - 'django-extensions'
     - 'django-requestlogging'
-    - 'django-devserver'
-    - 'guppy'
-    - 'line-profiler'
     - 'mysqlclient'
     - 'django-redis'
