@@ -12,7 +12,6 @@
   django_install_packages:
     - 'Django'
     - 'pytz'
-    - 'django-requestlogging'
     - 'django-extensions'
     - 'werkzeug'
     - 'mysqlclient'
