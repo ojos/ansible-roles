@@ -6,14 +6,14 @@
     update=yes
     track_submodules=yes
   become: yes
-  when: orchestration_repository
+  when: orchestration_repository != ''
 - name: Create orchestration directory.
   file: >
     path="{{ orchestration_directory }}"
     state=directory
     mode=0755
   become: yes
-  when: not orchestration_repository
+  when: orchestration_repository == ''
 
 - name: Change orchestration directory owner.
   file: >

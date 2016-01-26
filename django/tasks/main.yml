@@ -13,7 +13,7 @@
     repo="{{ django_repository }}"
     dest="{{ django_directory }}/{{ django_project }}"
     update=yes
-  when: django_repository
+  when: django_repository != ''
 
 - name: Create project directory(custom template).
   command: >
@@ -23,7 +23,7 @@
     creates: "{{ django_directory }}/{{ django_project }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: not django_repository and django_project_template_repository
+  when: django_repository == '' and django_project_template_repository
 - name: Create project directory(default).
   command: >
     django-admin startproject {{ django_project }}
@@ -32,7 +32,7 @@
     creates: "{{ django_directory }}/{{ django_project }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: not django_repository and not django_project_template_repository
+  when: django_repository == '' and not django_project_template_repository
 
 - name: Clone app directory.
   git: >
@@ -42,7 +42,7 @@
     track_submodules=yes
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: django_app_repository
+  when: django_app_repository != ''
 
 
 - name: Create app directory(custom template).
@@ -53,7 +53,7 @@
     creates: "{{ django_directory }}/{{ django_project }}/{{ django_app }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: not django_app_repository and django_app_template_repository
+  when: django_app_repository == '' and django_app_template_repository
 - name: Create app directory(default).
   command: >
     python manage.py startapp {{ django_app }}
@@ -62,7 +62,7 @@
     creates: "{{ django_directory }}/{{ django_project }}/{{ django_app }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
-  when: not django_app_repository and not django_app_template_repository
+  when: django_app_repository == '' and not django_app_template_repository
 
 - name: Change django project directory owner.
   file: >

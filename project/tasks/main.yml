@@ -6,14 +6,14 @@
     update=yes
     track_submodules=yes
   become: yes
-  when: project_repository
+  when: project_repository != ''
 - name: Create project directory.
   file: >
     path="{{ project_directory }}"
     state=directory
     mode=0755
   become: yes
-  when: not project_repository
+  when: project_repository == ''
 
 - name: Change project directory owner.
   file: >
