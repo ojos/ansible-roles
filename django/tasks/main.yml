@@ -13,7 +13,6 @@
     repo="{{ django_repository }}"
     dest="{{ django_directory }}/{{ django_project }}"
     update=yes
-    track_submodules=yes
   when: django_repository
 
 - name: Create project directory(custom template).
