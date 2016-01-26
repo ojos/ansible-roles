@@ -13,6 +13,7 @@
     repo="{{ django_repository }}"
     dest="{{ django_directory }}/{{ django_project }}"
     update=yes
+    track_submodules=yes
   when: django_repository
 
 - name: Create project directory(custom template).
@@ -39,6 +40,7 @@
     repo="{{ django_app_repository }}"
     dest="{{ django_directory }}/{{ django_project }}/{{ django_app }}"
     update=yes
+    track_submodules=yes
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: django_app_repository

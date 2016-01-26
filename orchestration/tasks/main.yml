@@ -4,6 +4,7 @@
     repo="{{ orchestration_repository }}"
     dest="{{ orchestration_directory }}"
     update=yes
+    track_submodules=yes
   become: yes
   when: orchestration_repository
 - name: Create orchestration directory.

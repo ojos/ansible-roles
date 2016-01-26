@@ -21,6 +21,7 @@
     repo="{{ xbuild_ansible_library_roles_repository }}"
     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_library_roles_directory_name }}"
     update=yes
+    track_submodules=yes
 
 - name: Default roles directory.
   stat: >
@@ -41,6 +42,7 @@
     repo="{{ xbuild_ansible_main_role_repository }}"
     dest="{{ xbuild_ansible_default_roles_directory }}/{{ xbuild_ansible_main_role_name }}"
     update=yes
+    track_submodules=yes
   when: xbuild_ansible_main_role_repository
 
 - name: Main role directory.

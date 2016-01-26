@@ -12,7 +12,7 @@
   vagrant_aws_security_groups: "VAGRANT_SECURITY_GROUPS"
   vagrant_aws_subnet_id: "VAGRANT_SUBNET_ID"
   vagrant_aws_username: ec2-user
-  vagrant_aws_private_key_path: "$PROJECT_HOME/key/vagrant.pem"
+  vagrant_aws_private_key_path: "$KEY_HOME/vagrant.pem"
   vagrant_aws_roles_tag: "app"
   vagrant_aws_tags: |
     {"Name" => ENV["PROJECT_NAME"] + "-vagrant",

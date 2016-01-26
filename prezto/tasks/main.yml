@@ -11,6 +11,7 @@
     dest={{ ansible_user_dir }}/.zprezto
     force=yes
     recursive=yes
+    track_submodules=yes
   when: not res.stat.exists
 - name: Copy bootstrap.
   template: >

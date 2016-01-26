@@ -18,6 +18,7 @@
     repo={{ direnv_repository }}
     dest={{ direnv_install_directory }}
     update=yes
+    track_submodules=yes
   when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
 - name: Make direnv.
   command: >
