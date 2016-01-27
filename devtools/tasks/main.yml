@@ -14,7 +14,7 @@
   ignore_errors: True
   when: ansible_os_family == 'RedHat'
 - name: Install/Upgrade devtools packages(RedHat).
-  homebrew: >
+  yum: >
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
     install_options={{ item.install_option | default('') }}
