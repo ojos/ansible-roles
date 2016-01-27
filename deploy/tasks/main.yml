@@ -1,8 +1,8 @@
 ---
 - name: Deploy Source.
   git: >
-    repo={{ deploy_sources.repository }}
-    dest={{ deploy_sources.directory }}
+    repo={{ item.repository }}
+    dest={{ item.directory }}
     update=yes
     track_submodules=yes
     accept_hostkey=yes
@@ -12,11 +12,11 @@
 
 - name: Change deploy directory owner.
   file: >
-    path="{{ deploy_sources.directory }}"
+    path="{{ item.directory }}"
     state=directory
     recurse=yes
-    owner={{ deploy_sources.user }}
-    group={{ deploy_sources.group }}
+    owner={{ item.user }}
+    group={{ item.group }}
   with_items: deploy_sources
   when: deploy_sources|length > 0
   become: yes

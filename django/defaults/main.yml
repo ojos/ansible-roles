@@ -10,9 +10,9 @@
   django_user: "{{ ansible_user_uid }}"
   django_group: "{{ ansible_user_gid }}"
   django_install_packages:
-    - 'Django'
-    - 'pytz'
-    - 'django-extensions'
-    - 'werkzeug'
-    - 'mysqlclient'
-    - 'django-redis'
+    - Django
+    - pytz
+    - django-extensions
+    - werkzeug
+    - mysqlclient
+    - django-redis
