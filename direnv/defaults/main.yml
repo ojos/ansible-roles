@@ -1,5 +1,5 @@
 ---
-  direnv_download_url: https://github.com/direnv/direnv/releases/download/
+  direnv_download_url: https://github.com/direnv/direnv/releases/download
   direnv_version: 2.6.0
   direnv_os: linux
   direnv_arch: amd64

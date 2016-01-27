@@ -14,7 +14,7 @@
 
 - name: Download direnv.
   get_url: >
-    url="{{ direnv_download_url }}/{{ direnv_version }}/direnv.{{ direnv_os }}-{{ direnv_arch }}"
+    url="{{ direnv_download_url }}/v{{ direnv_version }}/direnv.{{ direnv_os }}-{{ direnv_arch }}"
     dest="{{ direnv_install_directory }}/direnv"
     mode=0775
   when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
