@@ -5,6 +5,7 @@
     dest="{{ orchestration_directory }}"
     update=yes
     track_submodules=yes
+    accept_hostkey=yes
   become: yes
   when: orchestration_repository != ''
 - name: Create orchestration directory.

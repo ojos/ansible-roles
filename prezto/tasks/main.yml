@@ -12,6 +12,7 @@
     force=yes
     recursive=yes
     track_submodules=yes
+    accept_hostkey=yes
   when: not res.stat.exists
 
 - name: Copy bootstrap.

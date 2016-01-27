@@ -5,6 +5,7 @@
     dest={{ deploy_sources.directory }}
     update=yes
     track_submodules=yes
+    accept_hostkey=yes
   with_items: deploy_sources
   when: deploy_sources|length > 0
   become: yes

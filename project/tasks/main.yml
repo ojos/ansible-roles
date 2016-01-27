@@ -5,6 +5,7 @@
     dest="{{ project_directory }}"
     update=yes
     track_submodules=yes
+    accept_hostkey=yes
   become: yes
   when: project_repository != ''
 - name: Create project directory.

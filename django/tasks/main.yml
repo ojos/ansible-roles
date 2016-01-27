@@ -13,6 +13,7 @@
     repo="{{ django_repository }}"
     dest="{{ django_directory }}/{{ django_project }}"
     update=yes
+    accept_hostkey=yes
   when: django_repository != ''
   become: yes
 
@@ -43,6 +44,7 @@
     dest="{{ django_directory }}/{{ django_project }}/{{ django_app }}"
     update=yes
     track_submodules=yes
+    accept_hostkey=yes
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: django_app_repository != ''
