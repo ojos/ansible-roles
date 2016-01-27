@@ -1,4 +1,5 @@
 ---
   devtools_repositories: []
   devtools_packages: 
-    - "@Development tools"
+    - name: @Development tools
+      state: present
