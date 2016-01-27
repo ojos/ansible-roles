@@ -1,7 +1,11 @@
 ---
-  direnv_repository: https://github.com/direnv/direnv.git
-  direnv_install_directory: /usr/local/direnv
+  direnv_download_url: https://github.com/direnv/direnv/releases/download/
+  direnv_version: 2.6.0
+  direnv_os: linux
+  direnv_arch: amd64
+  direnv_install_directory: /usr/local/bin
   direnv_envrc_directory: "{{ project_directory }}"
   direnv_project_owner: "{{ project_owner }}"
   direnv_aws_default_ec2_ami: ami-383c1956
   direnv_environment_variables: []
+
