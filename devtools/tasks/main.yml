@@ -17,7 +17,6 @@
   yum: >
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
-    install_options={{ item.install_option | default('') }}
   with_items: devtools_packages
   when: ansible_os_family == 'RedHat' and devtools_packages|length > 0
 
