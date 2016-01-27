@@ -12,13 +12,13 @@
   register: tf_directory 
   changed_when: no
   always_run: yes
-
 - name: Create terraform directory.
   file: >
     path="{{ terraform_directory }}"
     state=directory
     mode=0755
   when: not tf_directory.stat.exists
+  become: yes
 
 - name: Clone skel.
   git: >
@@ -27,6 +27,7 @@
     update=no
     track_submodules=yes
   with_items: terraform_environments
+  become: yes
 
 - name: Change terraform directory owner.
   file: >

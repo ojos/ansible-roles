@@ -20,12 +20,14 @@
     update=yes
     track_submodules=yes
   when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
+  become: yes
 - name: Make direnv.
   command: >
     make install
   args:
     chdir: "{{ direnv_install_directory }}"
   when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
+  become: yes
 
 - name: login shell.
   shell: >

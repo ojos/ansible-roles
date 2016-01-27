@@ -1,3 +1,5 @@
 ---
   invoke_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   invoke_tasks_file_directory: "{{ project_directory }}"
+  invoke_user: "{{ xbuild_ansible_user }}"
+  invoke_group: "{{ xbuild_ansible_group }}"

@@ -10,6 +10,8 @@
     {{ xbuild_install_directory }}/go-install {{ xbuild_go_version }}
     {{ xbuild_go_install_directory }} {{ xbuild_go_os }} {{ xbuild_go_arch }}
   when: not go_dir.stat.exists
+  become: yes
+  
 - name: Change go directory owner.
   file: >
     path={{ xbuild_go_install_directory }}
@@ -24,3 +26,4 @@
     path={{ xbuild_install_directory }}
     state=absent
   when: xbuild_go_remove_xbuild
+  become: yes

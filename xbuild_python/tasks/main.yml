@@ -3,6 +3,7 @@
   yum: >
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
+  become: yes
   with_items: xbuild_python_dependent_packages
   when: ansible_os_family == 'RedHat' and xbuild_python_dependent_packages|length > 0
 - name: Install dependent packages(Darwin).
@@ -24,6 +25,18 @@
     {{ xbuild_install_directory }}/python-install {{ xbuild_python_version }}
     {{ xbuild_python_install_directory }}
   when: not python_dir.stat.exists
+  become: yes
+
+- name: Install python packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: xbuild_python_packages
+  when: xbuild_python_packages|length > 0
+  environment:
+    PATH: "{{ xbuild_python_install_directory }}/bin:{{ ansible_env.PATH }}"
+  become: yes
+
 - name: Change python directory owner.
   file: >
     path={{ xbuild_python_install_directory }}
@@ -32,12 +45,6 @@
     owner={{ xbuild_python_user }}
     group={{ xbuild_python_group }}
   become: yes
-
-- name: Remove xbuild directory.
-  file: >
-    path={{ xbuild_install_directory }}
-    state=absent
-  when: xbuild_python_remove_xbuild
 
 - name: Insert env in .envrc.
   lineinfile: >
@@ -49,13 +56,9 @@
   with_items: xbuild_python_environment_variables
   when: xbuild_python_envrc_directory != '' and xbuild_python_environment_variables|length > 0
 
-- name: Install python packages.
-  pip: >
-    name={{ item }}
-    state=latest
-  with_items: xbuild_python_packages
-  when: xbuild_python_packages|length > 0
-  environment:
-    PATH: "{{ xbuild_python_install_directory }}/bin:{{ ansible_env.PATH }}"
-
-
+- name: Remove xbuild directory.
+  file: >
+    path={{ xbuild_install_directory }}
+    state=absent
+  when: xbuild_python_remove_xbuild
+  become: yes

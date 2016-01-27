@@ -5,7 +5,7 @@
   register: res
   changed_when: False
   always_run: yes
-- name: Checkout Repository.
+- name: Clone prezto repository.
   git: >
     repo={{ prezto_repository }}
     dest={{ ansible_user_dir }}/.zprezto
@@ -13,6 +13,7 @@
     recursive=yes
     track_submodules=yes
   when: not res.stat.exists
+
 - name: Copy bootstrap.
   template: >
     src=bootstrap.tpl

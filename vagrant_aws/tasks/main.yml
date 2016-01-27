@@ -20,19 +20,20 @@
   register: vagarant_directory 
   changed_when: no
   always_run: yes
-
 - name: Create vagrant directory.
   file: >
     path="{{ vagrant_aws_vagarant_directory }}"
     state=directory
     mode=0755
   when: not vagarant_directory.stat.exists
+  become: yes
 
 - name: Create Vagrantfile.
   template: >
     src=Vagrantfile.tpl
     dest="{{ vagrant_aws_vagarant_directory }}/Vagrantfile"
     mode=0644
+  become: yes
 
 - name: Change vagrant directory owner.
   file: >

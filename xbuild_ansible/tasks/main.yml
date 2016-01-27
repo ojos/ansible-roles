@@ -15,62 +15,58 @@
     state=directory
     mode=0755
   when: not home_directory.stat.exists
+  become: yes
 
-- name: Clone library roles repository.
+- name: Clone Default roles repository.
   git: >
-    repo="{{ xbuild_ansible_library_roles_repository }}"
-    dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_library_roles_directory_name }}"
+    repo="{{ xbuild_ansible_roles_repository }}"
+    dest="{{ xbuild_ansible_directory }}/roles"
     update=yes
     track_submodules=yes
+  when: xbuild_ansible_roles_repository != ''
+  become: yes
 
 - name: Default roles directory.
   stat: >
-    path="{{ xbuild_ansible_default_roles_directory }}"
+    path="{{ xbuild_ansible_directory }}/roles"
   register: default_directory
   changed_when: no
   always_run: yes
-
 - name: Create default roles directory.
   file: >
-    path="{{ xbuild_ansible_default_roles_directory }}"
+    path="{{ xbuild_ansible_directory }}/roles"
     state=directory
     mode=0755
   when: not default_directory.stat.exists
+  become: yes
 
-- name: Clone main role repository.
-  git: >
-    repo="{{ xbuild_ansible_main_role_repository }}"
-    dest="{{ xbuild_ansible_default_roles_directory }}/{{ xbuild_ansible_main_role_name }}"
-    update=yes
-    track_submodules=yes
-  when: xbuild_ansible_main_role_repository != ''
-
-- name: Main role directory.
+- name: Buildout playbook.
   stat: >
-    path="{{ xbuild_ansible_default_roles_directory }}/{{ xbuild_ansible_main_role_name }}"
-  register: main_role_directory
+    path="{{ xbuild_ansible_directory }}/remote.yml"
+  register: buildout_playbook
   changed_when: no
   always_run: yes
-  when: xbuild_ansible_main_role_repository == '' and xbuild_ansible_main_role_name
-- name: Create Main role directory.
-  file: >
-    path="{{ xbuild_ansible_default_roles_directory }}/{{ xbuild_ansible_main_role_name }}"
-    state=directory
-    mode=0755
-  when: xbuild_ansible_main_role_repository == '' and xbuild_ansible_main_role_name and not main_role_directory.stat.exists
-
-- name: Playbook.
-  stat: >
-    path="{{ xbuild_ansible_playbook_file }}"
-  register: playbook_file
-  changed_when: no
-  always_run: yes
-- name: Create Playbook.
-  template: >
-    src=remote.yml.tpl
-    dest="{{ xbuild_ansible_playbook_file }}"
+- name: Create buildout playbook.
+  copy: >
+    src=remote.yml
+    dest={{ xbuild_ansible_directory }}/remote.yml
     mode=0644
-  when: not playbook_file.stat.exists
+  when: not buildout_playbook.stat.exists
+  become: yes
+
+- name: Deploy playbook.
+  stat: >
+    path="{{ xbuild_ansible_directory }}/deploy.yml"
+  register: deploy_playbook
+  changed_when: no
+  always_run: yes
+- name: Create deploy playbook.
+  copy: >
+    src=deploy.yml
+    dest={{ xbuild_ansible_directory }}/deploy.yml
+    mode=0644
+  when: not deploy_playbook.stat.exists
+  become: yes
 
 - name: Download buildout script.
   get_url: >
@@ -78,6 +74,7 @@
     dest="{{ xbuild_ansible_buildout_script }}"
     mode=755
     force=yes
+  become: yes
 
 - name: Change ansible directory owner.
   file: >

@@ -11,6 +11,7 @@
   yum: >
     name="{{ item }}"
     state="present"
+  become: yes
   with_items: "{{ redis_dependent_packages }}"
 - name: Download redis source.
   get_url: >

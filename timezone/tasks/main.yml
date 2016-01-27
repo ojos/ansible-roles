@@ -6,6 +6,8 @@
     owner=root
     group=root
     mode=0644
+  become: yes
+
 - name: Change clock file.
   template: >
     src="clock.tpl"
@@ -13,5 +15,8 @@
     owner=root
     group=root
     mode=0644
+  become: yes
+
 - name: Reflect clock file.
   shell: source /etc/sysconfig/clock
+  become: yes

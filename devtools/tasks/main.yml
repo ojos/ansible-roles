@@ -3,12 +3,14 @@
   yum: >
     tap={{ item }}
     state=present
+  become: yes
   with_items: devtools_repositories
   when: ansible_os_family == 'RedHat' and devtools_repositories|length > 0
 - name: Update Yum(RedHat).
   yum: >
     name="*"
     state="latest"
+  become: yes
   ignore_errors: True
   when: ansible_os_family == 'RedHat'
 - name: Install/Upgrade devtools packages(RedHat).
