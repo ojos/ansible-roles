@@ -10,7 +10,7 @@
   file: >
     path="{{ keygen_key_directory }}"
     state=directory
-    mode=0755
+    mode=0777
   when: not key_directory.stat.exists
   become: yes
 
@@ -21,7 +21,6 @@
     creates: "{{ keygen_key_directory }}/{{ item }}.pem"
   with_items: keygen_environments
   when: keygen_environments|length > 0
-  become: yes
 
 - name: Change key directory owner.
   file: >
@@ -30,6 +29,7 @@
     recurse=yes
     owner={{ keygen_user }}
     group={{ keygen_group }}
+    mode=0755
   become: yes
 
 - name: Insert env in .envrc.
