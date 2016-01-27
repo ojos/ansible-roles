@@ -1,7 +1,7 @@
 ---
 - name: Set localtime.
   copy: >
-    src="/usr/share/zoneinfo/{{ timezone }}"
+    src="/usr/share/zoneinfo/{{ timezone_area }}"
     dest="/etc/localtime"
     mode=0644
     force=yes
