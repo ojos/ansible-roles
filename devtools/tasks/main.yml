@@ -19,6 +19,7 @@
     state={{ item.state | default('latest') }}
   with_items: devtools_packages
   when: ansible_os_family == 'RedHat' and devtools_packages|length > 0
+  become: yes
 
 
 - name: External Homebrew repositories(Darwin).
