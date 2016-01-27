@@ -1,2 +1,2 @@
-ZONE="{{ timezone }}"
-UTC={{ clock_utc }}
+ZONE="{{ timezone_area }}"
+UTC={{ timezone_clock_utc }}
