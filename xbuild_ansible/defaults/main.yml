@@ -17,8 +17,6 @@
       regexp: "^export ANSIBLE_HOME"
     - value: export DEFAULT_FORKS={{ xbuild_ansible_forks }}
       regexp: "^export DEFAULT_FORKS"
-    - value: export DEFAULT_ROLES_PATH=$ANSIBLE_HOME/{{ xbuild_ansible_library_roles_directory_name }}:$ANSIBLE_HOME/{{ xbuild_ansible_default_roles_directory_name }}
-      regexp: "^export DEFAULT_ROLES_PATH"
     - value: export RETRY_FILES_ENABLED=no
       regexp: "^export RETRY_FILES_ENABLED"
     - value: |
