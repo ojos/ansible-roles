@@ -1,8 +1,8 @@
 ---
   supervisord_python_install_directory: "{{ xbuild_python_install_directory }}"
   supervisord_python_bin_directory: "{{ supervisord_python_install_directory }}/bin"
-  supervisord_user: "{{ ansible_user_uid }}"
-  supervisord_group: "{{ ansible_user_gid }}"
+  supervisord_user: "{{ xbuild_python_user }}"
+  supervisord_group: "{{ xbuild_python_group }}"
   supervisord_conf_directory: "{{ project_directory }}/etc/supervisord"
   supervisord_conf_file_name: supervisord.conf
   supervisord_include_conf_directory: "{{ supervisord_conf_directory }}/conf.d"

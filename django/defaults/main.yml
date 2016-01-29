@@ -7,8 +7,8 @@
   django_app: app
   django_app_repository: ""
   django_app_template_repository: https://github.com/ojos/django-app-skel/zipball/master
-  django_user: "{{ ansible_user_uid }}"
-  django_group: "{{ ansible_user_gid }}"
+  django_user: "{{ xbuild_python_user }}"
+  django_group: "{{ xbuild_python_group }}"
   django_install_packages:
     - Django
     - pytz

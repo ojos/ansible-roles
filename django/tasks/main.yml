@@ -65,11 +65,11 @@
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: django_app_repository == '' and not django_app_template_repository
 
-# - name: Change django project directory owner.
-#   file: >
-#     path="{{ django_directory }}/{{ django_project }}"
-#     state=directory
-#     recurse=yes
-#     owner={{ django_user }}
-#     group={{ django_group }}
-#   become: yes
+- name: Change django project directory owner.
+  file: >
+    path="{{ django_directory }}/{{ django_project }}"
+    state=directory
+    recurse=yes
+    owner={{ django_user }}
+    group={{ django_group }}
+  become: yes

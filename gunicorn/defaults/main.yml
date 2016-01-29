@@ -3,8 +3,8 @@
   gunicorn_install_packages:
     - 'gunicorn'
     - 'meinheld'
-  gunicorn_user: "{{ ansible_user_uid }}"
-  gunicorn_group: "{{ ansible_user_gid }}"
+  gunicorn_user: "{{ supervisord_user }}"
+  gunicorn_group: "{{ supervisord_group }}"
   gunicorn_conf_directory: "{{ project_directory }}/etc/gunicorn"
   gunicorn_conf_file_name: gunicorn.conf.py
   gunicorn_log_directory: "{{ project_directory }}/log/gunicorn"
