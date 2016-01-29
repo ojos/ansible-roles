@@ -5,6 +5,7 @@
   keygen_bits: 2048
   keygen_type: rsa
   keygen_passphrase: ''
+  keygen_ssh_config_file: "ssh_config"
   keygen_environments: "{{ project_environments }}"
   keygen_home_directory: "$PROJECT_HOME/key"
   keygen_envrc_directory: "{{ direnv_envrc_directory }}"

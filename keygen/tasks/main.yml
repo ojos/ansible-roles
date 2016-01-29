@@ -30,10 +30,11 @@
   register: ssh_config
   changed_when: no
   always_run: yes
-- name: Touch ssh_config.
+- name: Copy ssh_config.
   file: >
+    src={{ keygen_ssh_config_file }}
     path="{{ keygen_key_directory }}/ssh_config"
-    state=touch
+    state=file
     owner={{ keygen_user }}
     group={{ keygen_group }}
     mode=0644

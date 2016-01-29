@@ -1,0 +1,9 @@
+Host example
+HostName xxx.xxx.xxx.xxx
+User ec2-user
+Port 22
+UserKnownHostsFile /dev/null
+StrictHostKeyChecking no
+PasswordAuthentication no
+IdentitiesOnly yes
+LogLevel FATAL

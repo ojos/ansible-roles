@@ -5,9 +5,6 @@
   packer_group: "{{ project_group }}"
   packer_envrc_directory: "{{ direnv_envrc_directory }}"
   packer_template_file: "{{ packer_directory }}/templates.json"
-  packer_ansible_main_role_name: "{{ xbuild_ansible_main_role_name }}"
-  packer_playbook_file_name: "app.yml"
-  packer_playbook_file: "{{ xbuild_ansible_directory }}/{{ packer_playbook_file_name }}"
   packer_aws_type: amazon-ebs
   packer_aws_ami: "$AWS_DEFAULT_EC2_AMI"
   packer_aws_instance_type: t2.micro

@@ -16,6 +16,8 @@
   file: >
     path="{{ packer_directory }}"
     state=directory
+    owner={{ packer_user }}
+    group={{ packer_group }}
     mode=0755
   when: not pckr_directory.stat.exists
   become: yes
@@ -30,31 +32,10 @@
   copy: >
     src=templates.json
     dest={{ packer_template_file }}
-    mode=0644
-  when: not template_file.stat.exists
-  become: yes
-
-- name: Playbook.
-  stat: >
-    path="{{ packer_playbook_file }}"
-  register: playbook_file
-  changed_when: no
-  always_run: yes
-- name: Create Playbook.
-  template: >
-    src=app.yml.tpl
-    dest="{{ packer_playbook_file }}"
-    mode=0644
-  when: not playbook_file.stat.exists
-  become: yes
-
-- name: Change packer directory owner.
-  file: >
-    path="{{ packer_directory }}"
-    state=directory
-    recurse=yes
     owner={{ packer_user }}
     group={{ packer_group }}
+    mode=0644
+  when: not template_file.stat.exists
   become: yes
 
 - name: Insert env in .envrc.
