@@ -29,23 +29,40 @@ def restart():
     pass
 
 
+def _generate_bootstrap_command(action, env, hosts):
+    private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
+    return './bootstrap -p ./%s.yml -i %s -o \'["-l %s", "--private-key %s.pem"]\'' % (
+        action, hosts, hosts, private_key)
+
+
 @task
-def deploy(branch='master'):
+def deploy(env='vagrant', hosts='vagrant'):
     """デプロイ&再起動する"""
-    pass
+    private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
+    deploy_cmd = _generate_bootstrap_command('deploy', env, hosts)
+    cmd_list = [
+        'cd %s' % os.environ['ANSIBLE_HOME'],
+        deploy_cmd
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def buildout(env='vagrant', hosts='vagrant'):
+    """環境構築する"""
+    private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
+    buildout_cmd = _generate_bootstrap_command('buildout', env, hosts)
+    cmd_list = [
+        'cd %s' % os.environ['ANSIBLE_HOME'],
+        buildout_cmd
+    ]
+    run(' && '.join(cmd_list))
 
 
 @task
 def unittest(options=''):
     """アプリケーションサーバーをテストする"""
     pass
-
-
-@task
-def ssh(host="vagrant", env='vagrant'):
-    """sshラッパー"""
-    run('ssh -F %(dir)s/ssh_config -i %(dir)s/%(env)s.pem %(host)s' %
-        {'dir': os.environ['KEY_HOME'], 'env': env, 'host': host})
 
 
 @task
@@ -83,5 +100,14 @@ def tf_show(env='vagrant'):
     cmd_list = [
         'cd %s/%s' % (os.environ['TF_HOME'], env),
         'terraform show'
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def pack_build():
+    cmd_list = [
+        'cd %s' % os.environ['PACKER_HOME'],
+        'packer build templates.json'
     ]
     run(' && '.join(cmd_list))
