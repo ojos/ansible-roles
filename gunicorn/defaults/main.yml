@@ -1,13 +1,15 @@
 ---
-  gunicorn_dependent_packages:
+  gunicorn_python_bin_directory: "{{ supervisord_python_install_directory }}/bin"
+  gunicorn_install_packages:
     - 'gunicorn'
     - 'meinheld'
-  gunicorn_conf_dir: /usr/local/etc/gunicorn
-  gunicorn_conf_file: gunicorn.conf.py
-  gunicorn_log_dir: /var/log/gunicorn
-  gunicorn_pid_dir: /var/run/gunicorn
+  gunicorn_user: "{{ ansible_user_uid }}"
+  gunicorn_group: "{{ ansible_user_gid }}"
+  gunicorn_conf_directory: "{{ project_directory }}/etc/gunicorn"
+  gunicorn_conf_file_name: gunicorn.conf.py
+  gunicorn_log_directory: "{{ project_directory }}/log/gunicorn"
+  gunicorn_pid_directory: "{{ project_directory }}/run/gunicorn"
   gunicorn_pid_file: gunicorn.pid
-  gunicorn_user_home: "{{ gunicorn_conf_dir }}"
   gunicorn_bind: 0.0.0.0:8000
   gunicorn_backlog: 2048
   gunicorn_workers: "multiprocessing.cpu_count() * 2 + 1"
@@ -29,11 +31,9 @@
   gunicorn_preload_app: False
   gunicorn_daemon: False
   gunicorn_raw_env: "[]"
-  gunicorn_worker_tmp_dir: None
-  gunicorn_user: gunicorn
-  gunicorn_group: gunicorn
+  gunicorn_worker_tmp_directory: None
   gunicorn_umask: 0
-  gunicorn_tmp_upload_dir: None
+  gunicorn_tmp_upload_directory: None
   gunicorn_secure_scheme_headers: "{'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}"
   gunicorn_accesslog: access.log
   gunicorn_access_log_format: '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'

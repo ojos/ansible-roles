@@ -1,50 +1,54 @@
 ---
-- name: Install supervisor in pip.
-  command: >
-    {{ xbuild_python_install_dir_prefix }}/bin/pip install supervisor
-- name: Create supervisord user.
-  user: >
-    name="{{ supervisord_user }}"
-    shell=/bin/false
-    system=yes
-    home="{{ supervisord_conf_dir }}"
-    createhome=no
-  ignore_errors: True
-- name: Create supervisord conf directory.
+- name: Install supervisord packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: supervisord_install_packages
+  environment:
+    PATH: "{{ supervisord_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: supervisord_install_packages|length > 0
+
+- name: Create supervisord conf and sub directory.
   file: >
-    path="{{ supervisord_conf_dir }}/conf.d"
+    path="{{ supervisord_include_conf_directory }}"
     state=directory
     owner="{{ supervisord_user }}"
     group="{{ supervisord_group }}"
     mode=0755
-- name: Create supervisord log directory.
-  file: >
-    path="{{ supervisord_log_dir }}"
-    state=directory
-    owner="{{ supervisord_user }}"
-    group="{{ supervisord_group }}"
-    mode=0755
-- name: Create supervisord pid directory.
-  file: >
-    path="{{ supervisord_pid_dir }}"
-    state=directory
-    owner="{{ supervisord_user }}"
-    group="{{ supervisord_group }}"
-    mode=0755
-- name: Create supervisord http server socket directory.
-  file: >
-    path="{{ supervisord_unix_http_server_socket_dir }}"
-    state=directory
-    owner="{{ supervisord_user }}"
-    group="{{ supervisord_group }}"
-    mode=0755
+  become: yes
 - name: Create supervisord config file.
   template: >
     src=supervisord.conf.tpl
-    dest="{{ supervisord_conf_dir }}/{{ supervisord_conf_file }}"
+    dest="{{ supervisord_conf_directory }}/{{ supervisord_conf_file_name }}"
     owner="{{ supervisord_user }}"
     group="{{ supervisord_group }}"
     mode=0644
+
+- name: Create supervisord log directory.
+  file: >
+    path="{{ supervisord_log_directory }}"
+    state=directory
+    owner="{{ supervisord_user }}"
+    group="{{ supervisord_group }}"
+    mode=0755
+  become: yes
+- name: Create supervisord pid directory.
+  file: >
+    path="{{ supervisord_pid_directory }}"
+    state=directory
+    owner="{{ supervisord_user }}"
+    group="{{ supervisord_group }}"
+    mode=0755
+  become: yes
+- name: Create supervisord http server socket directory.
+  file: >
+    path="{{ supervisord_unix_http_server_socket_directory }}"
+    state=directory
+    owner="{{ supervisord_user }}"
+    group="{{ supervisord_group }}"
+    mode=0755
+  become: yes
+
 - name: Create supervisord service file.
   template: >
     src=supervisord.tpl
@@ -52,8 +56,15 @@
     owner=root
     group=root
     mode=0755
-- name: Register and Start supervisord service.
+  when: ansible_system == 'Linux'
+
+- name: Register supervisord service.
+  service: >
+    name=supervisord
+    enabled=yes
+  when: ansible_system == 'Linux'
+- name: Start supervisord service.
   service: >
     name=supervisord
     state=started
-    enabled=yes
+  when: ansible_system == 'Linux'

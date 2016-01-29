@@ -8,16 +8,16 @@
 #              operating systems.
 #
 # processname: supervisord
-# pidfile: {{ supervisord_pid_dir }}/{{ supervisord_pid_file }}
+# pidfile: {{ supervisord_pid_directory }}/{{ supervisord_pid_file }}
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
 RETVAL=0
 prog="supervisord"
-SUPERVISORD={{ supervisord_binary }}
-PID_FILE={{ supervisord_pid_dir }}/{{ supervisord_pid_file }}
-CONF_FILE={{ supervisord_conf_dir }}/{{ supervisord_conf_file }}
+SUPERVISORD={{ supervisord_python_bin_directory }}/supervisord
+PID_FILE={{ supervisord_pid_directory }}/{{ supervisord_pid_file }}
+CONF_FILE={{ supervisord_conf_directory }}/{{ supervisord_conf_file }}
 
 start()
 {
