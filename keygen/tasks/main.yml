@@ -31,15 +31,13 @@
   changed_when: no
   always_run: yes
 - name: Copy ssh_config.
-  file: >
+  copy: >
     src=ssh_config
     dest="{{ keygen_key_directory }}/ssh_config"
-    state=file
     owner={{ keygen_user }}
     group={{ keygen_group }}
     mode=0644
   when: not ssh_config.stat.exists
-  become: yes
 
 - name: Insert env in .envrc.
   lineinfile: >
