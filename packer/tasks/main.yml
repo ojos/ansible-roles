@@ -42,7 +42,7 @@
   always_run: yes
 - name: Create Playbook.
   template: >
-    src=local.yml.tpl
+    src=app.yml.tpl
     dest="{{ packer_playbook_file }}"
     mode=0644
   when: not playbook_file.stat.exists
