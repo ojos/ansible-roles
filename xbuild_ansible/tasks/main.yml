@@ -41,33 +41,33 @@
   when: not default_directory.stat.exists
   become: yes
 
-- name: Buildout playbook.
-  stat: >
-    path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}"
-  register: buildout_playbook
-  changed_when: no
-  always_run: yes
-- name: Create buildout playbook.
-  copy: >
-    src=buildout.yml
-    dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}""
-    mode=0644
-  when: not buildout_playbook.stat.exists
-  become: yes
+# - name: Buildout playbook.
+#   stat: >
+#     path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}"
+#   register: buildout_playbook
+#   changed_when: no
+#   always_run: yes
+# - name: Create buildout playbook.
+#   copy: >
+#     src=buildout.yml
+#     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}""
+#     mode=0644
+#   when: not buildout_playbook.stat.exists
+#   become: yes
 
-- name: Deploy playbook.
-  stat: >
-    path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_deploy_playbook_file_name }}"
-  register: deploy_playbook
-  changed_when: no
-  always_run: yes
-- name: Create deploy playbook.
-  copy: >
-    src=deploy.yml
-    dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_deploy_playbook_file_name }}"
-    mode=0644
-  when: not deploy_playbook.stat.exists
-  become: yes
+# - name: Deploy playbook.
+#   stat: >
+#     path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_deploy_playbook_file_name }}"
+#   register: deploy_playbook
+#   changed_when: no
+#   always_run: yes
+# - name: Create deploy playbook.
+#   copy: >
+#     src=deploy.yml
+#     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_deploy_playbook_file_name }}"
+#     mode=0644
+#   when: not deploy_playbook.stat.exists
+#   become: yes
 
 - name: Download buildout script.
   get_url: >
