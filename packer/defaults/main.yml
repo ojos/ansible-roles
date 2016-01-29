@@ -17,7 +17,6 @@
   packer_roles_source: "$DEFAULT_ROLES_PATH"
   packer_roles_directory: "$PACKER_ANSIBLE_STAGING_DIRECTORY/roles"
   packer_playbook: "$ANSIBLE_HOME/{{ packer_playbook_file_name }}"
-  packer_main_role: "$ANSIBLE_HOME/{{ xbuild_ansible_default_roles_directory_name }}/{{ xbuild_ansible_main_role_name }}"
   packer_environment_variables: 
     - value: "# packer"
       regexp: "^# packer$"
@@ -39,9 +38,7 @@
       regexp: "^export PACKER_ANSIBLE_ROLES_SOURCE"
     - value: "export PACKER_ANSIBLE_ROLES_DIRECTORY={{ packer_roles_directory }}"
       regexp: "^export PACKER_ANSIBLE_ROLES_DIRECTORY"
-    - value: "export PACKER_PLAYBOOK={{ packer_playbook }}"
-      regexp: "^export PACKER_PLAYBOOK"
     - value: |
-        export PACKER_MAIN_ROLE={{ packer_main_role }}
+        export PACKER_PLAYBOOK={{ packer_playbook }}
 
-      regexp: "^export PACKER_MAIN_ROLE"
+      regexp: "^export PACKER_PLAYBOOK"
