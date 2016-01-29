@@ -13,7 +13,7 @@
   packer_staging_directory: /tmp/ansible-local
   packer_roles_source: "$DEFAULT_ROLES_PATH"
   packer_roles_directory: "$PACKER_ANSIBLE_STAGING_DIRECTORY/roles"
-  packer_playbook: "$ANSIBLE_HOME/{{ packer_playbook_file_name }}"
+  packer_playbook: "$ANSIBLE_HOME/{{ xbuild_ansible_buildout_playbook_file_name }}"
   packer_environment_variables: 
     - value: "# packer"
       regexp: "^# packer$"
