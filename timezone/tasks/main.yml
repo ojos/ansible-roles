@@ -8,9 +8,6 @@
   register: localtime
   become: yes
 
-- name: debug localtime.
-  debug: msg="{{ localtime }}"
-
 - name: Change clock file.
   template: >
     src="clock.tpl"
@@ -19,9 +16,7 @@
   register: clock
   become: yes
 
-- name: debug clock.
-  debug: msg="{{ clock }}"
-
 - name: Reflect clock file.
   shell: source /etc/sysconfig/clock
+  when: localtime.changed or clock.changed
   become: yes
