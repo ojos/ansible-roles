@@ -44,3 +44,4 @@
   service: >
     name=supervisord
     state=reloaded
+  when: ansible_system == 'Linux'
