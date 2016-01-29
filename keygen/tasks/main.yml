@@ -32,7 +32,7 @@
   always_run: yes
 - name: Copy ssh_config.
   file: >
-    src={{ keygen_ssh_config_file }}
+    src=ssh_config
     path="{{ keygen_key_directory }}/ssh_config"
     state=file
     owner={{ keygen_user }}
