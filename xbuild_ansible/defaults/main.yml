@@ -10,6 +10,7 @@
   xbuild_ansible_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   xbuild_ansible_home_directory: "$ORCHESTRATION_HOME/ansible"
   xbuild_ansible_forks: 64
+  xbuild_ansible_roles_path: "$ANSIBLE_HOME/roles"
   xbuild_ansible_ssh_args: '"-F $KEY_HOME/ssh_config"'
   xbuild_ansible_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_ansible_environment_variables: 
@@ -17,10 +18,12 @@
       regexp: "^# ansible$"
     - value: export ANSIBLE_HOME={{ xbuild_ansible_home_directory }}
       regexp: "^export ANSIBLE_HOME"
-    - value: export DEFAULT_FORKS={{ xbuild_ansible_forks }}
-      regexp: "^export DEFAULT_FORKS"
-    - value: export RETRY_FILES_ENABLED=no
-      regexp: "^export RETRY_FILES_ENABLED"
+    - value: export ANSIBLE_FORKS={{ xbuild_ansible_forks }}
+      regexp: "^export ANSIBLE_FORKS"
+    - value: export ANSIBLE_RETRY_FILES_ENABLED=no
+      regexp: "^export ANSIBLE_RETRY_FILES_ENABLED"
+    - value: export ANSIBLE_ROLES_PATH={{ xbuild_ansible_roles_path }}
+      regexp: "^export ANSIBLE_ROLES_PATH"
     - value: |
         export ANSIBLE_SSH_ARGS={{ xbuild_ansible_ssh_args }}
 

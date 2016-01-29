@@ -5,14 +5,22 @@
     dest="/etc/localtime"
     mode=0644
     force=yes
+  register: localtime
   become: yes
+
+- name: debug localtime.
+  debug: msg="{{ localtime }}"
 
 - name: Change clock file.
   template: >
     src="clock.tpl"
     dest="/etc/sysconfig/clock"
     mode=0644
+  register: clock
   become: yes
+
+- name: debug clock.
+  debug: msg="{{ clock }}"
 
 - name: Reflect clock file.
   shell: source /etc/sysconfig/clock
