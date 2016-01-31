@@ -1,0 +1,13 @@
+---
+  vagrant_directory: "{{ orchestration_directory }}/vagrant"
+  vagrant_user: "{{ project_user }}"
+  vagrant_group: "{{ project_group }}"
+  vagrant_home_directory: "$ORCHESTRATION_HOME/vagrant"
+  vagrant_envrc_directory: "{{ direnv_envrc_directory }}"
+  vagrant_environment_variables: 
+    - value: "# vagrant"
+      regexp: "^# vagrant$"
+    - value: |
+        export VAGRANT_HOME={{ vagrant_home_directory }}
+
+      regexp: "^export VAGRANT_HOME"

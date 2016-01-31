@@ -22,22 +22,6 @@
   when: not pckr_directory.stat.exists
   become: yes
 
-- name: amazon-ebs json.
-  stat: >
-    path="{{ packer_amazon_ebs_file }}"
-  register: amazon_ebs_file
-  changed_when: no
-  always_run: yes
-- name: Create template json.
-  copy: >
-    src=amazon_ebs.json
-    dest={{ packer_amazon_ebs_file }}
-    owner={{ packer_user }}
-    group={{ packer_group }}
-    mode=0644
-  when: not amazon_ebs_file.stat.exists
-  become: yes
-
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ packer_envrc_directory }}/.envrc

@@ -1,17 +1,16 @@
 ---
   vagrant_aws_box_name: dummy
   vagrant_aws_box_url: https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
-  vagrant_aws_vagarant_directory: "{{ orchestration_directory }}/vagrant"
-  vagrant_aws_user: "{{ project_user }}"
-  vagrant_aws_group: "{{ project_group }}"
-  vagrant_aws_vagarant_cwd: "$ORCHESTRATION_HOME/vagrant"
+  vagrant_aws_vagarant_directory: "{{ vagrant_directory }}/aws"
+  vagrant_aws_user: "{{ vagrant_user }}"
+  vagrant_aws_group: "{{ vagrant_group }}"
   vagrant_aws_ami: "$AWS_DEFAULT_EC2_AMI"
   vagrant_aws_elastic_ip: "VAGRANT_ELASTIC_IP"
-  vagrant_aws_instance_type: t2.nano
+  vagrant_aws_instance_type: "$AWS_DEFAULT_INSTANCE_TYPE"
   vagrant_aws_keypair_name: "$PROJECT_NAME-vagrant"
-  vagrant_aws_security_groups: "VAGRANT_SECURITY_GROUPS"
-  vagrant_aws_subnet_id: "VAGRANT_SUBNET_ID"
-  vagrant_aws_username: ec2-user
+  vagrant_aws_security_groups: "$AWS_DEFAULT_SECURITY_GROUP"
+  vagrant_aws_subnet_id: "$AWS_DEFAULT_SUBNET_ID"
+  vagrant_aws_username: "$AWS_DEFAULT_USERNAME"
   vagrant_aws_private_key_path: "$KEY_HOME/vagrant.pem"
   vagrant_aws_roles_tag: "app"
   vagrant_aws_tags: |
@@ -20,12 +19,10 @@
       "Project" => ENV["PROJECT_NAME"],
       "Roles" => "{{ vagrant_aws_roles_tag }}",
       "Owner" => ENV["PROJECT_OWNER"]}
-  vagrant_aws_envrc_directory: "{{ direnv_envrc_directory }}"
+  vagrant_aws_envrc_directory: "{{ vagrant_envrc_directory }}"
   vagrant_aws_environment_variables: 
-    - value: "# vagrant"
-      regexp: "^# vagrant$"
-    - value: export VAGRANT_CWD={{ vagrant_aws_vagarant_cwd }}
-      regexp: "^export VAGRANT_CWD"
+    - value: "# vagrant-aws"
+      regexp: "^# vagrant-aws$"
     - value: export VAGRANT_AMI={{ vagrant_aws_ami }}
       regexp: "^export VAGRANT_AMI"
     - value: export VAGRANT_ELASTIC_IP={{ vagrant_aws_elastic_ip }}

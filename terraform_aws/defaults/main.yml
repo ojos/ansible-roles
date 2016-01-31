@@ -1,0 +1,42 @@
+---
+  terraform_aws_directory: "{{ terraform_directory }}"
+  terraform_aws_environments: "{{ project_environments }}"
+  terraform_aws_skel_repository: "https://github.com/ojos/terraform-aws.git"
+  terraform_aws_project_owner: "$PROJECT_OWNER"
+  terraform_aws_access_key_id: "$AWS_ACCESS_KEY_ID"
+  terraform_aws_secret_access_key: "$AWS_SECRET_ACCESS_KEY"
+  terraform_aws_region: "$AWS_DEFAULT_REGION"
+  terraform_aws_availability_zone: "$AWS_DEFAULT_AVAILABILITY_ZONE"
+  terraform_aws_security_group: "$AWS_DEFAULT_SECURITY_GROUP"
+  terraform_aws_subnet_id: "$AWS_DEFAULT_SUBNET_ID"
+  terraform_aws_username: "$AWS_DEFAULT_USERNAME"
+  terraform_aws_instance_type: "$AWS_DEFAULT_INSTANCE_TYPE"
+  terraform_aws_ec2_ami: "$AWS_DEFAULT_EC2_AMI"
+  terraform_aws_envrc_directory: "{{ terraform_envrc_directory }}"
+  terraform_aws_environment_variables: 
+    - value: "# terraform_aws"
+      regexp: "^# terraform_aws$"
+    - value: export TF_VAR_owner={{ terraform_project_owner }}
+      regexp: "^export TF_VAR_owner"
+    - value: export TF_VAR_aws_access_key_id={{ terraform_aws_access_key }}
+      regexp: "^export TF_VAR_aws_access_key_id"
+    - value: export TF_VAR_aws_secret_access_key={{ terraform_aws_secret_key }}
+      regexp: "^export TF_VAR_aws_secret_access_key"
+    - value: export TF_VAR_default_region={{ terraform_aws_default_region }}
+      regexp: "^export TF_VAR_default_region"
+    - value: export TF_VAR_default_availability_zone={{ terraform_aws_availability_zone }}
+      regexp: "^export TF_VAR_default_availability_zone"
+    - value: "export TF_VAR_default_security_group={{ terraform_aws_security_group }}"
+      regexp: "^export TF_VAR_default_security_group"
+    - value: "export TF_VAR_default_subnet_id={{ terraform_aws_subnet_id }}"
+      regexp: "^export TF_VAR_default_subnet_id"
+    - value: "export TF_VAR_default_username={{ terraform_aws_username }}"
+      regexp: "^export TF_VAR_default_username"
+    - value: "export TF_VAR_default_instance_type={{ terraform_aws_instance_type }}"
+      regexp: "^export TF_VAR_default_instance_type"
+    - value: |
+        export TF_VAR_default_ec2_ami={{ terraform_aws_ec2_ami }}
+
+      regexp: "^export TF_VAR_default_ec2_ami"
+
+

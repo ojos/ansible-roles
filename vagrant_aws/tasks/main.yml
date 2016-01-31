@@ -1,11 +1,4 @@
 ---
-- name: Install/Update vagrant.
-  homebrew_cask: >
-    name=vagrant
-    state=present
-  environment: 
-    HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
-
 - name: Install/Update vagrant-aws plug-in.
   command: >
     vagrant plugin install vagrant-aws

@@ -1,0 +1,62 @@
+---
+- name: Install/Update vagrant.
+  homebrew_cask: >
+    name=vagrant
+    state=present
+  environment: 
+    HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
+
+- name: Vagrant directory.
+  stat: >
+    path={{ vagarant_directory }}
+  register: vg_directory 
+  changed_when: no
+  always_run: yes
+- name: Create vagrant directory.
+  file: >
+    path="{{ vagarant_directory }}"
+    state=directory
+    mode=0755
+  when: not vg_directory.stat.exists
+  become: yes
+
+- name: Vagrantfile.
+  stat: >
+    path={{ vagarant_vagrantfile }}
+  register: vg_file
+  changed_when: no
+  always_run: yes
+- name: Create vagrant directory.
+  file: >
+    path="{{ vagarant_directory }}"
+    state=directory
+    mode=0755
+  when: not vg_directory.stat.exists
+  become: yes
+
+- name: Create Vagrantfile.
+  command: >
+    vagrant init
+  args:
+    chdir: "{{ vagarant_directory }}"
+    creates: "{{ vagarant_directory }}/Vagrantfile"
+  become: yes
+
+- name: Change vagrant directory owner.
+  file: >
+    path="{{ vagrant_aws_vagarant_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ vagrant_user }}
+    group={{ vagrant_group }}
+  become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ vagrant_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: vagrant_environment_variables
+  when: vagrant_envrc_directory != '' and vagrant_environment_variables|length > 0

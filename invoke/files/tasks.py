@@ -105,9 +105,9 @@ def tf_show(env='vagrant'):
 
 
 @task
-def pack_build():
+def pack(builder="amazon_ebs"):
     cmd_list = [
         'cd %s' % os.environ['PACKER_HOME'],
-        'packer build templates.json'
+        'packer build %s.json' % builder
     ]
     run(' && '.join(cmd_list))

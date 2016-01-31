@@ -1,0 +1,26 @@
+---
+- name: amazon-ebs json.
+  stat: >
+    path="{{ packer_aws_ebs_file }}"
+  register: amazon_ebs_file
+  changed_when: no
+  always_run: yes
+- name: Create template json.
+  copy: >
+    src=amazon_ebs.json
+    dest={{ packer_aws_ebs_file }}
+    owner={{ packer_aws_user }}
+    group={{ packer_aws_group }}
+    mode=0644
+  when: not amazon_ebs_file.stat.exists
+  become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ packer_aws_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: packer_aws_environment_variables
+  when: packer_aws_envrc_directory != '' and packer_aws_environment_variables|length > 0

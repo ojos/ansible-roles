@@ -1,0 +1,34 @@
+---
+  awsenv_access_key_id: AWS_ACCESS_KEY_ID
+  awsenv_secret_access_key: AWS_SECRET_ACCESS_KEY
+  awsenv_default_region: AWS_DEFAULT_REGION
+  awsenv_default_availability_zone: AWS_DEFAULT_AVAILABILITY_ZONE
+  awsenv_default_security_group: AWS_DEFAULT_SECURITY_GROUP
+  awsenv_default_subnet_id: AWS_DEFAULT_SUBNET_ID
+  awsenv_default_username: ec2-user
+  awsenv_default_instance_type: t2.micro
+  awsenv_default_ec2_ami: ami-383c1956
+  awsenv_envrc_directory: "{{ direnv_envrc_directory }}"
+  awsenv_environment_variables: 
+    - value: "# aws"
+      regexp: "^# vagrant$"
+    - value: export AWS_ACCESS_KEY_ID={{ awsenv_access_key_id }}
+      regexp: "^export AWS_ACCESS_KEY_ID"
+    - value: export AWS_SECRET_ACCESS_KEY={{ awsenv_secret_access_key }}
+      regexp: "^export AWS_SECRET_ACCESS_KEY"
+    - value: export AWS_DEFAULT_REGION={{ awsenv_default_region }}
+      regexp: "^export AWS_DEFAULT_REGION"
+    - value: export AWS_DEFAULT_AVAILABILITY_ZONE={{ awsenv_default_availability_zone }}
+      regexp: "^export AWS_DEFAULT_AVAILABILITY_ZONE"
+    - value: export AWS_DEFAULT_SECURITY_GROUP={{ awsenv_default_security_group }}
+      regexp: "^export AWS_DEFAULT_SECURITY_GROUP"
+    - value: export AWS_DEFAULT_SUBNET_ID={{ awsenv_default_subnet_id }}
+      regexp: "^export AWS_DEFAULT_SUBNET_ID"
+    - value: export AWS_DEFAULT_USERNAME={{ awsenv_default_username }}
+      regexp: "^export AWS_DEFAULT_USERNAME"
+    - value: export AWS_DEFAULT_INSTANCE_TYPE={{ awsenv_default_instance_type }}
+      regexp: "^export AWS_DEFAULT_INSTANCE_TYPE"
+    - value:  |
+        export AWS_DEFAULT_EC2_AMI={{ awsenv_default_ec2_ami }}
+
+      regexp: "^export AWS_DEFAULT_EC2_AMI"
