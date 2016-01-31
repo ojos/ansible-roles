@@ -8,13 +8,13 @@
 
 - name: Vagrant directory.
   stat: >
-    path={{ vagarant_directory }}
+    path={{ vagrant_directory }}
   register: vg_directory 
   changed_when: no
   always_run: yes
 - name: Create vagrant directory.
   file: >
-    path="{{ vagarant_directory }}"
+    path="{{ vagrant_directory }}"
     state=directory
     mode=0755
   when: not vg_directory.stat.exists
@@ -22,13 +22,13 @@
 
 - name: Vagrantfile.
   stat: >
-    path={{ vagarant_vagrantfile }}
+    path={{ vagrant_vagrantfile }}
   register: vg_file
   changed_when: no
   always_run: yes
 - name: Create vagrant directory.
   file: >
-    path="{{ vagarant_directory }}"
+    path="{{ vagrant_directory }}"
     state=directory
     mode=0755
   when: not vg_directory.stat.exists
@@ -38,13 +38,13 @@
   command: >
     vagrant init
   args:
-    chdir: "{{ vagarant_directory }}"
-    creates: "{{ vagarant_directory }}/Vagrantfile"
+    chdir: "{{ vagrant_directory }}"
+    creates: "{{ vagrant_directory }}/Vagrantfile"
   become: yes
 
 - name: Change vagrant directory owner.
   file: >
-    path="{{ vagrant_aws_vagarant_directory }}"
+    path="{{ vagrant_aws_vagrant_directory }}"
     state=directory
     recurse=yes
     owner={{ vagrant_user }}

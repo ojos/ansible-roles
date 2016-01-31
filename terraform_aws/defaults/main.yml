@@ -22,21 +22,21 @@
       regexp: "^export TF_VAR_aws_access_key_id"
     - value: export TF_VAR_aws_secret_access_key={{ terraform_aws_secret_key }}
       regexp: "^export TF_VAR_aws_secret_access_key"
-    - value: export TF_VAR_default_region={{ terraform_aws_default_region }}
-      regexp: "^export TF_VAR_default_region"
-    - value: export TF_VAR_default_availability_zone={{ terraform_aws_availability_zone }}
-      regexp: "^export TF_VAR_default_availability_zone"
-    - value: "export TF_VAR_default_security_group={{ terraform_aws_security_group }}"
-      regexp: "^export TF_VAR_default_security_group"
-    - value: "export TF_VAR_default_subnet_id={{ terraform_aws_subnet_id }}"
-      regexp: "^export TF_VAR_default_subnet_id"
-    - value: "export TF_VAR_default_username={{ terraform_aws_username }}"
-      regexp: "^export TF_VAR_default_username"
-    - value: "export TF_VAR_default_instance_type={{ terraform_aws_instance_type }}"
-      regexp: "^export TF_VAR_default_instance_type"
+    - value: export TF_VAR_aws_default_region={{ terraform_aws_default_region }}
+      regexp: "^export TF_VAR_aws_default_region"
+    - value: export TF_VAR_aws_default_availability_zone={{ terraform_aws_availability_zone }}
+      regexp: "^export TF_VAR_aws_default_availability_zone"
+    - value: "export TF_VAR_aws_default_security_group={{ terraform_aws_security_group }}"
+      regexp: "^export TF_VAR_aws_default_security_group"
+    - value: "export TF_VAR_aws_default_subnet_id={{ terraform_aws_subnet_id }}"
+      regexp: "^export TF_VAR_aws_default_subnet_id"
+    - value: "export TF_VAR_aws_default_username={{ terraform_aws_username }}"
+      regexp: "^export TF_VAR_aws_default_username"
+    - value: "export TF_VAR_aws_default_instance_type={{ terraform_aws_instance_type }}"
+      regexp: "^export TF_VAR_aws_default_instance_type"
     - value: |
-        export TF_VAR_default_ec2_ami={{ terraform_aws_ec2_ami }}
+        export TF_VAR_aws_default_ec2_ami={{ terraform_aws_ec2_ami }}
 
-      regexp: "^export TF_VAR_default_ec2_ami"
+      regexp: "^export TF_VAR_aws_default_ec2_ami"
 
 
