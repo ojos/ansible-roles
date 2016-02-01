@@ -13,8 +13,8 @@
   packer_aws_roles_directory: "$PACKER_ANSIBLE_STAGING_DIRECTORY/roles"
   packer_aws_playbook: "$ANSIBLE_HOME/{{ xbuild_ansible_buildout_playbook_file_name }}"
   packer_aws_environment_variables: 
-    - value: "# packer_aws"
-      regexp: "^# packer_aws$"
+    - value: "# packer-aws"
+      regexp: "^# packer-aws$"
     - value: "export PACKER_AWS_AMI={{ packer_aws_ami }}"
       regexp: "^export PACKER_AWS_AMI"
     - value: "export PACKER_AWS_INSTANCE_TYPE={{ packer_aws_instance_type }}"

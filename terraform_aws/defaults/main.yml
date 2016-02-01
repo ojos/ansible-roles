@@ -16,8 +16,8 @@
   terraform_aws_ec2_ami: "$AWS_DEFAULT_EC2_AMI"
   terraform_aws_envrc_directory: "{{ terraform_envrc_directory }}"
   terraform_aws_environment_variables: 
-    - value: "# terraform_aws"
-      regexp: "^# terraform_aws$"
+    - value: "# terraform-aws"
+      regexp: "^# terraform-aws$"
     - value: export TF_VAR_owner={{ terraform_project_owner }}
       regexp: "^export TF_VAR_owner"
     - value: export TF_VAR_aws_access_key_id={{ terraform_aws_access_key }}
