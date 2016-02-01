@@ -14,12 +14,6 @@
     group={{ vagrant_aws_group }}
   when: not vagrant_aws_directory.stat.exists
 
-- name: Install/Update vagrant-aws plug-in.
-  shell: >
-    vagrant plugin install vagrant-aws
-  args:
-    chdir: "{{ vagrant_aws_vagrant_directory }}"
-
 - name: Create Vagrantfile(aws).
   template: >
     src=Vagrantfile.tpl
@@ -27,6 +21,12 @@
     owner={{ vagrant_aws_user }}
     group={{ vagrant_aws_group }}
     mode=0644
+
+- name: Install/Update vagrant-aws plug-in.
+  shell: >
+    vagrant plugin install vagrant-aws
+  args:
+    chdir: "{{ vagrant_aws_vagrant_directory }}"
 
 - name: Insert env in .envrc.
   lineinfile: >
