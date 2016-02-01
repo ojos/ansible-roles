@@ -20,20 +20,6 @@
   when: not vg_directory.stat.exists
   become: yes
 
-- name: Vagrantfile.
-  stat: >
-    path={{ vagrant_vagrantfile }}
-  register: vg_file
-  changed_when: no
-  always_run: yes
-- name: Create vagrant directory.
-  file: >
-    path="{{ vagrant_directory }}"
-    state=directory
-    mode=0755
-  when: not vg_directory.stat.exists
-  become: yes
-
 - name: Create Vagrantfile.
   command: >
     vagrant init
