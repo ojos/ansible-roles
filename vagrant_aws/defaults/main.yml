@@ -4,6 +4,7 @@
   vagrant_aws_vagrant_directory: "{{ vagrant_directory }}/aws"
   vagrant_aws_user: "{{ vagrant_user }}"
   vagrant_aws_group: "{{ vagrant_group }}"
+  vagrant_aws_vagrant_cwd: "$VAGRANT_HOME/aws"
   vagrant_aws_ami: "$AWS_DEFAULT_EC2_AMI"
   vagrant_aws_elastic_ip: "VAGRANT_ELASTIC_IP"
   vagrant_aws_instance_type: "$AWS_DEFAULT_INSTANCE_TYPE"
@@ -23,6 +24,8 @@
   vagrant_aws_environment_variables: 
     - value: "# vagrant-aws"
       regexp: "^# vagrant-aws$"
+    - value: export VAGRANT_CWD={{ vagrant_aws_vagrant_cwd }}
+      regexp: "^export VAGRANT_CWD"
     - value: export VAGRANT_AMI={{ vagrant_aws_ami }}
       regexp: "^export VAGRANT_AMI"
     - value: export VAGRANT_ELASTIC_IP={{ vagrant_aws_elastic_ip }}

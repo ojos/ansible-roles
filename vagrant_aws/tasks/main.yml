@@ -1,12 +1,4 @@
 ---
-- name: Install/Update vagrant-aws plug-in.
-  command: >
-    vagrant plugin install vagrant-aws
-
-- name: Add vagrant-aws box.
-  command: >
-    vagrant box add --force {{ vagrant_aws_box_name }} {{ vagrant_aws_box_url }}
-
 - name: Vagrant aws directory.
   stat: >
     path={{ vagrant_aws_vagrant_directory }}
@@ -19,6 +11,13 @@
     state=directory
     mode=0755
   when: not vagrant_aws_directory.stat.exists
+  become: yes
+
+- name: Install/Update vagrant-aws plug-in.
+  shell: >
+    vagrant plugin install vagrant-aws
+  args:
+    chdir: "{{ vagrant_aws_vagrant_directory }}"
   become: yes
 
 - name: Create Vagrantfile(aws).
