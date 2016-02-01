@@ -24,8 +24,6 @@
     accept_hostkey=yes
   with_items: terraform_aws_environments
   when: terraform_aws_environments|length > 0
-  become: yes
-  become_user: "{{ terraform_aws_user }}"
 
 - name: Insert env in .envrc.
   lineinfile: >
