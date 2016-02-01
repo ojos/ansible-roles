@@ -66,39 +66,66 @@ def unittest(options=''):
 
 
 @task
-def tf_plan(env='vagrant'):
+def vg_up(provider='aws'):
+    cmd_list = [
+        'cd %s/%s' % (os.environ['VAGRANT_HOME'], provider),
+        'vagrant up'
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def vg_destroy(provider='aws'):
+    cmd_list = [
+        'cd %s/%s' % (os.environ['VAGRANT_HOME'], provider),
+        'vagrant destroy'
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def vg_ssh(provider='aws'):
+    cmd_list = [
+        'cd %s/%s' % (os.environ['VAGRANT_HOME'], provider),
+        'vagrant ssh'
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def tf_plan(env='vagrant', provider='aws'):
     public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
     cmd_list = [
-        'cd %s/%s' % (os.environ['TF_HOME'], env),
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
         'terraform plan -var "public_key=%s"' % public_key
     ]
     run(' && '.join(cmd_list))
 
 
 @task
-def tf_apply(env='vagrant'):
+def tf_apply(env='vagrant', provider='aws'):
     public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
     cmd_list = [
-        'cd %s/%s' % (os.environ['TF_HOME'], env),
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
         'terraform apply -var "public_key=%s"' % public_key
     ]
     run(' && '.join(cmd_list))
 
 
 @task
-def tf_destroy(env='vagrant'):
+def tf_destroy(env='vagrant', provider='aws'):
     public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
     cmd_list = [
-        'cd %s/%s' % (os.environ['TF_HOME'], env),
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
         'terraform destroy -var "public_key=%s"' % public_key
     ]
     run(' && '.join(cmd_list))
 
 
 @task
-def tf_show(env='vagrant'):
+def tf_show(env='vagrant', provider='aws'):
     cmd_list = [
-        'cd %s/%s' % (os.environ['TF_HOME'], env),
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
         'terraform show'
     ]
     run(' && '.join(cmd_list))
