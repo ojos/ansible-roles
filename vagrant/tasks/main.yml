@@ -20,17 +20,17 @@
   when: not vg_directory.stat.exists
   become: yes
 
-- name: Create Vagrantfile.
-  command: >
-    vagrant init
-  args:
-    chdir: "{{ vagrant_directory }}"
-    creates: "{{ vagrant_directory }}/Vagrantfile"
-  become: yes
+# - name: Create Vagrantfile.
+#   command: >
+#     vagrant init
+#   args:
+#     chdir: "{{ vagrant_directory }}"
+#     creates: "{{ vagrant_directory }}/Vagrantfile"
+#   become: yes
 
 - name: Change vagrant directory owner.
   file: >
-    path="{{ vagrant_aws_vagrant_directory }}"
+    path="{{ vagrant_directory }}"
     state=directory
     recurse=yes
     owner={{ vagrant_user }}
