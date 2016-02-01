@@ -18,7 +18,7 @@
   terraform_aws_environment_variables: 
     - value: "# terraform-aws"
       regexp: "^# terraform-aws$"
-    - value: export TF_VAR_owner={{ terraform_project_owner }}
+    - value: export TF_VAR_owner={{ project_owner }}
       regexp: "^export TF_VAR_owner"
     - value: export TF_VAR_aws_access_key_id={{ terraform_aws_access_key }}
       regexp: "^export TF_VAR_aws_access_key_id"
