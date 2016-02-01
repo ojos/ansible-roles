@@ -1,5 +1,7 @@
 ---
-  terraform_aws_directory: "{{ terraform_directory }}"
+  terraform_aws_directory: "{{ terraform_directory }}/aws"
+  terraform_aws_user: "{{ terraform_user }}"
+  terraform_aws_group: "{{ terraform_group }}"
   terraform_aws_environments: "{{ project_environments }}"
   terraform_aws_skel_repository: "https://github.com/ojos/terraform-aws.git"
   terraform_aws_project_owner: "$PROJECT_OWNER"

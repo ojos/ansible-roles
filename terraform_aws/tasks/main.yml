@@ -1,20 +1,38 @@
 ---
+- name: Terraform aws directory.
+  stat: >
+    path={{ terraform_aws_directory }}
+  register: tf_aws_directory 
+  changed_when: no
+  always_run: yes
+- name: Create terraform aws directory.
+  file: >
+    path="{{ terraform_aws_directory }}"
+    state=directory
+    owner={{ terraform_aws_user }}
+    group={{ terraform_aws_group }}
+    mode=0755
+  when: not tf_aws_directory.stat.exists
+  become: yes
+
 - name: Clone skel.
   git: >
-    repo="{{ terraform_skel_repository }}"
-    dest="{{ terraform_directory }}/{{ item }}"
+    repo="{{ terraform_aws_skel_repository }}"
+    dest="{{ terraform_aws_directory }}/{{ item }}"
     update=no
     track_submodules=yes
     accept_hostkey=yes
-  with_items: terraform_environments
-  when: terraform_environments|length > 0
+  with_items: terraform_aws_environments
+  when: terraform_aws_environments|length > 0
+  become: yes
+  become_user: "{{ terraform_aws_user }}"
 
 - name: Insert env in .envrc.
   lineinfile: >
-    dest={{ terraform_envrc_directory }}/.envrc
+    dest={{ terraform_aws_envrc_directory }}/.envrc
     line="{{ item.value }}"
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: terraform_environment_variables
-  when: terraform_envrc_directory != '' and terraform_environment_variables|length > 0
+  with_items: terraform_aws_environment_variables
+  when: terraform_aws_envrc_directory != '' and terraform_aws_environment_variables|length > 0
