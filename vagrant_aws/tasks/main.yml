@@ -10,31 +10,23 @@
     path="{{ vagrant_aws_vagrant_directory }}"
     state=directory
     mode=0755
+    owner={{ vagrant_aws_user }}
+    group={{ vagrant_aws_group }}
   when: not vagrant_aws_directory.stat.exists
-  become: yes
 
 - name: Install/Update vagrant-aws plug-in.
   shell: >
     vagrant plugin install vagrant-aws
   args:
     chdir: "{{ vagrant_aws_vagrant_directory }}"
-  become: yes
 
 - name: Create Vagrantfile(aws).
   template: >
     src=Vagrantfile.tpl
     dest="{{ vagrant_aws_vagrant_directory }}/Vagrantfile"
-    mode=0644
-  become: yes
-
-- name: Change vagrant directory owner.
-  file: >
-    path="{{ vagrant_aws_vagrant_directory }}"
-    state=directory
-    recurse=yes
     owner={{ vagrant_aws_user }}
     group={{ vagrant_aws_group }}
-  become: yes
+    mode=0644
 
 - name: Insert env in .envrc.
   lineinfile: >
