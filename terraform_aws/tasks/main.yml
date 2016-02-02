@@ -28,7 +28,7 @@
 - name: Replace environment in config.tf.
   lineinfile: >
     dest={{ terraform_aws_directory }}/{{ item }}/config.tf
-    line="^  default = \"{{ item }}\"$"
+    line="  default = {{ item }}"
     insertafter=EOF
     state=present
     regexp="^  default = \"develop\"$"
