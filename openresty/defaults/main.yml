@@ -31,4 +31,19 @@
   openresty_dependent_packages:
     - 'pcre-devel'
     - 'openssl-devel'
-  openresty_configure_options: "--prefix={{ openresty_prefix_dir }} --user={{ openresty_nginx_user }} --group={{ openresty_nginx_user }} --sbin-path={{ openresty_nginx_bin_file }} --conf-path={{ openresty_nginx_conf_file }} --pid-path={{ openresty_nginx_pid_file }} --lock-path={{ openresty_nginx_lock_file }} --error-log-path={{ openresty_nginx_error_log_file }} --http-log-path={{ openresty_nginx_access_log_file }} --http-client-body-temp-path={{ openresty_nginx_client_body_temp_dir }} --http-fastcgi-temp-path={{ openresty_nginx_fastcgi_temp_dir }} --http-uwsgi-temp-path={{ openresty_nginx_uwsgi_temp_dir }} --http-scgi-temp-path={{ openresty_nginx_scgi_temp_dir }} --http-proxy-temp-path={{ openresty_nginx_proxy_temp_dir }} --with-luajit"
+  openresty_configure_options: >-
+    --prefix={{ openresty_prefix_dir }}
+    --user={{ openresty_nginx_user }}
+    --group={{ openresty_nginx_user }}
+    --sbin-path={{ openresty_nginx_bin_file }}
+    --conf-path={{ openresty_nginx_conf_file }}
+    --pid-path={{ openresty_nginx_pid_file }}
+    --lock-path={{ openresty_nginx_lock_file }}
+    --error-log-path={{ openresty_nginx_error_log_file }}
+    --http-log-path={{ openresty_nginx_access_log_file }}
+    --http-client-body-temp-path={{ openresty_nginx_client_body_temp_dir }}
+    --http-fastcgi-temp-path={{ openresty_nginx_fastcgi_temp_dir }}
+    --http-uwsgi-temp-path={{ openresty_nginx_uwsgi_temp_dir }}
+    --http-scgi-temp-path={{ openresty_nginx_scgi_temp_dir }}
+    --http-proxy-temp-path={{ openresty_nginx_proxy_temp_dir }}
+    --with-luajit"

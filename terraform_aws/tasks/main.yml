@@ -25,6 +25,23 @@
   with_items: terraform_aws_environments
   when: terraform_aws_environments|length > 0
 
+- name: Replace environment in config.tf.
+  lineinfile: >
+    dest={{ terraform_aws_directory }}/{{ item }}/config.tf
+    line="^  default = \"{{ item.value }}\"$"
+    insertafter=EOF
+    state=present
+    regexp="^  default = \"develop\"$"
+  with_items: terraform_aws_environments
+  when: terraform_aws_environments|length > 0
+
+- name: Remove README.md.
+  file: >
+    path="{{ terraform_aws_directory }}/{{ item }}/README.md"
+    state=absent
+  with_items: terraform_aws_environments
+  when: terraform_aws_environments|length > 0
+
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ terraform_aws_envrc_directory }}/.envrc

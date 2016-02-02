@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - { role: awsenv }
+  - { role: terraform_aws }
   - { role: vagrant }
