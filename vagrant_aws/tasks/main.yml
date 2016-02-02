@@ -58,3 +58,12 @@
     dest={{ vagrant_aws_terraform_directory }}/ec2.tf
     mode=0644
     force=yes
+
+- name: Replace vpc_id in vpc_security_group.tf.
+  lineinfile: >
+    dest={{ vagrant_aws_terraform_directory }}/vpc_security_group.tf
+    line="var.aws_default_vpc_id"
+    insertafter=EOF
+    state=present
+    regexp='aws_vpc\.default.id'
+
