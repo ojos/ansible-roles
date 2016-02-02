@@ -49,12 +49,12 @@
   file: >
     path="{{ vagrant_aws_terraform_directory }}/{{ item }}"
     state=absent
-  when: item != 'ec2.tf' and item != 'config.tf'
+  when: item != 'ec2.tf' and item != 'config.tf' and item != 'vpc_security_group.tf'
   with_items: terraform_vagrant_directory.stdout_lines
 
 - name: Copy ec2.tf.
   copy: >
     src=ec2.tf
-    dest={{ terraform_vagrant_directory }}/ec2.tf
+    dest={{ vagrant_aws_terraform_directory }}/ec2.tf
     mode=0644
     force=yes
