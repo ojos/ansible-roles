@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 
+import json
 import os
+import re
 
 from invoke import run, task
 
@@ -66,30 +68,49 @@ def unittest(options=''):
 
 
 @task
-def vg_up(provider='aws'):
-    cmd_list = [
-        'cd %s/%s' % (os.environ['VAGRANT_HOME'], provider),
-        'vagrant up'
-    ]
-    run(' && '.join(cmd_list))
+def vg_init(provider='aws'):
+    tf_plan()
+    tf_apply()
+
+    tfstate_path = '%s/%s/vagrant/terraform.tfstate' % (os.environ['TF_HOME'], provider)
+    with open(tfstate_path, 'r') as tf_fh:
+        tfstate = json.loads(tf_fh.read())
+
+    eip = tfstate['modules'][0]['resources'][
+        'aws_eip.default']['primary']['attributes']['public_ip']
+    sg_id = tfstate['modules'][0]['resources'][
+        'aws_security_group.default']['primary']['attributes']['id']
+
+    ssh_config_path = '%s/ssh_config' % os.environ['KEY_HOME']
+    with open(ssh_config_path, 'r') as ssh_config_fh:
+        ssh_config = ssh_config_fh.read()
+
+    ssh_config = re.sub(r'(Host\svagrant\nHostName)\s.+\n', r'\1 %s\n' % eip, ssh_config)
+
+    with open(ssh_config_path, 'w') as ssh_config_fh:
+        ssh_config_fh.write(ssh_config)
+
+    envrc_path = '%s/.envrc' % os.environ['PROJECT_HOME']
+    with open(envrc_path, 'r') as env_fh:
+        envrc = env_fh.read()
+
+    envrc = re.sub(r'(export\sVAGRANT_ELASTIC_IP)=.+\n', r'\1=%s\n' % eip, envrc)
+    envrc = re.sub(r'(export\sVAGRANT_SECURITY_GROUPS)=.+\n', r'\1=%s\n' % sg_id, envrc)
+
+    with open(envrc_path, 'w') as env_fh:
+        env_fh.write(envrc)
+
+    run('direnv allow')
 
 
 @task
-def vg_destroy(provider='aws'):
-    cmd_list = [
-        'cd %s/%s' % (os.environ['VAGRANT_HOME'], provider),
-        'vagrant destroy'
-    ]
-    run(' && '.join(cmd_list))
+def vg_up():
+    run('vagrant up')
 
 
 @task
-def vg_ssh(provider='aws'):
-    cmd_list = [
-        'cd %s/%s' % (os.environ['VAGRANT_HOME'], provider),
-        'vagrant ssh'
-    ]
-    run(' && '.join(cmd_list))
+def vg_destroy():
+    run('vagrant destroy')
 
 
 @task

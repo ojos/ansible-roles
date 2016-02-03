@@ -5,7 +5,7 @@
   keygen_bits: 2048
   keygen_type: rsa
   keygen_passphrase: ''
-  keygen_ssh_user: 'ec2_user'
+  keygen_ssh_user: 'ec2-user'
   keygen_ssh_port: 22
   keygen_ssh_host_config: |
     Host {{ item }}
