@@ -24,7 +24,7 @@
 
 - name: Install/Update vagrant-aws plug-in.
   shell: >
-    vagrant plugin install vagrant-aws
+    vagrant init && vagrant plugin install vagrant-aws
   args:
     chdir: "{{ vagrant_aws_vagrant_directory }}"
 
