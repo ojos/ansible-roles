@@ -63,6 +63,7 @@
   lineinfile: >
     dest={{ vagrant_aws_terraform_directory }}/vpc_security_group.tf
     line="    vpc_id = \"${var.aws_default_vpc_id}\""
+    insertafter=EOF
     state=present
-    regexp='    vpc_id = "\$\{aws_vpc\.default.id\}"'
+    regexp='^\s+vpc_id\s=\s.+$'
 

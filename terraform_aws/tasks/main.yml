@@ -31,7 +31,7 @@
     line="  default = {{ item }}"
     insertafter=EOF
     state=present
-    regexp="^  default = \"develop\"$"
+    regexp="^\s+default\s=\s\".+\"$"
   with_items: terraform_aws_environments
   when: terraform_aws_environments|length > 0
 
