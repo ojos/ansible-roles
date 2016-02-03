@@ -30,14 +30,23 @@
   register: ssh_config
   changed_when: no
   always_run: yes
-- name: Copy ssh_config.
-  copy: >
-    src=ssh_config
-    dest="{{ keygen_key_directory }}/ssh_config"
+- name: Touch ssh_config.
+  file: >
+    path="{{ keygen_key_directory }}/ssh_config"
+    state=touch
     owner={{ keygen_user }}
     group={{ keygen_group }}
     mode=0644
   when: not ssh_config.stat.exists
+
+- name: Insert hosts in ssh_config.
+  lineinfile: >
+    dest={{ keygen_envrc_directory }}/.envrc
+    line="{{ keygen_ssh_host_config }}"
+    insertafter=EOF
+    state=present
+  with_items: keygen_environments
+  when: not ssh_config.stat.exists and keygen_environments|length > 0
 
 - name: Insert env in .envrc.
   lineinfile: >
