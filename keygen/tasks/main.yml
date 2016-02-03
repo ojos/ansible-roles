@@ -45,6 +45,7 @@
     line="{{ keygen_ssh_host_config }}"
     insertafter=EOF
     state=present
+    regexp="Host {{ item }}"
   with_items: keygen_environments
   when: not ssh_config.stat.exists and keygen_environments|length > 0
 
