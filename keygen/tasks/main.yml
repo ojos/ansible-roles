@@ -41,7 +41,7 @@
 
 - name: Insert hosts in ssh_config.
   lineinfile: >
-    dest={{ keygen_envrc_directory }}/ssh_config
+    dest={{ keygen_key_directory }}/ssh_config
     line="{{ keygen_ssh_host_config }}"
     insertafter=EOF
     state=present
