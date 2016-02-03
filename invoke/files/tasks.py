@@ -104,16 +104,6 @@ def vg_init(provider='aws'):
 
 
 @task
-def vg_up():
-    run('vagrant up')
-
-
-@task
-def vg_destroy():
-    run('vagrant destroy')
-
-
-@task
 def tf_plan(env='vagrant', provider='aws'):
     public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
     cmd_list = [
