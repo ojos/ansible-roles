@@ -5,7 +5,7 @@
   vagrant_aws_user: "{{ vagrant_user }}"
   vagrant_aws_group: "{{ vagrant_group }}"
   vagrant_aws_terraform_directory: "{{ terraform_aws_directory }}/vagrant"
-  vagrant_aws_vagrant_cwd: "$VAGRANT_HOME/aws"
+  vagrant_aws_vagrant_cwd: "$ORCHESTRATION_HOME/vagrant/aws"
   vagrant_aws_ami: "$AWS_DEFAULT_EC2_AMI"
   vagrant_aws_elastic_ip: "VAGRANT_ELASTIC_IP"
   vagrant_aws_instance_type: "$AWS_DEFAULT_INSTANCE_TYPE"
