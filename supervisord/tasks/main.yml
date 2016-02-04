@@ -63,9 +63,9 @@
     enabled=yes
   become: yes
   when: ansible_system == 'Linux'
-# - name: Start supervisord service.
-#   service: >
-#     name=supervisord
-#     state=started
-#   become: yes
-#   when: ansible_system == 'Linux'
+- name: Start supervisord service.
+  service: >
+    name=supervisord
+    state=started
+  become: yes
+  when: ansible_system == 'Linux'

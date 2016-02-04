@@ -4,7 +4,7 @@ upstream app_server {
 
 server {
     listen       80;
-    client_max_body_size {{ proxy_gunicorn_client_max_body_size }};
+    client_max_body_size {{ proxy_gunicorn_nginx_client_max_body_size }};
     server_name  localhost;
 
     error_page   404              /404.html;

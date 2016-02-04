@@ -216,8 +216,14 @@
     group="{{ openresty_user }}"
     mode=0755
   become: yes
+
 - name: Register nginx service.
   service: >
     name=nginx
     enabled=yes
+  become: yes
+- name: Start nginx service.
+  service: >
+    name=supervisord
+    state=started
   become: yes

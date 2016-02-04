@@ -3,6 +3,8 @@
   service: >
     name=nginx
     state=stopped
+  become: yes
+
 - name: Replace http.server.conf.
   template: >
     src=nginx.http.server.conf.tpl
@@ -11,7 +13,9 @@
     group="{{ proxy_gunicorn_group }}"
     mode=0644
   become: yes
+
 - name: Start nginx service.
   service: >
     name=nginx
     state=started
+  become: yes
