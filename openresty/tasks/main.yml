@@ -4,7 +4,7 @@
     name="{{ openresty_user }}"
     shell=/bin/false
     system=yes
-    home="{{ openresty_prefix_directory }}/nginx"
+    home="{{ openresty_nginx_prefix }}/nginx"
     createhome=no
   become: yes
   ignore_errors: yes
@@ -74,21 +74,21 @@
 # - name: Copy favicon.ico.
 #   copy: >
 #     src=favicon.ico
-#     dest={{ openresty_prefix_directory }}/nginx/html/favicon.ico
+#     dest={{ openresty_nginx_prefix }}/nginx/html/favicon.ico
 #     owner="{{ openresty_user }}"
 #     group="{{ openresty_group }}"
 #     mode=0644
 # - name: Copy 404.html.
 #   copy: >
 #     src=404.html
-#     dest={{ openresty_prefix_directory }}/nginx/html/404.html
+#     dest={{ openresty_nginx_prefix }}/nginx/html/404.html
 #     owner="{{ openresty_user }}"
 #     group="{{ openresty_group }}"
 #     mode=0644
 # - name: Copy 50x.html.
 #   copy: >
 #     src=50x.html
-#     dest={{ openresty_prefix_directory }}/nginx/html/50x.html
+#     dest={{ openresty_nginx_prefix }}/nginx/html/50x.html
 #     owner="{{ openresty_user }}"
 #     group="{{ openresty_group }}"
 #     mode=0644
@@ -151,7 +151,7 @@
 #     mode=0644
 # - name: Create lua directory.
 #   file: >
-#     path="{{ openresty_nginx_conf_directory }}/lua"
+#     path="{{ openresty_nginx_conf_prefix }}/lua"
 #     state=directory
 #     owner="{{ openresty_user }}"
 #     group="{{ openresty_group }}"
@@ -159,7 +159,7 @@
 # - name: Copy current_time.lua.
 #   copy: >
 #     src=current_time.lua
-#     dest={{ openresty_nginx_conf_directory }}/lua/current_time.lua
+#     dest={{ openresty_nginx_conf_prefix }}/lua/current_time.lua
 #     owner="{{ openresty_user }}"
 #     group="{{ openresty_group }}"
 #     mode=0644
