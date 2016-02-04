@@ -16,12 +16,12 @@
 ### END INIT INFO
 #
 
-PATH={{ openresty_nginx_prefix }}/sbin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:
+PATH={{ nginx_prefix }}/sbin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:
 DESC="Nginx Daemon"
-DAEMON={{ openresty_nginx_bin_file }}
-CONF={{ openresty_nginx_conf_file }}
-PID={{ openresty_nginx_pid_file }}
-SCRIPT={{ openresty_nginx_service_file }}
+DAEMON={{ nginx_bin_file }}
+CONF={{ nginx_conf_file }}
+PID={{ nginx_pid_file }}
+SCRIPT={{ nginx_service_file }}
 
 if [ ! -x "$DAEMON" ] || [ ! -f "$CONF" ]; then
     echo -e "\033[33m $DAEMON has no permission to run. \033[0m"
