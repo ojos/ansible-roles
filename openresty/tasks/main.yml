@@ -50,18 +50,25 @@
   become: yes
   when: not source_directory.stat.exists
 
+- name: Makefile.
+  stat: >
+    path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}/Makefile"
+  register: make_file
+  changed_when: no
+  always_run: yes
 - name: Configure openresty source.
   shell: >
     ./configure {{openresty_configure_options}}
   args:
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
-# - name: Make openresty.
-#   shell: >
-#     /usr/bin/make
-#   args:
-#     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
-#   become: yes
+  when: not make_file.stat.exists
+- name: Make openresty.
+  shell: >
+    /usr/bin/make
+  args:
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
+  become: yes
 # - name: Install openresty.
 #   shell: >
 #     /usr/bin/make install
