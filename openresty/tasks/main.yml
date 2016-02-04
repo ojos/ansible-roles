@@ -83,13 +83,21 @@
     path={{ openresty_src_directory }}/openresty-{{ openresty_version }}/made
     state=touch
   become: yes
+  when: not made_file.stat.exists
 
+- name: Binary file.
+  stat: >
+    path={{ openresty_nginx_bin_file }}
+  register: bin_file
+  changed_when: no
+  always_run: yes
 - name: Install openresty.
   shell: >
     /usr/bin/make install
   args:
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
+  when: not bin_file.stat.exists
 
 - name: Create nginx temp directory.
   file: >

@@ -8,5 +8,5 @@ server {
         root   html;
     }
 
-    include {{ openresty_nginx_sub_conf_dir }}/http.server.location.conf;
+    include {{ openresty_nginx_sub_conf_directory }}/http.server.location.conf;
 }

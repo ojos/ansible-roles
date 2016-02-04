@@ -6,6 +6,6 @@ http {
     resolver           {{ openresty_nginx_resolver }};
     server_tokens      {{ openresty_nginx_server_tokens }};
     include            {{ openresty_nginx_conf_dir }}/mime.types;
-    include            {{ openresty_nginx_sub_conf_dir }}/http.lua.conf;
-    include            {{ openresty_nginx_sub_conf_dir }}/http.server.conf;
+    include            {{ openresty_nginx_sub_conf_directory }}/http.lua.conf;
+    include            {{ openresty_nginx_sub_conf_directory }}/http.server.conf;
 }
