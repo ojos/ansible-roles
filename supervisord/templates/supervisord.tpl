@@ -8,7 +8,7 @@
 #              operating systems.
 #
 # processname: supervisord
-# pidfile: {{ supervisord_pid_directory }}/{{ supervisord_pid_file }}
+# pidfile: {{ supervisord_pid_directory }}/{{ supervisord_pid_file_name }}
 
 # Source function library.
 . /etc/rc.d/init.d/functions
@@ -16,7 +16,7 @@
 RETVAL=0
 prog="supervisord"
 SUPERVISORD={{ supervisord_python_bin_directory }}/supervisord
-PID_FILE={{ supervisord_pid_directory }}/{{ supervisord_pid_file }}
+PID_FILE={{ supervisord_pid_directory }}/{{ supervisord_pid_file_name }}
 CONF_FILE={{ supervisord_conf_directory }}/{{ supervisord_conf_file }}
 
 start()
