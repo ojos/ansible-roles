@@ -34,8 +34,8 @@
     - openssl-devel
   openresty_configure_options: >-
     --prefix={{ openresty_prefix_directory }}
-    --user={{ openresty_nginx_user }}
-    --group={{ openresty_nginx_user }}
+    --user={{ openresty_user }}
+    --group={{ openresty_user }}
     --sbin-path={{ openresty_nginx_bin_file }}
     --conf-path={{ openresty_nginx_conf_file }}
     --pid-path={{ openresty_nginx_pid_file }}

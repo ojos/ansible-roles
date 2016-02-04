@@ -1,4 +1,4 @@
-user  {{ openresty_nginx_user }};
+user  {{ openresty_user }};
 worker_processes  {{ openresty_nginx_worker_processes }};
 error_log  {{ openresty_nginx_error_log_file }};
 pid  {{ openresty_nginx_pid_file }};
