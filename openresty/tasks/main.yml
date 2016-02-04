@@ -23,16 +23,10 @@
   become: yes
   when: openresty_dependent_packages|length > 0
 
-- name: Create source directory.
-  file: >
-    path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
-    state=directory
-    mode=0755
-  become: yes
 - name: Extract openresty source.
   unarchive: >
     src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
-    dest="{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
+    dest="{{ openresty_src_directory }}"
     copy=no
   become: yes
 
