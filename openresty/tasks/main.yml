@@ -206,7 +206,7 @@
 - name: Replace nginx http server resolver.
   replace: >
     dest="{{ openresty_nginx_sub_conf_directory }}/http.conf"
-    replace="    resolver           {{ openresty_extract_resolver.stdout }};"
+    replace="    resolver           {{ resolver.stdout }};"
     regexp='^(\s+resolver\s+).+;'
   become: yes
 
