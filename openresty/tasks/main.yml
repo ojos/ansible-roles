@@ -38,4 +38,202 @@
     copy=no
   become: yes
 
-archive_file
+- name: Make file.
+  stat: >
+    path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}/Makefile"
+  register: make_file
+  changed_when: no
+  always_run: yes
+- name: Configure openresty source.
+  shell: >
+    ./configure {{openresty_configure_options}}
+  args:
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
+  become: yes
+  when: not make_file.stat.exists or openresty_force_install
+
+- name: Made file.
+  stat: >
+    path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}/made"
+  register: made_file
+  changed_when: no
+  always_run: yes
+- name: Make openresty.
+  shell: >
+    /usr/bin/make
+  args:
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
+  become: yes
+  when: not made_file.stat.exists or openresty_force_install
+
+- name: Touch Maked file.
+  file: >
+    path={{ openresty_src_directory }}/openresty-{{ openresty_version }}/made
+    state=touch
+  become: yes
+  when: not made_file.stat.exists
+
+- name: Binary file.
+  stat: >
+    path={{ openresty_nginx_bin_file }}
+  register: bin_file
+  changed_when: no
+  always_run: yes
+- name: Install openresty.
+  shell: >
+    /usr/bin/make install
+  args:
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
+  become: yes
+  when: not bin_file.stat.exists or openresty_force_install
+
+- name: Create nginx tmp directory.
+  file: >
+    path="{{ openresty_nginx_tmp_directory }}"
+    state=directory
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0755
+  become: yes
+- name: Create nginx run directory.
+  file: >
+    path="{{ openresty_nginx_prefix }}/run"
+    state=directory
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0755
+  become: yes
+- name: Create nginx configure sub directory.
+  file: >
+    path="{{ openresty_nginx_sub_conf_directory }}"
+    state=directory
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0755
+  become: yes
+- name: Create lua directory.
+  file: >
+    path="{{ openresty_nginx_conf_prefix }}/lua"
+    state=directory
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0755
+  become: yes
+
+- name: Copy favicon.ico.
+  copy: >
+    src=favicon.ico
+    dest={{ openresty_nginx_prefix }}/html/favicon.ico
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+- name: Copy 404.html.
+  copy: >
+    src=404.html
+    dest={{ openresty_nginx_prefix }}/html/404.html
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+- name: Copy 50x.html.
+  copy: >
+    src=50x.html
+    dest={{ openresty_nginx_prefix }}/html/50x.html
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+
+- name: Create nginx.conf.
+  template: >
+    src=nginx.conf.tpl
+    dest={{ openresty_nginx_conf_file }}
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+
+- name: Create global.conf.
+  template: >
+    src=nginx.global.conf.tpl
+    dest={{ openresty_nginx_sub_conf_directory }}/global.conf
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+- name: Create http.conf.
+  template: >
+    src=nginx.http.conf.tpl
+    dest={{ openresty_nginx_sub_conf_directory }}/http.conf
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+- name: Create http.server.conf.
+  template: >
+    src=nginx.http.server.conf.tpl
+    dest={{ openresty_nginx_sub_conf_directory }}/http.server.conf
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+- name: Create http.lua.conf.
+  template: >
+    src=nginx.http.lua.conf.tpl
+    dest={{ openresty_nginx_sub_conf_directory }}/http.lua.conf
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+- name: Create http.server.location.conf.
+  template: >
+    src=nginx.http.server.location.conf.tpl
+    dest={{ openresty_nginx_sub_conf_directory }}/http.server.location.conf
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+
+- name: Extract resolver.
+  shell: >
+    grep nameserver /etc/resolv.conf | awk '{print $2}'
+  register: resolver
+- name: Replace nginx http server resolver.
+  replace: >
+    dest="{{ openresty_nginx_sub_conf_directory }}/http.conf"
+    replace="    resolver           {{ resolver.stdout }};"
+    regexp='^(\s+resolver\s+).+;'
+  become: yes
+
+- name: Copy current_time.lua.
+  copy: >
+    src=current_time.lua
+    dest={{ openresty_nginx_conf_prefix }}/lua/current_time.lua
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0644
+  become: yes
+
+- name: Change nginx directory owner.
+  file: >
+    path="{{ openresty_nginx_prefix }}"
+    state=directory
+    recurse=yes
+    owner={{ openresty_user }}
+    group={{ openresty_user }}
+  become: yes
+
+- name: Create nginx service file.
+  template: >
+    src=nginx.service.tpl
+    dest="{{ openresty_nginx_service_file }}"
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0755
+  become: yes
+- name: Register nginx service.
+  service: >
+    name=nginx
+    enabled=yes
+  become: yes
