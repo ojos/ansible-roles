@@ -15,14 +15,6 @@
   when: user_list.stdout_lines.count(openresty_user) < 1 
   become: yes
 
-- name: Install dependent packages.
-  yum: >
-    name="{{ item }}"
-    state="present"
-  with_items: "{{ openresty_dependent_packages }}"
-  become: yes
-  when: openresty_dependent_packages|length > 0
-
 - name: Install/Upgrade dependent packages(RedHat).
   yum: >
     name={{ item.name | default(item) }}
