@@ -1,6 +1,7 @@
 ---
   openresty_version: 1.9.7.3
   openresty_src_directory: /usr/local/src
+  openresty_nginx_remove_src_directory: no
   openresty_user: nginx
   openresty_force_install: no
   openresty_nginx_prefix: /usr/local/openresty
@@ -19,6 +20,9 @@
   openresty_nginx_uwsgi_tmp_file: "{{ openresty_nginx_tmp_directory }}/uwsgi_temp"
   openresty_nginx_scgi_tmp_file: "{{ openresty_nginx_tmp_directory }}/scgi_temp"
   openresty_nginx_proxy_tmp_file: "{{ openresty_nginx_tmp_directory }}/proxy_temp"
+  openresty_nginx_openssl_directory: /usr/lib64/openssl
+  openresty_nginx_compiler_options: '"-I/usr/local/include"'
+  openresty_nginx_linker_options: '"-L/usr/local/lib"'
   openresty_nginx_service_file: /etc/rc.d/init.d/nginx
   openresty_nginx_worker_processes: auto
   openresty_nginx_worker_rlimit_nofile: 4096
@@ -50,4 +54,9 @@
     --http-uwsgi-temp-path={{ openresty_nginx_uwsgi_tmp_file }}
     --http-scgi-temp-path={{ openresty_nginx_scgi_tmp_file }}
     --http-proxy-temp-path={{ openresty_nginx_proxy_tmp_file }}
+    --with-openssl={{ openresty_nginx_openssl_directory }}
     --with-luajit
+    --with-pcre
+    --with-pcre-jit
+    --with-cc-opt={{ openresty_nginx_compiler_options }}
+    --with-ld-opt={{ openresty_nginx_linker_options }}

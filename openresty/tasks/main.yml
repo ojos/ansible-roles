@@ -79,6 +79,13 @@
   become: yes
   when: not bin_file.stat.exists or openresty_force_install
 
+- name: Remove source directory.
+  file: >
+    path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
+    state=absent
+  become: yes
+  when: openresty_nginx_remove_src_directory
+
 - name: Create nginx tmp directory.
   file: >
     path="{{ openresty_nginx_tmp_directory }}"
@@ -199,7 +206,7 @@
     mode=0644
   become: yes
 
-- name: Change nginx directory owner.
+- name: Change openresty directory owner.
   file: >
     path="{{ openresty_nginx_prefix }}"
     state=directory

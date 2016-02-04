@@ -118,11 +118,8 @@ case "$1" in
  info)
  do_info
  ;;
- status)
- status -p $PID $DAEMON
- ;;
  *)
- echo "Usage: $SCRIPT {start|stop|reload|restart|quit|test|status|info}"
+ echo "Usage: $SCRIPT {start|stop|reload|restart|quit|test|info}"
  exit 2
  ;;
 esac
