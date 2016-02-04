@@ -31,7 +31,7 @@
   openresty_dependent_packages:
     - pcre-devel
     - openssl-devel
-  openresty_configure_options: >-
+  openresty_configure_options: >
     --prefix={{ openresty_nginx_prefix }}
     --user={{ openresty_user }}
     --group={{ openresty_user }}
