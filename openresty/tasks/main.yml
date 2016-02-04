@@ -63,27 +63,42 @@
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
   when: not make_file.stat.exists
+
+- name: Made file.
+  stat: >
+    path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}/made"
+  register: made_file
+  changed_when: no
+  always_run: yes
 - name: Make openresty.
   shell: >
     /usr/bin/make
   args:
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
-# - name: Install openresty.
-#   shell: >
-#     /usr/bin/make install
-#   args:
-#     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
-#   become: yes
+  when: not made_file.stat.exists
 
-# - name: Create nginx temp directory.
-#   file: >
-#     path="{{ openresty_nginx_tmp_directory }}"
-#     state=directory
-#     owner="{{ openresty_user }}"
-#     group="{{ openresty_group }}"
-#     mode=0755
-#   become: yes
+- name: Touch Maked file.
+  file: >
+    path={{ openresty_src_directory }}/openresty-{{ openresty_version }}/made
+    state=touch
+  become: yes
+
+- name: Install openresty.
+  shell: >
+    /usr/bin/make install
+  args:
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
+  become: yes
+
+- name: Create nginx temp directory.
+  file: >
+    path="{{ openresty_nginx_tmp_directory }}"
+    state=directory
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
+    mode=0755
+  become: yes
 
 # - name: Copy favicon.ico.
 #   copy: >
