@@ -1,5 +1,5 @@
 location ^~ /current_time {
-    content_by_lua_file {{ openresty_nginx_conf_dir }}/lua/current_time.lua;
+    content_by_lua_file {{ openresty_nginx_conf_prefix }}/lua/current_time.lua;
 }
 
 location ^~ /favicon {
