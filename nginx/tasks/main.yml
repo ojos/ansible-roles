@@ -1,0 +1,217 @@
+---
+- name: user list.
+  shell: >
+    cut -d: -f1 /etc/passwd  
+  register: user_list  
+  changed_when: false  
+  always_run: yes 
+- name: Create nginx user.
+  user: >
+    name="{{ nginx_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ nginx_prefix }}/nginx"
+    createhome=no
+  when: user_list.stdout_lines.count(nginx_user) < 1 
+  become: yes
+
+- name: Install/Upgrade dependent packages(RedHat).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ nginx_dependent_packages }}"
+  when: ansible_os_family == 'RedHat' and nginx_dependent_packages|length > 0
+  become: yes
+
+- name: Install/Upgrade dependent packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: "{{ nginx_dependent_packages }}"
+  when: ansible_os_family == 'Darwin' and nginx_dependent_packages|length > 0
+
+- name: Extract nginx source.
+  unarchive: >
+    src="http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz"
+    dest="{{ nginx_src_directory }}"
+    copy=no
+  become: yes
+
+- name: Make file.
+  stat: >
+    path="{{ nginx_src_directory }}/nginx-{{ nginx_version }}/Makefile"
+  register: make_file
+  changed_when: no
+  always_run: yes
+- name: Configure nginx source.
+  shell: >
+    ./configure {{ nginx_configure_options }}
+  args:
+    chdir: "{{ nginx_src_directory }}/nginx-{{ nginx_version }}"
+  become: yes
+  when: not make_file.stat.exists or nginx_force_install
+
+- name: Made file.
+  stat: >
+    path="{{ nginx_src_directory }}/nginx-{{ nginx_version }}/made"
+  register: made_file
+  changed_when: no
+  always_run: yes
+- name: Make nginx.
+  shell: >
+    /usr/bin/make
+  args:
+    chdir: "{{ nginx_src_directory }}/nginx-{{ nginx_version }}"
+  become: yes
+  when: not made_file.stat.exists or nginx_force_install
+
+- name: Touch Maked file.
+  file: >
+    path={{ nginx_src_directory }}/nginx-{{ nginx_version }}/made
+    state=touch
+  become: yes
+  when: not made_file.stat.exists
+
+- name: Binary file.
+  stat: >
+    path={{ nginx_bin_file }}
+  register: bin_file
+  changed_when: no
+  always_run: yes
+- name: Install nginx.
+  shell: >
+    {{ nginx_make_bin_file }} install
+  args:
+    chdir: "{{ nginx_src_directory }}/nginx-{{ nginx_version }}"
+  become: yes
+  when: not bin_file.stat.exists or nginx_force_install
+
+- name: Remove source directory.
+  file: >
+    path="{{ nginx_src_directory }}/nginx-{{ nginx_version }}"
+    state=absent
+  become: yes
+  when: nginx_remove_src_directory
+
+- name: Create nginx tmp directory.
+  file: >
+    path="{{ nginx_tmp_directory }}"
+    state=directory
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0755
+  become: yes
+- name: Create nginx run directory.
+  file: >
+    path="{{ nginx_run_directory }}"
+    state=directory
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0755
+  become: yes
+- name: Create nginx configure sub directory.
+  file: >
+    path="{{ nginx_sub_conf_directory }}"
+    state=directory
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0755
+  become: yes
+
+- name: Copy favicon.ico.
+  copy: >
+    src=favicon.ico
+    dest={{ nginx_prefix }}/nginx/html/favicon.ico
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0644
+  become: yes
+- name: Copy 404.html.
+  copy: >
+    src=404.html
+    dest={{ nginx_prefix }}/nginx/html/404.html
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0644
+  become: yes
+- name: Copy 50x.html.
+  copy: >
+    src=50x.html
+    dest={{ nginx_prefix }}/nginx/html/50x.html
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0644
+  become: yes
+
+- name: Create nginx.conf.
+  template: >
+    src=nginx.conf.tpl
+    dest={{ nginx_conf_file }}
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0644
+  become: yes
+
+- name: Create global.conf.
+  template: >
+    src=nginx.global.conf.tpl
+    dest={{ nginx_sub_conf_directory }}/global.conf
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0644
+  become: yes
+- name: Create http.conf.
+  template: >
+    src=nginx.http.conf.tpl
+    dest={{ nginx_sub_conf_directory }}/http.conf
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0644
+  become: yes
+- name: Create http.server.conf.
+  template: >
+    src=nginx.http.server.conf.tpl
+    dest={{ nginx_sub_conf_directory }}/http.server.conf
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0644
+  become: yes
+
+- name: Extract resolver.
+  shell: >
+    grep nameserver /etc/resolv.conf | awk '{print $2}'
+  register: resolver
+- name: Replace nginx http server resolver.
+  replace: >
+    dest="{{ nginx_sub_conf_directory }}/http.conf"
+    replace="    resolver           {{ resolver.stdout }};"
+    regexp='^(\s+resolver\s+).+;'
+  when: ansible_system == 'Linux'
+  become: yes
+
+- name: Change nginx directory owner.
+  file: >
+    path="{{ nginx_prefix }}"
+    state=directory
+    recurse=yes
+    owner={{ nginx_user }}
+    group={{ nginx_user }}
+  become: yes
+
+- name: Create nginx service file.
+  template: >
+    src=nginx.service.tpl
+    dest="{{ nginx_service_file }}"
+    owner="{{ nginx_user }}"
+    group="{{ nginx_user }}"
+    mode=0755
+  become: yes
+  when: ansible_system == 'Linux'
+
+- name: Register nginx service.
+  service: >
+    name=nginx
+    enabled=yes
+  become: yes
+  when: ansible_system == 'Linux'
