@@ -3,6 +3,7 @@
   service: >
     name=nginx
     state=stopped
+  when: ansible_system == 'Linux'
   become: yes
 
 - name: Replace http.server.conf.
