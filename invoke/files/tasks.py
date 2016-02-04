@@ -26,6 +26,65 @@ def atom():
 
 
 @task
+def plan(env='vagrant', provider='aws'):
+    """Terraformで計画ファイルを作成"""
+    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
+    cmd_list = [
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
+        'terraform plan -var "public_key=%s"' % public_key
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def show(env='vagrant', provider='aws'):
+    """Terraformで計画ファイルを出力"""
+    cmd_list = [
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
+        'terraform show'
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def apply(env='vagrant', provider='aws'):
+    """Terraformでサーバー環境を構築"""
+    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
+    cmd_list = [
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
+        'terraform apply -var "public_key=%s"' % public_key
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def destroy(env='vagrant', provider='aws'):
+    """Terraformでサーバー環境を撤去"""
+    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
+    cmd_list = [
+        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
+        'terraform destroy -var "public_key=%s"' % public_key
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def pack(builder="amazon_ebs"):
+    """Packerでイメージを構築"""
+    cmd_list = [
+        'cd %s' % os.environ['PACKER_HOME'],
+        'packer build %s.json' % builder
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
+def unittest(options=''):
+    """アプリケーションサーバーをテストする"""
+    pass
+
+
+@task
 def restart():
     """サーバーを再起動する"""
     pass
@@ -51,7 +110,7 @@ def deploy(env='vagrant', hosts='vagrant'):
 
 @task
 def buildout(env='vagrant', hosts='vagrant'):
-    """環境構築する"""
+    """システム環境構築する"""
     private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
     buildout_cmd = _generate_bootstrap_command('buildout', env, hosts)
     cmd_list = [
@@ -62,90 +121,40 @@ def buildout(env='vagrant', hosts='vagrant'):
 
 
 @task
-def unittest(options=''):
-    """アプリケーションサーバーをテストする"""
-    pass
+def replace(path, replaces):
+    """ファイルに置換処理する"""
+    with open(path, 'r') as fh:
+        string = fh.read()
+
+    for repl in replaces:
+        string = re.sub(repl['pattern'], repl['repl'], string)
+
+    with open(path, 'w') as fh:
+        fh.write(string)
 
 
 @task
-def vg_init(provider='aws'):
-    tf_plan()
-    tf_apply()
+def launch(env='vagrant', provider='aws'):
+    """サーバー環境を起動する"""
+    plan(env, provider)
+    apply(env, provider)
 
-    tfstate_path = '%s/%s/vagrant/terraform.tfstate' % (os.environ['TF_HOME'], provider)
+    tfstate_path = '%s/%s/%s/terraform.tfstate' % (os.environ['TF_HOME'], provider, env)
     with open(tfstate_path, 'r') as tf_fh:
         tfstate = json.loads(tf_fh.read())
 
     eip = tfstate['modules'][0]['resources'][
         'aws_eip.default']['primary']['attributes']['public_ip']
-    sg_id = tfstate['modules'][0]['resources'][
-        'aws_security_group.default']['primary']['attributes']['id']
 
-    ssh_config_path = '%s/ssh_config' % os.environ['KEY_HOME']
-    with open(ssh_config_path, 'r') as ssh_config_fh:
-        ssh_config = ssh_config_fh.read()
+    replace('%s/ssh_config' % os.environ['KEY_HOME'],
+            [{'pattern': r'(Host\s%s\nHostName)\s.+\n' % env, 'repl': r'\1 %s\n' % eip}])
 
-    ssh_config = re.sub(r'(Host\svagrant\nHostName)\s.+\n', r'\1 %s\n' % eip, ssh_config)
+    if env == 'vagrant':
+        sg_id = tfstate['modules'][0]['resources'][
+            'aws_security_group.default']['primary']['attributes']['id']
 
-    with open(ssh_config_path, 'w') as ssh_config_fh:
-        ssh_config_fh.write(ssh_config)
-
-    envrc_path = '%s/.envrc' % os.environ['PROJECT_HOME']
-    with open(envrc_path, 'r') as env_fh:
-        envrc = env_fh.read()
-
-    envrc = re.sub(r'(export\sVAGRANT_ELASTIC_IP)=.+\n', r'\1=%s\n' % eip, envrc)
-    envrc = re.sub(r'(export\sVAGRANT_SECURITY_GROUPS)=.+\n', r'\1=%s\n' % sg_id, envrc)
-
-    with open(envrc_path, 'w') as env_fh:
-        env_fh.write(envrc)
+        replace('%s/.envrc' % os.environ['PROJECT_HOME'],
+                [{'pattern': r'(export\sVAGRANT_ELASTIC_IP)=.+\n', 'repl': r'\1=%s\n' % eip},
+                 {'pattern': r'(export\sVAGRANT_SECURITY_GROUPS)=.+\n', 'repl': r'\1=%s\n' % sg_id}])
 
     run('direnv allow')
-
-
-@task
-def tf_plan(env='vagrant', provider='aws'):
-    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
-    cmd_list = [
-        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform plan -var "public_key=%s"' % public_key
-    ]
-    run(' && '.join(cmd_list))
-
-
-@task
-def tf_apply(env='vagrant', provider='aws'):
-    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
-    cmd_list = [
-        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform apply -var "public_key=%s"' % public_key
-    ]
-    run(' && '.join(cmd_list))
-
-
-@task
-def tf_destroy(env='vagrant', provider='aws'):
-    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
-    cmd_list = [
-        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform destroy -var "public_key=%s"' % public_key
-    ]
-    run(' && '.join(cmd_list))
-
-
-@task
-def tf_show(env='vagrant', provider='aws'):
-    cmd_list = [
-        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform show'
-    ]
-    run(' && '.join(cmd_list))
-
-
-@task
-def pack(builder="amazon_ebs"):
-    cmd_list = [
-        'cd %s' % os.environ['PACKER_HOME'],
-        'packer build %s.json' % builder
-    ]
-    run(' && '.join(cmd_list))
