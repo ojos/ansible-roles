@@ -3,7 +3,6 @@
   openresty_src_directory: /usr/local/src
   openresty_prefix_directory: /usr/local/openresty
   openresty_user: nginx
-  openresty_group: nginx
   openresty_nginx_bin_file: /usr/local/sbin/nginx
   openresty_nginx_conf_directory: /etc/nginx
   openresty_nginx_sub_conf_directory: "{{ openresty_nginx_conf_directory }}/conf.d"
