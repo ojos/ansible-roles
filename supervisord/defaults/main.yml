@@ -13,7 +13,7 @@
   supervisord_log_level: info
   supervisord_pid_directory: "{{ project_directory }}/run/supervisord"
   supervisord_pid_file_name: supervisord.pid
-  supervisord_unix_http_server_socket_directory: "{{ project_directory }}/tmp"
+  supervisord_unix_http_server_socket_directory: "{{ project_directory }}/tmp/supervisord"
   supervisord_unix_http_server_socket_file_name: supervisor.sock
   supervisord_nodaemon: False
   supervisord_minfds: 1024

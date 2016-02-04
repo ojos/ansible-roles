@@ -6,12 +6,6 @@
   environment: 
     HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
 
-- name: Terraform directory.
-  stat: >
-    path={{ terraform_directory }}
-  register: tf_directory 
-  changed_when: no
-  always_run: yes
 - name: Create terraform directory.
   file: >
     path="{{ terraform_directory }}"
@@ -19,7 +13,6 @@
     owner={{ terraform_user }}
     group={{ terraform_group }}
     mode=0755
-  when: not tf_directory.stat.exists
   become: yes
 
 - name: Insert env in .envrc.
