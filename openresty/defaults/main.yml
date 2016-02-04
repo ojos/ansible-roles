@@ -2,6 +2,7 @@
   openresty_version: 1.9.7.3
   openresty_src_directory: /usr/local/src
   openresty_user: nginx
+  openresty_force_install: yes
   openresty_nginx_prefix: /usr/local/openresty/nginx
   openresty_nginx_bin_file: "{{ openresty_nginx_prefix }}/sbin/nginx"
   openresty_nginx_conf_prefix: "{{ openresty_nginx_prefix }}/conf"

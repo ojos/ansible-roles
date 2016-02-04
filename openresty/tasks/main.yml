@@ -34,7 +34,7 @@
     url="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_src_directory }}/openresty-{{ openresty_version }}.tar.gz"
   become: yes
-  when: not source_file.stat.exists
+  when: not source_file.stat.exists or openresty_force_install
 
 - name: source directory.
   stat: >
@@ -48,7 +48,7 @@
     dest="{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
     copy="no"
   become: yes
-  when: not source_directory.stat.exists
+  when: not source_directory.stat.exists or openresty_force_install
 
 - name: Make file.
   stat: >
@@ -62,7 +62,7 @@
   args:
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
-  when: not make_file.stat.exists
+  when: not make_file.stat.exists or openresty_force_install
 
 - name: Made file.
   stat: >
@@ -76,7 +76,7 @@
   args:
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
-  when: not made_file.stat.exists
+  when: not made_file.stat.exists or openresty_force_install
 
 - name: Touch Maked file.
   file: >
@@ -97,7 +97,7 @@
   args:
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
-  when: not bin_file.stat.exists
+  when: not bin_file.stat.exists or openresty_force_install
 
 - name: Create nginx tmp directory.
   file: >
