@@ -44,7 +44,7 @@
   always_run: yes
 - name: Configure openresty source.
   shell: >
-    ./configure {{openresty_configure_options}}
+    ./configure {{ openresty_configure_options }}
   args:
     chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
