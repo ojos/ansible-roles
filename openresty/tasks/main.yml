@@ -27,8 +27,6 @@
   file: >
     path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
     state=directory
-    owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
     mode=0755
   become: yes
 - name: Extract openresty source.
