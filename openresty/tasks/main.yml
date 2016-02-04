@@ -99,9 +99,17 @@
   become: yes
   when: not bin_file.stat.exists
 
-- name: Create nginx temp directory.
+- name: Create nginx tmp directory.
   file: >
     path="{{ openresty_nginx_tmp_directory }}"
+    state=directory
+    owner="{{ openresty_user }}"
+    group="{{ openresty_user }}"
+    mode=0755
+  become: yes
+- name: Create nginx run directory.
+  file: >
+    path="{{ openresty_nginx_prefix }}/run"
     state=directory
     owner="{{ openresty_user }}"
     group="{{ openresty_user }}"
