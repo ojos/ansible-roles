@@ -1,13 +1,19 @@
 ---
-- name: Create nginx user.
+- name: user list.
+  shell: >
+    cut -d: -f1 /etc/passwd  
+  register: user_list  
+  changed_when: false  
+  always_run: yes 
+- name: Create openresty user.
   user: >
     name="{{ openresty_user }}"
     shell=/bin/false
     system=yes
     home="{{ openresty_nginx_prefix }}/nginx"
     createhome=no
+  when: "user_list.stdout_lines.count({{ openresty_user }})" < 1 
   become: yes
-  ignore_errors: yes
 
 - name: Install dependent packages.
   yum: >
