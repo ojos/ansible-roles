@@ -3,7 +3,7 @@
   pip: >
     name=invoke
     version=0.12.0
-    state=latest
+    state=present
   environment:
     PATH: "{{ invoke_python_bin_directory }}:{{ ansible_env.PATH }}"
 
