@@ -17,7 +17,7 @@ RETVAL=0
 prog="supervisord"
 SUPERVISORD={{ supervisord_python_bin_directory }}/supervisord
 PID_FILE={{ supervisord_pid_directory }}/{{ supervisord_pid_file_name }}
-CONF_FILE={{ supervisord_conf_directory }}/{{ supervisord_conf_file }}
+CONF_FILE={{ supervisord_conf_directory }}/{{ supervisord_conf_file_name }}
 
 start()
 {
