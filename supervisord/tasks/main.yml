@@ -53,18 +53,19 @@
   template: >
     src=supervisord.tpl
     dest="/etc/rc.d/init.d/supervisord"
-    owner=root
-    group=root
     mode=0755
+  become: yes
   when: ansible_system == 'Linux'
 
 - name: Register supervisord service.
   service: >
     name=supervisord
     enabled=yes
+  become: yes
   when: ansible_system == 'Linux'
-- name: Start supervisord service.
-  service: >
-    name=supervisord
-    state=started
-  when: ansible_system == 'Linux'
+# - name: Start supervisord service.
+#   service: >
+#     name=supervisord
+#     state=started
+#   become: yes
+#   when: ansible_system == 'Linux'
