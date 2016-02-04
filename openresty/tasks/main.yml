@@ -15,31 +15,53 @@
     name="{{ item }}"
     state="present"
   with_items: "{{ openresty_dependent_packages }}"
+  become: yes
 
-
+- name: source file.
+  stat: >
+    path="{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}.tar.gz"
+  register: source_file
+  changed_when: no
+  always_run: yes
 - name: Download openresty source.
   get_url: >
     url="http://openresty.org/download/ngx_openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}.tar.gz"
-    force="yes"
+  become: yes
+  when: not source_file.stat.exists
+
+- name: source directory.
+  stat: >
+    path="{{ openresty_src_directory }}"
+  register: source_directory
+  changed_when: no
+  always_run: yes
 - name: Extract openresty source.
   unarchive: >
     src="{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_src_directory }}"
     copy="no"
+  become: yes
+  when: not source_directory.stat.exists
 
 - name: Configure openresty source.
   shell: >
     ./configure {{openresty_configure_options}}
-    chdirectory={{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}
+  args:
+    chdir: "{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}"
+  become: yes
 - name: Make openresty.
   shell: >
     /usr/bin/make
-    chdirectory={{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}
+  args:
+    chdir: "{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}"
+  become: yes
 - name: Install openresty.
   shell: >
     /usr/bin/make install
-    chdirectory={{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}
+  args:
+    chdir: "{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}"
+  become: yes
 
 - name: Create nginx temp directory.
   file: >
@@ -54,50 +76,50 @@
   copy: >
     src=favicon.ico
     dest={{ openresty_prefix_directory }}/nginx/html/favicon.ico
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Copy 404.html.
   copy: >
     src=404.html
     dest={{ openresty_prefix_directory }}/nginx/html/404.html
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Copy 50x.html.
   copy: >
     src=50x.html
     dest={{ openresty_prefix_directory }}/nginx/html/50x.html
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Create nginx.conf.
   template: >
     src=nginx.conf.tpl
     dest={{ openresty_nginx_conf_file }}
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Create nginx configure sub directory.
   file: >
     path="{{ openresty_nginx_sub_conf_directory }}"
     state=directory
-    owner="root"
-    group="root"
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
 - name: Create global.conf.
   template: >
     src=nginx.global.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/global.conf
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Create http.conf.
   template: >
     src=nginx.http.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/http.conf
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Extract resolver.
   shell: "grep nameserver /etc/resolv.conf | awk '{print $2}'"
@@ -111,46 +133,45 @@
   template: >
     src=nginx.http.server.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/http.server.conf
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Create http.lua.conf.
   template: >
     src=nginx.http.lua.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/http.lua.conf
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Create http.server.location.conf.
   template: >
     src=nginx.http.server.location.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/http.server.location.conf
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Create lua directory.
   file: >
     path="{{ openresty_nginx_conf_directory }}/lua"
     state=directory
-    owner="root"
-    group="root"
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
 - name: Copy current_time.lua.
   copy: >
     src=current_time.lua
     dest={{ openresty_nginx_conf_directory }}/lua/current_time.lua
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
 - name: Create nginx service file.
   template: >
     src=nginx.service.tpl
     dest="{{ openresty_nginx_service_file }}"
-    owner=root
-    group=root
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
-- name: Register and Start nginx service.
+- name: Register nginx service.
   service: >
     name=nginx
-    state=started
     enabled=yes
