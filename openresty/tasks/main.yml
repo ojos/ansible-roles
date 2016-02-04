@@ -19,14 +19,14 @@
 
 - name: source file.
   stat: >
-    path="{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}.tar.gz"
+    path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}.tar.gz"
   register: source_file
   changed_when: no
   always_run: yes
 - name: Download openresty source.
   get_url: >
-    url="http://openresty.org/download/ngx_openresty-{{ openresty_version }}.tar.gz"
-    dest="{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}.tar.gz"
+    url="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
+    dest="{{ openresty_src_directory }}/openresty-{{ openresty_version }}.tar.gz"
   become: yes
   when: not source_file.stat.exists
 
@@ -38,7 +38,7 @@
   always_run: yes
 - name: Extract openresty source.
   unarchive: >
-    src="{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}.tar.gz"
+    src="{{ openresty_src_directory }}/openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_src_directory }}"
     copy="no"
   become: yes
@@ -48,19 +48,19 @@
   shell: >
     ./configure {{openresty_configure_options}}
   args:
-    chdir: "{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}"
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
 - name: Make openresty.
   shell: >
     /usr/bin/make
   args:
-    chdir: "{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}"
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
 - name: Install openresty.
   shell: >
     /usr/bin/make install
   args:
-    chdir: "{{ openresty_src_directory }}/ngx_openresty-{{ openresty_version }}"
+    chdir: "{{ openresty_src_directory }}/openresty-{{ openresty_version }}"
   become: yes
 
 - name: Create nginx temp directory.
