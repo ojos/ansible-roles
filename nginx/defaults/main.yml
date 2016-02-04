@@ -3,6 +3,7 @@
   nginx_src_directory: /usr/local/src
   nginx_remove_src_directory: no
   nginx_user: nginx
+  nginx_group: nginx
   nginx_force_install: no
   nginx_prefix: /usr/local/nginx
   nginx_make_bin_file: /usr/bin/make
