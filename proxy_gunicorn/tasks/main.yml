@@ -14,8 +14,3 @@
     mode=0644
   become: yes
 
-- name: Start nginx service.
-  service: >
-    name=nginx
-    state=started
-  become: yes

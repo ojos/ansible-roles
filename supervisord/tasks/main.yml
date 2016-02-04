@@ -51,7 +51,7 @@
 
 - name: Create supervisord service file.
   template: >
-    src=supervisord.tpl
+    src=supervisord.service.tpl
     dest="/etc/rc.d/init.d/supervisord"
     mode=0755
   become: yes
@@ -61,11 +61,5 @@
   service: >
     name=supervisord
     enabled=yes
-  become: yes
-  when: ansible_system == 'Linux'
-- name: Start supervisord service.
-  service: >
-    name=supervisord
-    state=started
   become: yes
   when: ansible_system == 'Linux'

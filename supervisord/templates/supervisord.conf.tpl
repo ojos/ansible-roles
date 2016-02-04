@@ -17,7 +17,7 @@ user={{ supervisord_user }}
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 [supervisorctl]
-serverurl=unix://{{ supervisord_unix_http_server_socket_file_name }}
+serverurl=unix://{{supervisord_unix_http_server_socket_directory}}/{{ supervisord_unix_http_server_socket_file_name }}
 
 [include]
 files = {{ supervisord_include_conf_directory }}/*.conf

@@ -222,8 +222,3 @@
     name=nginx
     enabled=yes
   become: yes
-- name: Start nginx service.
-  service: >
-    name=supervisord
-    state=started
-  become: yes
