@@ -223,9 +223,11 @@
     group="{{ openresty_user }}"
     mode=0755
   become: yes
+  when: ansible_system == 'Linux'
 
 - name: Register nginx service.
   service: >
     name=nginx
     enabled=yes
   become: yes
+  when: ansible_system == 'Linux'
