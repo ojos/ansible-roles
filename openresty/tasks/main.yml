@@ -50,7 +50,7 @@
   become: yes
   when: not source_directory.stat.exists
 
-- name: Makefile.
+- name: Make file.
   stat: >
     path="{{ openresty_src_directory }}/openresty-{{ openresty_version }}/Makefile"
   register: make_file
@@ -96,7 +96,6 @@
     path="{{ openresty_nginx_tmp_directory }}"
     state=directory
     owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
     mode=0755
   become: yes
 
