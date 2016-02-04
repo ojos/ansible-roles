@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - { role: timezone }
+  - { role: gunicorn }
   - { role: openresty }

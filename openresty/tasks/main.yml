@@ -178,14 +178,6 @@
     group="{{ openresty_user }}"
     mode=0644
   become: yes
-- name: Create http.server.location.conf.
-  template: >
-    src=nginx.http.server.location.conf.tpl
-    dest={{ openresty_nginx_sub_conf_directory }}/http.server.location.conf
-    owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
-    mode=0644
-  become: yes
 
 - name: Extract resolver.
   shell: >

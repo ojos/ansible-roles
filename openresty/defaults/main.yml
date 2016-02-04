@@ -2,7 +2,7 @@
   openresty_version: 1.9.7.3
   openresty_src_directory: /usr/local/src
   openresty_user: nginx
-  openresty_force_install: yes
+  openresty_force_install: no
   openresty_nginx_prefix: /usr/local/openresty
   openresty_nginx_bin_file: "{{ openresty_nginx_prefix }}/nginx/sbin/nginx"
   openresty_nginx_conf_prefix: "{{ openresty_nginx_prefix }}/nginx/conf"
@@ -20,7 +20,8 @@
   openresty_nginx_scgi_tmp_file: "{{ openresty_nginx_tmp_directory }}/scgi_temp"
   openresty_nginx_proxy_tmp_file: "{{ openresty_nginx_tmp_directory }}/proxy_temp"
   openresty_nginx_service_file: /etc/rc.d/init.d/nginx
-  openresty_nginx_worker_processes: 1
+  openresty_nginx_worker_processes: auto
+  openresty_nginx_worker_rlimit_nofile: 4096
   openresty_nginx_worker_connections: 1024
   openresty_nginx_keepalive_timeout: 65
   openresty_nginx_sendfile: "on"
@@ -29,7 +30,8 @@
   openresty_nginx_server_tokens: "off"
   openresty_nginx_lua_check_client_abort: "on"
   openresty_nginx_lua_code_cache: "on"
-  openresty_nginx_default_type: plain/text
+  openresty_nginx_default_type: application/octet-stream
+  openresty_nginx_client_max_body_size: 4G
   openresty_dependent_packages:
     - pcre-devel
     - openssl-devel
