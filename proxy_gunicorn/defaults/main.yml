@@ -1,7 +1,7 @@
 ---
-  proxy_gunicorn_user: "{{ openresty_user }}"
-  proxy_gunicorn_group: "{{ openresty_user }}"
+  proxy_gunicorn_user: "{{ ansible_user_uid }}"
+  proxy_gunicorn_group: "{{ ansible_user_gid }}"
   proxy_gunicorn_bind: "{{ gunicorn_bind }}"
-  proxy_gunicorn_static_dir: "{{ openresty_nginx_prefix }}/nginx/html"
-  proxy_gunicorn_nginx_sub_conf_directory: "{{ openresty_nginx_sub_conf_directory }}"
-  proxy_gunicorn_nginx_client_max_body_size: "{{ openresty_nginx_client_max_body_size }}"
+  proxy_gunicorn_static_dir: /usr/local/nginx/html
+  proxy_gunicorn_nginx_sub_conf_directory: /usr/local/nginx/conf/conf.d
+  proxy_gunicorn_nginx_client_max_body_size: 4G
