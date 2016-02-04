@@ -16,7 +16,7 @@
 ### END INIT INFO
 #
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PATH={{ openresty_nginx_prefix }}/sbin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:
 DESC="Nginx Daemon"
 DAEMON={{ openresty_nginx_bin_file }}
 CONF={{ openresty_nginx_conf_file }}
