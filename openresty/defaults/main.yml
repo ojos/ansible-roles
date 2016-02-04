@@ -9,8 +9,8 @@
   openresty_nginx_conf_file: "{{ openresty_nginx_conf_prefix }}/nginx.conf"
   openresty_nginx_pid_file: "{{ openresty_nginx_prefix }}/run/nginx.pid"
   openresty_nginx_lock_file: "{{ openresty_nginx_prefix }}/run/nginx.lock"
-  openresty_nginx_access_log_file: "{{ openresty_nginx_prefix }}/log/access.log"
-  openresty_nginx_error_log_file: "{{ openresty_nginx_prefix }}/log/error.log"
+  openresty_nginx_access_log_file: "{{ openresty_nginx_prefix }}/logs/access.log"
+  openresty_nginx_error_log_file: "{{ openresty_nginx_prefix }}/logs/error.log"
   openresty_nginx_tmp_directory: "{{ openresty_nginx_prefix }}/tmp"
   openresty_nginx_client_body_tmp_file: "{{ openresty_nginx_tmp_directory }}/client_body_temp"
   openresty_nginx_fastcgi_tmp_file: "{{ openresty_nginx_tmp_directory }}/fastcgi_temp"
@@ -21,12 +21,12 @@
   openresty_nginx_worker_processes: 1
   openresty_nginx_worker_connections: 1024
   openresty_nginx_keepalive_timeout: 65
-  openresty_nginx_sendfile: on
-  openresty_nginx_multi_accept: on
+  openresty_nginx_sendfile: "on"
+  openresty_nginx_multi_accept: "on"
   openresty_nginx_resolver: 8.8.8.8
-  openresty_nginx_server_tokens: off
-  openresty_nginx_lua_check_client_abort: on
-  openresty_nginx_lua_code_cache: on
+  openresty_nginx_server_tokens: "off"
+  openresty_nginx_lua_check_client_abort: "on"
+  openresty_nginx_lua_code_cache: "on"
   openresty_nginx_default_type: plain/text
   openresty_dependent_packages:
     - pcre-devel

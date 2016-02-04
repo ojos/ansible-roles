@@ -219,17 +219,9 @@
     mode=0644
   become: yes
 
-- name: Change html directory owner.
+- name: Change nginx directory owner.
   file: >
-    path="{{ openresty_nginx_prefix }}/html"
-    state=directory
-    recurse=yes
-    owner={{ openresty_user }}
-    group={{ openresty_user }}
-  become: yes
-- name: Change conf directory owner.
-  file: >
-    path={{ openresty_nginx_conf_prefix }}
+    path="{{ openresty_nginx_prefix }}"
     state=directory
     recurse=yes
     owner={{ openresty_user }}
