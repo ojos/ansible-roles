@@ -46,4 +46,4 @@
     --http-uwsgi-temp-path={{ openresty_nginx_uwsgi_tmp_file }}
     --http-scgi-temp-path={{ openresty_nginx_scgi_tmp_file }}
     --http-proxy-temp-path={{ openresty_nginx_proxy_tmp_file }}
-    --with-luajit"
+    --with-luajit
