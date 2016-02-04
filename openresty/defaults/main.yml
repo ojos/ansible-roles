@@ -13,11 +13,11 @@
   openresty_nginx_access_log_file: "{{ openresty_nginx_prefix }}/logs/access.log"
   openresty_nginx_error_log_file: "{{ openresty_nginx_prefix }}/logs/error.log"
   openresty_nginx_tmp_directory: "{{ openresty_nginx_prefix }}/tmp"
-  openresty_nginx_client_body_tmp_file: "{{ openresty_nginx_tmp_directory }}/client_body_temp"
-  openresty_nginx_fastcgi_tmp_file: "{{ openresty_nginx_tmp_directory }}/fastcgi_temp"
-  openresty_nginx_uwsgi_tmp_file: "{{ openresty_nginx_tmp_directory }}/uwsgi_temp"
-  openresty_nginx_scgi_tmp_file: "{{ openresty_nginx_tmp_directory }}/scgi_temp"
-  openresty_nginx_proxy_tmp_file: "{{ openresty_nginx_tmp_directory }}/proxy_temp"
+  openresty_nginx_client_body_tmp_file: "tmp/client_body_temp"
+  openresty_nginx_fastcgi_tmp_file: "tmp/fastcgi_temp"
+  openresty_nginx_uwsgi_tmp_file: "tmp/uwsgi_temp"
+  openresty_nginx_scgi_tmp_file: "tmp/scgi_temp"
+  openresty_nginx_proxy_tmp_file: "tmp/proxy_temp"
   openresty_nginx_service_file: /etc/rc.d/init.d/nginx
   openresty_nginx_worker_processes: 1
   openresty_nginx_worker_connections: 1024
