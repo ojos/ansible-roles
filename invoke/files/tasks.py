@@ -84,12 +84,6 @@ def unittest(options=''):
     pass
 
 
-@task
-def restart():
-    """サーバーを再起動する"""
-    pass
-
-
 def _generate_bootstrap_command(action, env, hosts):
     private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
     return './bootstrap -p ./%s.yml -i %s -o \'["-l %s", "--private-key %s.pem"]\'' % (
@@ -97,21 +91,31 @@ def _generate_bootstrap_command(action, env, hosts):
 
 
 @task
+def restart(env='vagrant', hosts='vagrant'):
+    """サーバーを再起動する"""
+    restart_cmd = _generate_bootstrap_command('restart', env, hosts)
+    cmd_list = [
+        'cd %s' % os.environ['ANSIBLE_HOME'],
+        restart_cmd
+    ]
+    run(' && '.join(cmd_list))
+
+
+@task
 def deploy(env='vagrant', hosts='vagrant'):
     """デプロイ&再起動する"""
-    private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
     deploy_cmd = _generate_bootstrap_command('deploy', env, hosts)
     cmd_list = [
         'cd %s' % os.environ['ANSIBLE_HOME'],
         deploy_cmd
     ]
     run(' && '.join(cmd_list))
+    restart()
 
 
 @task
 def buildout(env='vagrant', hosts='vagrant'):
     """システム環境構築する"""
-    private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
     buildout_cmd = _generate_bootstrap_command('buildout', env, hosts)
     cmd_list = [
         'cd %s' % os.environ['ANSIBLE_HOME'],
