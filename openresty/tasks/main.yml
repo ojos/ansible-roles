@@ -12,7 +12,7 @@
     system=yes
     home="{{ openresty_nginx_prefix }}/nginx"
     createhome=no
-  when: "user_list.stdout_lines.count({{ openresty_user }})" < 1 
+  when: user_list.stdout_lines.count(openresty_user) < 1 
   become: yes
 
 - name: Install dependent packages.
@@ -21,6 +21,7 @@
     state="present"
   with_items: "{{ openresty_dependent_packages }}"
   become: yes
+  when: openresty_dependent_packages|length > 0
 
 - name: source file.
   stat: >
