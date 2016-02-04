@@ -1,10 +1,4 @@
 ---
-- name: Key directory.
-  stat: >
-    path={{ keygen_key_directory }}
-  register: key_directory
-  changed_when: no
-  always_run: yes
 - name: Create key directory.
   file: >
     path="{{ keygen_key_directory }}"
@@ -13,7 +7,6 @@
     owner={{ keygen_user }}
     group={{ keygen_group }}
     mode=0755
-  when: not key_directory.stat.exists
   become: yes
 
 - name: Generate ssh key.

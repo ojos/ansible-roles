@@ -3,18 +3,18 @@
   command: >
     {{ xbuild_ansible_python_bin_directory }}/pip install -U ansible
 
-- name: Ansible directory.
-  stat: >
-    path={{ xbuild_ansible_directory }}
-  register: home_directory
-  changed_when: no
-  always_run: yes
 - name: Create ansible directory.
   file: >
     path="{{ xbuild_ansible_directory }}"
     state=directory
     mode=0755
-  when: not home_directory.stat.exists
+  become: yes
+
+- name: Create default roles directory.
+  file: >
+    path="{{ xbuild_ansible_directory }}/roles"
+    state=directory
+    mode=0755
   become: yes
 
 - name: Clone Default roles repository.
@@ -25,20 +25,6 @@
     track_submodules=yes
     accept_hostkey=yes
   when: xbuild_ansible_roles_repository != ''
-  become: yes
-
-- name: Default roles directory.
-  stat: >
-    path="{{ xbuild_ansible_directory }}/roles"
-  register: default_directory
-  changed_when: no
-  always_run: yes
-- name: Create default roles directory.
-  file: >
-    path="{{ xbuild_ansible_directory }}/roles"
-    state=directory
-    mode=0755
-  when: not default_directory.stat.exists
   become: yes
 
 - name: Buildout playbook.

@@ -1,10 +1,4 @@
 ---
-- name: Terraform aws directory.
-  stat: >
-    path={{ terraform_aws_directory }}
-  register: tf_aws_directory 
-  changed_when: no
-  always_run: yes
 - name: Create terraform aws directory.
   file: >
     path="{{ terraform_aws_directory }}"
@@ -12,7 +6,6 @@
     owner={{ terraform_aws_user }}
     group={{ terraform_aws_group }}
     mode=0755
-  when: not tf_aws_directory.stat.exists
   become: yes
 
 - name: Clone skel.

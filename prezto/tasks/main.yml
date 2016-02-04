@@ -1,34 +1,34 @@
 ---
-- name: Prezto directory.
-  stat: >
-    path={{ ansible_user_dir }}/.zprezto
-  register: res
-  changed_when: False
-  always_run: yes
 - name: Clone prezto repository.
   git: >
     repo={{ prezto_repository }}
     dest={{ ansible_user_dir }}/.zprezto
-    force=yes
+    update=yes
     recursive=yes
     track_submodules=yes
     accept_hostkey=yes
-  when: not res.stat.exists
+
+- name: .zshrc.
+  stat: >
+    path={{ ansible_user_dir }}/.zshrc
+  register: zshrc
+  changed_when: no
+  always_run: yes
 
 - name: Copy bootstrap.
   template: >
     src=bootstrap.tpl
     dest={{ ansible_user_dir }}/bootstrap
     mode=0755
-  when: not res.stat.exists
+  when: not zshrc.stat.exists
 - name: Excute bootstrap.sh.
   shell: >
     ./bootstrap
   args:
     chdir: {{ ansible_user_dir }}
-  when: not res.stat.exists
+  when: not zshrc.stat.exists
 - name: Remove bootstrap.
   file: >
     path={{ ansible_user_dir }}/bootstrap
     state=absent
-  when: not res.stat.exists
+  when: not zshrc.stat.exists

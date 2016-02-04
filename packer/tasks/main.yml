@@ -6,12 +6,6 @@
   environment: 
     HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
 
-- name: Packer directory.
-  stat: >
-    path={{ packer_directory }}
-  register: pckr_directory 
-  changed_when: no
-  always_run: yes
 - name: Create packer directory.
   file: >
     path="{{ packer_directory }}"
@@ -19,7 +13,6 @@
     owner={{ packer_user }}
     group={{ packer_group }}
     mode=0755
-  when: not pckr_directory.stat.exists
   become: yes
 
 - name: Insert env in .envrc.

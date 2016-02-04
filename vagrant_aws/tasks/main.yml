@@ -1,10 +1,4 @@
 ---
-- name: Vagrant aws directory.
-  stat: >
-    path={{ vagrant_aws_vagrant_directory }}
-  register: vagrant_aws_directory 
-  changed_when: no
-  always_run: yes
 - name: Create vagrant aws directory.
   file: >
     path="{{ vagrant_aws_vagrant_directory }}"
@@ -12,7 +6,6 @@
     mode=0755
     owner={{ vagrant_aws_user }}
     group={{ vagrant_aws_group }}
-  when: not vagrant_aws_directory.stat.exists
 
 - name: Install/Update vagrant-aws plug-in.
   shell: >
