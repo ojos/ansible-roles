@@ -219,8 +219,8 @@
     path="{{ openresty_nginx_prefix }}"
     state=directory
     recurse=yes
-    owner={{ openresty_user }}
-    group={{ openresty_user }}
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
   become: yes
 
 - name: Create nginx service file.

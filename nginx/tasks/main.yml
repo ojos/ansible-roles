@@ -195,8 +195,8 @@
     path="{{ nginx_prefix }}"
     state=directory
     recurse=yes
-    owner={{ nginx_user }}
-    group={{ nginx_user }}
+    owner="{{ nginx_user }}"
+    group="{{ nginx_group }}"
   become: yes
 
 - name: Create nginx service file.
