@@ -20,3 +20,21 @@
   supervisord_minprocs: 200
   supervisord_install_packages:
     - supervisor
+  supervisord_bin_file: "$PROJECT_HOME/python/bin/supervisord"
+  supervisord_control_bin_file: "$PROJECT_HOME/python/bin/supervisorctl"
+  supervisord_pid_file: "$PROJECT_HOME/run/supervisord/{{ supervisord_pid_file_name }}"
+  supervisord_conf_file: "$PROJECT_HOME/etc/supervisord/{{ supervisord_conf_file_name }}"
+  supervisord_envrc_directory: "{{ direnv_envrc_directory }}"
+  supervisord_environment_variables:
+    - value: "# supervisord"
+      regexp: "^# supervisord$"
+    - value: "export SUPERVISORD_BIN={{ supervisord_bin_file }}"
+      regexp: "^export SUPERVISORD_BIN"
+    - value: "export SUPERVISORCTL_BIN={{ supervisord_control_bin_file }}"
+      regexp: "^export SUPERVISORCTL_BIN"
+    - value: "export SUPERVISORD_PID={{ supervisord_pid_file }}"
+      regexp: "^export SUPERVISORD_PID"
+    - value: |
+        export SUPERVISORD_CONF={{ supervisord_conf_file }}
+
+      regexp: "^export SUPERVISORD_CONF"
