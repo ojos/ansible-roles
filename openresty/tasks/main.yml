@@ -4,7 +4,8 @@
     cut -d: -f1 /etc/passwd  
   register: user_list  
   changed_when: false  
-  always_run: yes 
+  always_run: yes
+  when: ansible_os_family != 'Darwin'
 - name: Create openresty user.
   user: >
     name="{{ openresty_user }}"
@@ -12,7 +13,7 @@
     system=yes
     home="{{ openresty_nginx_prefix }}/nginx"
     createhome=no
-  when: user_list.stdout_lines.count(openresty_user) < 1 
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(openresty_user) < 1 
   become: yes
 
 - name: Install/Upgrade dependent packages(RedHat).

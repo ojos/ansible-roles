@@ -5,6 +5,7 @@
   register: user_list  
   changed_when: false  
   always_run: yes 
+  when: ansible_os_family != 'Darwin'
 - name: Create nginx user.
   user: >
     name="{{ nginx_user }}"
@@ -12,7 +13,7 @@
     system=yes
     home="{{ nginx_prefix }}/nginx"
     createhome=no
-  when: user_list.stdout_lines.count(nginx_user) < 1 
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(nginx_user) < 1
   become: yes
 
 - name: Install/Upgrade dependent packages(RedHat).
