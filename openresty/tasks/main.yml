@@ -99,7 +99,7 @@
     path="{{ openresty_nginx_tmp_directory }}"
     state=directory
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
   become: yes
 - name: Create nginx run directory.
@@ -107,7 +107,7 @@
     path="{{ openresty_nginx_run_directory }}"
     state=directory
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
   become: yes
 - name: Create nginx configure sub directory.
@@ -115,7 +115,7 @@
     path="{{ openresty_nginx_sub_conf_directory }}"
     state=directory
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
   become: yes
 - name: Create lua directory.
@@ -123,7 +123,7 @@
     path="{{ openresty_nginx_conf_prefix }}/lua"
     state=directory
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
   become: yes
 
@@ -132,7 +132,7 @@
     src=favicon.ico
     dest={{ openresty_nginx_prefix }}/nginx/html/favicon.ico
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 - name: Copy 404.html.
@@ -140,7 +140,7 @@
     src=404.html
     dest={{ openresty_nginx_prefix }}/nginx/html/404.html
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 - name: Copy 50x.html.
@@ -148,7 +148,7 @@
     src=50x.html
     dest={{ openresty_nginx_prefix }}/nginx/html/50x.html
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 
@@ -157,7 +157,7 @@
     src=nginx.conf.tpl
     dest={{ openresty_nginx_conf_file }}
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 
@@ -166,7 +166,7 @@
     src=nginx.global.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/global.conf
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 - name: Create http.conf.
@@ -174,7 +174,7 @@
     src=nginx.http.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/http.conf
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 - name: Create http.server.conf.
@@ -182,7 +182,7 @@
     src=nginx.http.server.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/http.server.conf
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 - name: Create http.lua.conf.
@@ -190,7 +190,7 @@
     src=nginx.http.lua.conf.tpl
     dest={{ openresty_nginx_sub_conf_directory }}/http.lua.conf
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 
@@ -210,7 +210,7 @@
     src=current_time.lua
     dest={{ openresty_nginx_conf_prefix }}/lua/current_time.lua
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0644
   become: yes
 
@@ -228,7 +228,7 @@
     src=nginx.service.tpl
     dest="{{ openresty_nginx_service_file }}"
     owner="{{ openresty_user }}"
-    group="{{ openresty_user }}"
+    group="{{ openresty_group }}"
     mode=0755
   become: yes
   when: ansible_system == 'Linux'

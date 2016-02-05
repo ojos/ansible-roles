@@ -3,6 +3,7 @@
   openresty_src_directory: /usr/local/src
   openresty_nginx_remove_src_directory: no
   openresty_user: nginx
+  openresty_group: nginx
   openresty_force_install: no
   openresty_nginx_prefix: /usr/local/openresty
   openresty_nginx_bin_file: "{{ openresty_nginx_prefix }}/nginx/sbin/nginx"
@@ -39,7 +40,7 @@
   openresty_configure_options: >-
     --prefix={{ openresty_nginx_prefix }}
     --user={{ openresty_user }}
-    --group={{ openresty_user }}
+    --group={{ openresty_group }}
     --sbin-path={{ openresty_nginx_bin_file }}
     --conf-path={{ openresty_nginx_conf_file }}
     --pid-path={{ openresty_nginx_pid_file }}

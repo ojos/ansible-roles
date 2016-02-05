@@ -38,7 +38,7 @@
   nginx_configure_options: >-
     --prefix={{ nginx_prefix }}
     --user={{ nginx_user }}
-    --group={{ nginx_user }}
+    --group={{ nginx_group }}
     --sbin-path={{ nginx_bin_file }}
     --conf-path={{ nginx_conf_file }}
     --pid-path={{ nginx_pid_file }}
