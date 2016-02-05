@@ -200,6 +200,16 @@
     group="{{ nginx_group }}"
   become: yes
 
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ nginx_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: nginx_environment_variables
+  when: nginx_envrc_directory != '' and nginx_environment_variables|length > 0
+
 - name: Create nginx service file.
   template: >
     src=nginx.service.tpl

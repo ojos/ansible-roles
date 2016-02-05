@@ -53,3 +53,16 @@
     --http-scgi-temp-path={{ openresty_nginx_scgi_tmp_file }}
     --http-proxy-temp-path={{ openresty_nginx_proxy_tmp_file }}
     --with-luajit
+  openresty_nginx_home_directory: "$PROJECT_HOME/openresty/nginx"
+  openresty_envrc_directory: "{{ direnv_envrc_directory }}"
+  openresty_environment_variables:
+    - value: "# openresty"
+      regexp: "^# openresty$"
+    - value: "export NGINX_HOME={{ openresty_nginx_home_directory }}"
+      regexp: "^export NGINX_HOME"
+    - value: "export NGINX_BIN=$NGINX_HOME/sbin/nginx"
+      regexp: "^export NGINX_BIN"
+    - value: |
+        export NGINX_PID=$NGINX_HOME/run/nginx.pid
+
+      regexp: "^export NGINX_PID"

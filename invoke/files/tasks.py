@@ -20,51 +20,55 @@ def atom():
     run('atom %s' % os.environ['PROJECT_HOME'])
 
 
+def _ngx_start(deamon, pid):
+    if pid:
+        run('sudo %s -s reopen' % deamon)
+    else:
+        run('sudo %s' % deamon)
+
+
+def _ngx_stop(deamon, pid):
+    if pid:
+        run('sudo %s -s stop' % deamon)
+
+
+def _ngx_reload(deamon, pid):
+    if pid:
+        run('sudo %s -s reload' % deamon)
+    else:
+        run('sudo %s' % deamon)
+
+
 @task
-def plan(env='vagrant', provider='aws'):
-    """Terraformで計画ファイルを作成"""
+def ngx(command):
+    """Nginxのラッパー"""
+    deamon = os.environ['NGINX_BIN']
+    pid = os.path.exists(os.environ['NGINX_PID'])
+
+    if command == 'start':
+        _ngx_start(deamon, pid)
+    elif command == 'stop':
+        _ngx_stop(deamon, pid)
+    elif command == 'reload':
+        _ngx_reload(deamon, pid)
+    elif command == 'restart':
+        _ngx_stop(deamon, pid)
+        _ngx_start(deamon, pid)
+
+
+@task
+def tf(command, env='vagrant', provider='aws'):
+    """Terraformのラッパー"""
     public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
     cmd_list = [
         'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform plan -var "public_key=%s"' % public_key
+        'terraform %s -var "public_key=%s"' % (command, public_key)
     ]
     run(' && '.join(cmd_list))
 
 
 @task
-def show(env='vagrant', provider='aws'):
-    """Terraformで計画ファイルを出力"""
-    cmd_list = [
-        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform show'
-    ]
-    run(' && '.join(cmd_list))
-
-
-@task
-def apply(env='vagrant', provider='aws'):
-    """Terraformでサーバー環境を構築"""
-    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
-    cmd_list = [
-        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform apply -var "public_key=%s"' % public_key
-    ]
-    run(' && '.join(cmd_list))
-
-
-@task
-def destroy(env='vagrant', provider='aws'):
-    """Terraformでサーバー環境を撤去"""
-    public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
-    cmd_list = [
-        'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform destroy -var "public_key=%s"' % public_key
-    ]
-    run(' && '.join(cmd_list))
-
-
-@task
-def pack(builder="amazon_ebs"):
+def pck(builder="amazon_ebs"):
     """Packerでイメージを構築"""
     cmd_list = [
         'cd %s' % os.environ['PACKER_HOME'],
