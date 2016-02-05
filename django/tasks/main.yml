@@ -73,3 +73,12 @@
     owner={{ django_user }}
     group={{ django_group }}
   become: yes
+
+- name: Create supervisord process conf file.
+  template: >
+    src=django.conf.tpl
+    dest={{ supervisord_include_conf_directory }}/django.conf
+    owner="{{ django_user }}"
+    group="{{ django_group }}"
+    mode=0644
+  become: yes
