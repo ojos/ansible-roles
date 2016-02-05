@@ -7,8 +7,9 @@
   django_app: app
   django_app_repository: ""
   django_app_template_repository: https://github.com/ojos/django-app-skel/zipball/master
-  django_user: "{{ xbuild_python_user }}"
-  django_group: "{{ xbuild_python_group }}"
+  django_app_name: core.wsgi
+  django_user: "{{ gunicorn_user }}"
+  django_group: "{{ gunicorn_group }}"
   django_install_packages:
     - Django
     - pytz
