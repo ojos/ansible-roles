@@ -30,6 +30,8 @@
   nginx_sendfile: "on"
   nginx_multi_accept: "on"
   nginx_resolver: 8.8.8.8
+  nginx_resolver_valid: 300s
+  nginx_resolver_timeout: 10s
   nginx_server_tokens: "off"
   nginx_default_type: application/octet-stream
   nginx_client_max_body_size: 4G

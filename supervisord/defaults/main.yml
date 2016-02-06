@@ -28,10 +28,6 @@
   supervisord_environment_variables:
     - value: "# supervisord"
       regexp: "^# supervisord$"
-    - value: "export SUPERVISORD_BIN={{ supervisord_bin_file }}"
-      regexp: "^export SUPERVISORD_BIN"
-    - value: "export SUPERVISORCTL_BIN={{ supervisord_control_bin_file }}"
-      regexp: "^export SUPERVISORCTL_BIN"
     - value: "export SUPERVISORD_PID={{ supervisord_pid_file }}"
       regexp: "^export SUPERVISORD_PID"
     - value: |

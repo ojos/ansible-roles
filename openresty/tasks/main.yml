@@ -199,11 +199,15 @@
   shell: >
     grep nameserver /etc/resolv.conf | awk '{print $2}'
   register: resolver
+  changed_when: false  
+  always_run: yes
+  when: ansible_distribution == 'Amazon'
 - name: Replace nginx http server resolver.
   replace: >
-    dest="{{ openresty_nginx_sub_conf_directory }}/http.conf"
-    replace="    resolver           {{ resolver.stdout }};"
-    regexp='^(\s+resolver\s+).+;'
+    dest="{{ nginx_sub_conf_directory }}/http.conf"
+    replace="\1{{ resolver.stdout }}"
+    regexp='(^\s+resolver\s+)\d+\.\d+\.\d+\.\d'
+  when: ansible_distribution == 'Amazon'
   become: yes
 
 - name: Copy current_time.lua.

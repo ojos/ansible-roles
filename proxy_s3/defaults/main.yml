@@ -1,7 +1,11 @@
 ---
-  proxy_s3_htpassword: '/etc/nginx/htpassword'
-  proxy_s3_bucket: 'vagrant'
-  proxy_s3_username: 'vagrant'
-  proxy_s3_password: 'vagrant'
-  proxy_s3_resolver_ip: '8.8.8.8'
-  proxy_s3_resolv_file: '/etc/resolv.conf'
+  proxy_s3_user: "{{ openresty_user }}"
+  proxy_s3_group: "{{ openresty_group }}"
+  proxy_s3_htpassword_file_name: 'htpassword'
+  proxy_s3_bucket: 'bucket_name'
+  proxy_s3_region: 'ap-northeast-1'
+  proxy_s3_auth_username: 'username'
+  proxy_s3_auth_password: 'password'
+  proxy_s3_nginx_conf_prefix: "{{ openresty_nginx_conf_prefix }}"
+  proxy_s3_nginx_sub_conf_directory: "{{ openresty_nginx_sub_conf_directory }}"
+  proxy_s3_nginx_client_max_body_size: "{{ openresty_nginx_client_max_body_size }}"

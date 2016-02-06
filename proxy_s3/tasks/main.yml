@@ -1,34 +1,31 @@
 ---
 - name: Stop nginx service.
-  command: >
-    service nginx stop
-- name: Change nginx.conf.
+  service: >
+    name=nginx
+    state=stopped
+  when: ansible_system == 'Linux'
+  become: yes
+
+- name: Replace http.server.conf.
   template: >
-    src=nginx.conf.tpl
-    dest={{ openresty_nginx_conf_dir }}/nginx.conf
-    owner=root
-    group=root
+    src=nginx.http.server.conf.tpl
+    dest={{ proxy_s3_nginx_sub_conf_directory }}/http.server.conf
+    owner="{{ proxy_s3_user }}"
+    group="{{ proxy_s3_group }}"
     mode=0644
-- name: Create replace_resolver.sh.
-  template: >
-    src=replace_resolver.sh.tpl
-    dest={{ openresty_nginx_conf_dir }}/replace_resolver.sh
-    owner=root
-    group=root
-    mode=0755
-- name: Exec replace_resolver.sh.
-  command: >
-    {{ openresty_nginx_conf_dir }}/replace_resolver.sh
+  become: yes
+
 - name: Install passlib.
-  pip: name=passlib
+  pip: >
+    name=passlib
+    state=latest
+  become: yes
+
 - name: Create htpassword.
   htpasswd: >
-    path="{{ proxy_s3_htpassword }}"
-    name="{{ proxy_s3_username }}"
-    password="{{ proxy_s3_password }}"
+    path="{{ proxy_s3_nginx_conf_prefix }}/{{ proxy_s3_htpassword_file_name }}"
+    name="{{ proxy_s3_auth_username }}"
+    password="{{ proxy_s3_auth_password }}"
     owner=root
     group=nginx
     mode=0640
-- name: Start nginx service.
-  command: >
-    service nginx start

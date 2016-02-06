@@ -41,7 +41,7 @@ def _ngx_reload(deamon, pid):
 
 @task
 def ngx(command):
-    """Nginxのラッパー"""
+    """Nginxサービスの起動/停止/再起動/リロード"""
     deamon = os.environ['NGINX_BIN']
     pid = os.path.exists(os.environ['NGINX_PID'])
 
@@ -54,6 +54,45 @@ def ngx(command):
     elif command == 'restart':
         _ngx_stop(deamon, pid)
         _ngx_start(deamon, pid)
+
+
+def _sv_start(deamon, ctl, conf, pid):
+    if os.path.exists(pid):
+        run('%s -c %s reload' % (ctl, conf))
+    else:
+        run('%s --configuration %s --pidfile %s' % (deamon, conf, pid))
+
+
+def _sv_stop(pid):
+    if os.path.exists(pid):
+        with open(pid, "r") as fh:
+            run('kill %s' % (fh.read().rstrip("\n")))
+
+
+def _sv_reload(deamon, ctl, conf, pid):
+    if os.path.exists(pid):
+        run('%s -c %s reload' % (ctl, conf))
+    else:
+        run('%s --configuration %s --pidfile %s' % (deamon, conf, pid))
+
+
+@task
+def sv(command):
+    """Supervisordサービスの起動/停止/再起動/リロード"""
+    deamon = 'supervisord'
+    ctl = 'supervisorctl'
+    conf = os.environ['SUPERVISORD_CONF']
+    pid = os.environ['SUPERVISORD_PID']
+
+    if command == 'start':
+        _sv_start(deamon, ctl, conf, pid)
+    elif command == 'stop':
+        _sv_stop(pid)
+    elif command == 'reload':
+        _sv_reload(deamon, ctl, conf, pid)
+    elif command == 'restart':
+        _sv_stop(pid)
+        _sv_start(deamon, ctl, conf, pid)
 
 
 @task
