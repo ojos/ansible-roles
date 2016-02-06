@@ -3,5 +3,13 @@
   become: no
   vars:
   tasks:
-    - name: debug
-      debug:
+    - name: Restart supervisord service.
+      service: >
+        name=supervisord
+        state=restarted
+      become: yes
+    - name: Restart nginx service.
+      service: >
+        name=nginx
+        state=restarted
+      become: yes
