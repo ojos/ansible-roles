@@ -19,6 +19,7 @@
     - environment: vagrant
       providers:
         - ec2
+        - s3
         - vpc_security_group
     - environment: develop
       providers:
@@ -42,11 +43,11 @@
         - vpc_security_group
     - environment: production
       providers:
-        - autoscalng
+        - autoscaling
         - ec2
-        - elasitccache
+        - elasticache
         - elb
-        - rds_
+        - rds_cluster
         - route53
         - s3
         - vpc
