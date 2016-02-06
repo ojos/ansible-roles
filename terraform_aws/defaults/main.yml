@@ -19,7 +19,6 @@
     - environment: vagrant
       providers:
         - ec2
-        - s3
         - vpc_security_group
     - environment: develop
       providers:
