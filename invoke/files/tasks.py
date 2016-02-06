@@ -41,7 +41,7 @@ def _ngx_reload(deamon, pid):
 
 @task
 def ngx(command):
-    """Nginxサービスの起動/停止/再起動/リロード"""
+    """Nginxのラッパー"""
     deamon = os.environ['NGINX_BIN']
     pid = os.path.exists(os.environ['NGINX_PID'])
 
@@ -189,8 +189,8 @@ def replace(path, replaces):
 @task
 def launch(env='vagrant', provider='aws'):
     """サーバー環境を起動する"""
-    plan(env, provider)
-    apply(env, provider)
+    tf('plan', env, provider)
+    tf('apply', env, provider)
 
     tfstate_path = '%s/%s/%s/terraform.tfstate' % (os.environ['TF_HOME'], provider, env)
     with open(tfstate_path, 'r') as tf_fh:

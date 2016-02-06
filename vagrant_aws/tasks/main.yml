@@ -38,12 +38,12 @@
   changed_when: false  
   always_run: yes
 
-- name: Remove tf file.
-  file: >
-    path="{{ vagrant_aws_terraform_directory }}/{{ item }}"
-    state=absent
-  when: item != 'ec2.tf' and item != 'config.tf' and item != 'vpc_security_group.tf'
-  with_items: terraform_vagrant_directory.stdout_lines
+# - name: Remove tf file.
+#   file: >
+#     path="{{ vagrant_aws_terraform_directory }}/{{ item }}"
+#     state=absent
+#   when: item != 'ec2.tf' and item != 'config.tf' and item != 'vpc_security_group.tf'
+#   with_items: terraform_vagrant_directory.stdout_lines
 
 - name: Copy ec2.tf.
   copy: >

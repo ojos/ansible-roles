@@ -28,12 +28,18 @@
   with_items: terraform_aws_environments
   when: terraform_aws_environments|length > 0
 
-- name: Remove README.md.
+- name: Remove tf file.
   file: >
-    path="{{ terraform_aws_directory }}/{{ item }}/README.md"
+    path="{{ vagrant_aws_terraform_directory }}/{{ item }}"
     state=absent
-  with_items: terraform_aws_environments
-  when: terraform_aws_environments|length > 0
+  when: item != 'ec2.tf' and item != 'config.tf' and item != 'vpc_security_group.tf'
+  with_items: terraform_vagrant_directory.stdout_lines
+# - name: Remove README.md.
+#   file: >
+#     path="{{ terraform_aws_directory }}/{{ item }}/README.md"
+#     state=absent
+#   with_items: terraform_aws_environments
+#   when: terraform_aws_environments|length > 0
 
 - name: Insert env in .envrc.
   lineinfile: >
