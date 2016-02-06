@@ -204,7 +204,7 @@
   when: ansible_distribution == 'Amazon'
 - name: Replace nginx http server resolver.
   replace: >
-    dest="{{ nginx_sub_conf_directory }}/http.conf"
+    dest="{{ openresty_nginx_sub_conf_directory }}/http.conf"
     replace="\1{{ resolver.stdout }}"
     regexp='(^\s+resolver\s+)\d+\.\d+\.\d+\.\d'
   when: ansible_distribution == 'Amazon'
