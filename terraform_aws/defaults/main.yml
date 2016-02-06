@@ -15,38 +15,42 @@
   terraform_aws_username: "$AWS_DEFAULT_USERNAME"
   terraform_aws_instance_type: "$AWS_DEFAULT_INSTANCE_TYPE"
   terraform_aws_ec2_ami: "$AWS_DEFAULT_EC2_AMI"
-  terraform_aws_dependent_template_file:
-    - vagrant:
-        - config.tf
-        - ec2.tf
-        - vpc_security_group.tf
-    - develop:
-        - config.tf
-        - elasitccache.tf
-        - elb.tf
-        - rds.tf
-        - route53.tf
-        - s3.tf
-        - vpc.tf
-        - vpc_security_group.tf
-    - staging:
-        - config.tf
-        - elasitccache.tf
-        - elb.tf
-        - rds.tf
-        - route53.tf
-        - s3.tf
-        - vpc.tf
-        - vpc_security_group.tf
-    - production:
-        - config.tf
-        - elasitccache.tf
-        - elb.tf
-        - rds_cluster.tf
-        - route53.tf
-        - s3.tf
-        - vpc.tf
-        - vpc_security_group.tf
+  terraform_aws_environment_templates:
+    - environment: vagrant
+      providers:
+        - ec2
+        - vpc_security_group
+    - environment: develop
+      providers:
+        - ec2
+        - elasitccache
+        - elb
+        - rds
+        - route53
+        - s3
+        - vpc
+        - vpc_security_group
+    - environment: staging
+      providers:
+        - ec2
+        - elasitccache
+        - elb
+        - rds
+        - route53
+        - s3
+        - vpc
+        - vpc_security_group
+    - environment: production
+      providers:
+        - autoscalng
+        - ec2
+        - elasitccache
+        - elb
+        - rds_
+        - route53
+        - s3
+        - vpc
+        - vpc_security_group
   terraform_aws_envrc_directory: "{{ terraform_envrc_directory }}"
   terraform_aws_environment_variables: 
     - value: "# terraform-aws"
