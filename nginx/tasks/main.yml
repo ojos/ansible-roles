@@ -189,8 +189,8 @@
 - name: Replace nginx http server resolver.
   replace: >
     dest="{{ nginx_sub_conf_directory }}/http.conf"
-    replace="\1{{ resolver.stdout }}"
-    regexp='(^\s+resolver\s+)\d+\.\d+\.\d+\.\d'
+    replace="\1           {{ resolver.stdout }}"
+    regexp='(^\s+resolver)           \d+\.\d+\.\d+\.\d'
   when: ansible_distribution == 'Amazon'
   become: yes
 

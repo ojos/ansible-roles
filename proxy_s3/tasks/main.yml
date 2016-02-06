@@ -23,7 +23,7 @@
 
 - name: Create htpassword.
   htpasswd: >
-    path="{{ proxy_s3_nginx_conf_prefix }}/{{ proxy_s3_htpassword_file_name }}"
+    path="{{ proxy_s3_nginx_sub_conf_directory }}/{{ proxy_s3_htpassword_file_name }}"
     name="{{ proxy_s3_auth_username }}"
     password="{{ proxy_s3_auth_password }}"
     owner="{{ proxy_s3_user }}"
