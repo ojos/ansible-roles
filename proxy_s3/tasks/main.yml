@@ -26,6 +26,7 @@
     path="{{ proxy_s3_nginx_conf_prefix }}/{{ proxy_s3_htpassword_file_name }}"
     name="{{ proxy_s3_auth_username }}"
     password="{{ proxy_s3_auth_password }}"
-    owner=root
-    group=nginx
+    owner="{{ proxy_s3_user }}"
+    group="{{ proxy_s3_group }}"
     mode=0640
+  become: yes
