@@ -14,7 +14,7 @@
     insertafter=EOF
     state=present
   with_items: crond_tasks
-  when: crond_tasks|length > 0
+  # when: crond_tasks|length > 0
 
 - name: Insert line break in crontab file.
   lineinfile: >
@@ -23,7 +23,6 @@
     insertafter=EOF
     state=present
   with_items: crond_tasks
-  when: crond_tasks|length > 0
 
 - name: Replace crontan.
   shell: >
