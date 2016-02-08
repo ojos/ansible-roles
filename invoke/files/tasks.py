@@ -130,17 +130,21 @@ def _update_ansible_roles():
     run(' && '.join(cmd_list))
 
 
-def _generate_bootstrap_command(action, env, hosts):
+def _generate_bootstrap_command(action, env, hosts, vars):
     private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
-    return './bootstrap -p ./%s.yml -i %s -o \'["-l %s", "--private-key %s.pem"]\'' % (
+    cmd = './bootstrap -p %s.yml -i %s -o \'["-l %s", "--private-key %s.pem"]\'' % (
         action, hosts, hosts, private_key)
+    if vars is not None:
+        cmd = '%s -v \'%s\'' % (cmd, vars)
+
+    return cmd
 
 
 @task
-def restart(env='vagrant', hosts='vagrant'):
+def restart(env='vagrant', hosts='vagrant', vars=None):
     """サーバーを再起動する"""
     _update_ansible_roles()
-    restart_cmd = _generate_bootstrap_command('restart', env, hosts)
+    restart_cmd = _generate_bootstrap_command('restart', env, hosts, vars)
     cmd_list = [
         'cd %s' % os.environ['ANSIBLE_HOME'],
         restart_cmd
@@ -149,10 +153,10 @@ def restart(env='vagrant', hosts='vagrant'):
 
 
 @task
-def deploy(env='vagrant', hosts='vagrant'):
+def deploy(env='vagrant', hosts='vagrant', vars=None):
     """デプロイ&再起動する"""
     _update_ansible_roles()
-    deploy_cmd = _generate_bootstrap_command('deploy', env, hosts)
+    deploy_cmd = _generate_bootstrap_command('deploy', env, hosts, vars)
     cmd_list = [
         'cd %s' % os.environ['ANSIBLE_HOME'],
         deploy_cmd
@@ -162,10 +166,10 @@ def deploy(env='vagrant', hosts='vagrant'):
 
 
 @task
-def buildout(env='vagrant', hosts='vagrant'):
+def buildout(env='vagrant', hosts='vagrant', vars=None):
     """システム環境構築する"""
     _update_ansible_roles()
-    buildout_cmd = _generate_bootstrap_command('buildout', env, hosts)
+    buildout_cmd = _generate_bootstrap_command('buildout', env, hosts, vars)
     cmd_list = [
         'cd %s' % os.environ['ANSIBLE_HOME'],
         buildout_cmd

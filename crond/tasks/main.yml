@@ -1,0 +1,39 @@
+---
+- name: Create crontab file.
+  file: >
+    state=touch
+    path={{ ansible_user_dir }}/crontab
+    owner={{ ansible_user_uid }}
+    group={{ ansible_user_gid }}
+    mode=0644
+
+- name: Insert tasks in crontab file.
+  lineinfile: >
+    dest={{ ansible_user_dir }}/crontab
+    line="{{ item }}"
+    insertafter=EOF
+    state=present
+  with_items: crond_tasks
+  when: crond_tasks|length > 0
+
+- name: Insert line break in crontab file.
+  lineinfile: >
+    dest={{ ansible_user_dir }}/crontab
+    line=""
+    insertafter=EOF
+    state=present
+  with_items: crond_tasks
+  when: crond_tasks|length > 0
+
+- name: Replace crontan.
+  shell: >
+    /usr/bin/crontab {{ ansible_user_dir }}/crontab
+  args:
+    chdir: "{{ ansible_user_dir }}"
+  become: yes
+  become_user: "{{ crond_task_user }}"
+
+- name: Remove crontab file.
+  file: >
+    state=absent
+    path={{ ansible_user_dir }}/crontab
