@@ -1,4 +1,17 @@
 ---
+- name: crontab file.
+  stat: >
+    path="{{ ansible_user_dir }}/crontab"
+  register: crontab_file
+  changed_when: no
+  always_run: yes
+- name: Remove old file.
+  file: >
+    state=absent
+    path={{ ansible_user_dir }}/crontab
+  become: yes
+  when: crontab_file.stat.exists
+
 - name: Create crontab file.
   file: >
     state=touch
