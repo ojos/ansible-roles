@@ -1,6 +1,7 @@
 ---
   openresty_luarocks_version: 2.3.0
   openresty_luarocks_src_directory: "{{ openresty_src_directory }}"
+  openresty_luarocks_force_install: no
   openresty_luarocks_remove_src_directory: no
   openresty_luarocks_user: "{{ openresty_user }}"
   openresty_luarocks_group: "{{ openresty_group }}"
