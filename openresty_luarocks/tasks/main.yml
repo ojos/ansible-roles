@@ -6,24 +6,12 @@
     copy=no
   become: yes
 
-- name: Make file.
-  stat: >
-    path="{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}/Makefile"
-  register: make_file
-  changed_when: no
-  always_run: yes
-
-- name: debug.
-  debug: >
-    msg="{{ openresty_luarocks_configure_options }}"
-
 - name: Configure luarocks source.
   shell: >
     ./configure {{ openresty_luarocks_configure_options }}
   args:
     chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
   become: yes
-  when: not make_file.stat.exists or openresty_luarocks_force_install
 
 - name: Made file.
   stat: >
