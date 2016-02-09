@@ -29,7 +29,7 @@ server {
             local woothee = require "resty.woothee"
             local r = woothee.parse(ngx.var.http_user_agent)
 
-            for _,v in pairs({{ proxy_s3_ignore_auth_user_agents|join(', ') }}) do
+            for _,v in pairs({"{{ proxy_s3_ignore_auth_user_agents|join('", "') }}"}) do
               if r.name == v then
                 return
               end
