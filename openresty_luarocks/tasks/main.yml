@@ -12,6 +12,11 @@
   register: make_file
   changed_when: no
   always_run: yes
+
+- name: debug.
+  debug: >
+    msg="{{ openresty_luarocks_configure_options }}"
+
 - name: Configure luarocks source.
   shell: >
     ./configure {{ openresty_luarocks_configure_options }}
