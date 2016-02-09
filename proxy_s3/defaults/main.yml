@@ -9,6 +9,10 @@
   proxy_s3_nginx_conf_prefix: "{{ openresty_nginx_conf_prefix }}"
   proxy_s3_nginx_sub_conf_directory: "{{ openresty_nginx_sub_conf_directory }}"
   proxy_s3_nginx_client_max_body_size: "{{ openresty_nginx_client_max_body_size }}"
+  proxy_s3_ignore_auth_user_agents:
+    - 'facebook'
+    - 'twitter'
   proxy_s3_luarocks_bin_file:  "{{ openresty_luarocks_bin_file }}"
   proxy_s3_luarocks_install_packages:
     - https://raw.githubusercontent.com/toritori0318/lua-resty-woothee/master/lua-resty-woothee-dev-1.rockspec
+  proxy_s3_
