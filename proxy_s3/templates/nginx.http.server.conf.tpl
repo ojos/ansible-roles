@@ -29,6 +29,8 @@ server {
             local woothee = require "resty.woothee"
             local r = woothee.parse(ngx.var.http_user_agent)
 
+            ngx.log(ngx.ERR, 'filename : ' .. string.gsub(ngx.var.request_uri, "(./)(.)(%?.*)", "%2"))
+
             for _,v in pairs({"{{ proxy_s3_ignore_auth_user_agents|join('", "') }}"}) do
               if r.name == v then
                 return
