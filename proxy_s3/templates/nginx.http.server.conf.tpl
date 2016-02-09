@@ -26,7 +26,7 @@ server {
         ';
 
         access_by_lua '
-            if ngx.var.remote_user == "smallfish" and ngx.var.remote_passwd == "12" then
+            if ngx.var.remote_user == "{{ proxy_s3_auth_username }}" and ngx.var.remote_passwd == "{{ proxy_s3_auth_password }}" then
                 return
             end
             ngx.header.www_authenticate = [[Basic realm="Restricted"]]

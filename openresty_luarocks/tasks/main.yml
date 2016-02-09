@@ -46,6 +46,7 @@
   args:
     chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
   become: yes
+  become_user: "{{ openresty_luarocks_user }}"
   when: not bin_file.stat.exists or openresty_luarocks_force_install
 
 - name: Remove source directory.
