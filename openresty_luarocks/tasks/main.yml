@@ -6,12 +6,19 @@
     copy=no
   become: yes
 
+- name: config.unix file.
+  stat: >
+    path="{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}/Makefile"
+  register: config_unix_file
+  changed_when: no
+  always_run: yes
 - name: Configure luarocks source.
   shell: >
     ./configure {{ openresty_luarocks_configure_options }}
   args:
     chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
   become: yes
+  when: not config_unix_file.stat.exists or openresty_luarocks_force_install
 
 - name: Made file.
   stat: >
@@ -36,7 +43,7 @@
 
 - name: Binary file.
   stat: >
-    path={{ openresty_luarocks_luajit_prefix }}/bin/luarocks
+    path={{ openresty_luarocks_prefix }}/bin/luarocks
   register: bin_file
   changed_when: no
   always_run: yes
