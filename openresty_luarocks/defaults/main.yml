@@ -11,4 +11,4 @@
     --prefix={{ openresty_luarocks_prefix }}
     --with-lua={{ openresty_luarocks_prefix }}/
     --lua-suffix={{ openresty_luarocks_lua_suffix }}
-    --with-lua-include={{ openresty_luarocks_luajit_prefix }}/include/luajit-2.1
+    --with-lua-include={{ openresty_luarocks_prefix }}/include/luajit-2.1
