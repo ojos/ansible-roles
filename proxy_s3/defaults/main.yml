@@ -12,6 +12,7 @@
   proxy_s3_ignore_auth_user_agents:
     - 'facebook'
     - 'twitter'
+  proxy_s3_ignore_auth_extensions: []
   proxy_s3_luarocks_bin_file:  "{{ openresty_luarocks_bin_file }}"
   proxy_s3_luarocks_install_packages:
     - https://raw.githubusercontent.com/toritori0318/lua-resty-woothee/master/lua-resty-woothee-dev-1.rockspec
