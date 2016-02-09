@@ -56,13 +56,13 @@
   shell: >
     /usr/bin/make install
   args:
-    chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ luarocks_version }}"
+    chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
   become: yes
-  when: not bin_file.stat.exists or luarocks_force_install
+  when: not bin_file.stat.exists or openresty_luarocks_force_install
 
 - name: Remove source directory.
   file: >
-    path="{{ openresty_luarocks_src_directory }}/luarocks-{{ luarocks_version }}"
+    path="{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
     state=absent
   become: yes
-  when: luarocks_nginx_remove_src_directory
+  when: openresty_luarocks_remove_src_directory
