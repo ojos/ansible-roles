@@ -10,4 +10,4 @@
     --prefix={{ openresty_luarocks_luajit_prefix }}
     --with-lua={{ openresty_luarocks_luajit_prefix }}
     --lua-suffix=jit
-    --with-lua-include="{{ openresty_luarocks_luajit_prefix }}/include/luajit-2.1"
+    --with-lua-include={{ openresty_luarocks_luajit_prefix }}/include/luajit-2.1
