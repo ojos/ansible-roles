@@ -10,21 +10,6 @@ server {
     }
 
     location / {
-        rewrite_by_lua '
-            local dir, file, param = string.match(ngx.var.request_uri, "(.*/)([^?]*)(%??.*)")
-            if file == "" then
-                ngx.req.set_uri(dir .. "index.html", false)
-            end
-        ';
-
-<!--             access_by_lua '
-            auth_header = ngx.req.get_headers().authorization
-            if not auth_header or auth_header == '' or not string.match(auth_header, '^[Bb]asic ') then
-                ngx.header['WWW-Authenticate'] = 'Restricted'
-                ngx.exit(ngx.HTTP_UNAUTHORIZED)
-            end
-        '; -->
-
         set_by_lua $orgn '
             local origin = ngx.req.get_headers()["origin"]
             if origin == nil then
@@ -32,6 +17,22 @@ server {
             end
             return origin
         ';
+
+        rewrite_by_lua '
+            local dir, file, param = string.match(ngx.var.request_uri, "(.*/)([^?]*)(%??.*)")
+            if file == "" then
+                ngx.req.set_uri(dir .. "index.html", false)
+            end
+        ';
+
+        access_by_lua '
+            if ngx.var.remote_user == "smallfish" and ngx.var.remote_passwd == "12" then
+                return
+            end
+            ngx.header.www_authenticate = [[Basic realm="Restricted"]]
+            ngx.exit(401)
+        ';
+
 
         set $s3_bucket "{{ proxy_s3_bucket }}.s3-{{ proxy_s3_region }}.amazonaws.com";
 
@@ -50,8 +51,8 @@ server {
 
         proxy_pass https://$s3_bucket;
 
-        auth_basic "Restricted";
-        auth_basic_user_file "{{ proxy_s3_nginx_sub_conf_directory }}/{{ proxy_s3_htpassword_file_name }}";
+        # auth_basic "Restricted";
+        # auth_basic_user_file "{{ proxy_s3_nginx_sub_conf_directory }}/{{ proxy_s3_htpassword_file_name }}";
 
         if ($request_method = OPTIONS ) {
             add_header Access-Control-Allow-Origin *;
