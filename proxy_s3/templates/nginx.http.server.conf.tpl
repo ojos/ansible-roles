@@ -30,15 +30,17 @@ server {
             local r = woothee.parse(ngx.var.http_user_agent)
 
             for _,v in pairs({"{{ proxy_s3_ignore_auth_user_agents|join('", "') }}"}) do
-              if r.name == v and r.category == 'crawler' then
+              if r.name == v and r.category == "crawler" then
                 return
               end
             end
 
-            ext, i = string.gsub(request_uri, "(.*/)([^?.]*)%.?(%w*)%??(.*)", "%3")
-            for _,v in pairs({"{{ proxy_s3_ignore_auth_extensions|join('", "') }}"}) do
-              if ext == v then
-                return
+            ext, i = string.gsub(ngx.var.request_uri, "(.*/)([^?.]*)%.?(%w*)%??(.*)", "%3")
+            if ext ~= "" then
+              for _,v in pairs({"{{ proxy_s3_ignore_auth_extensions|join('", "') }}"}) do
+                if ext == v then
+                  return
+                end
               end
             end
 
