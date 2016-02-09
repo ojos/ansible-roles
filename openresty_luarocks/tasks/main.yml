@@ -19,9 +19,9 @@
   register: made_file
   changed_when: no
   always_run: yes
-- name: Make luarocks.
+- name: Build luarocks.
   shell: >
-    /usr/bin/make
+    /usr/bin/make build
   args:
     chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
   become: yes
