@@ -1,49 +1,47 @@
 ---
-- name: Stop supervisord service.
-  service: >
-    name=supervisord
-    state=stopped
-- name: Install celery in pip.
-  command: >
-    {{ xbuild_python_install_dir_prefix }}/bin/pip install celery
-- name: Create celery user.
-  user: >
-    name="{{ celery_user }}"
-    shell=/bin/false
-    system=yes
-    home="{{ celery_user_home }}"
-    createhome=no
-  ignore_errors: True
-- name: Create celery conf directory.
+- name: Install celery packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: celery_install_packages
+  environment:
+    PATH: "{{ celery_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: celery_install_packages|length > 0
+
+- name: Create gunicorn conf directory.
   file: >
-    path="{{ celery_conf_dir }}"
+    path="{{ celery_conf_directory }}"
     state=directory
     owner="{{ celery_user }}"
-    group="{{ celery_user }}"
+    group="{{ celery_group }}"
     mode=0755
-- name: Create celery log directory.
-  file: >
-    path="{{ celery_log_dir }}"
-    state=directory
-    owner="{{ celery_user }}"
-    group="{{ celery_user }}"
-    mode=0755
-- name: Create celery pid directory.
-  file: >
-    path="{{ celery_pid_dir }}"
-    state=directory
-    owner="{{ celery_user }}"
-    group="{{ celery_user }}"
-    mode=0755
+  become: yes
 - name: Create celery config file.
   template: >
-    src=celery.tpl
-    dest="{{ celery_conf_dir }}/{{ celery_conf_file }}"
+    src=celery.conf.tpl
+    dest="{{ celery_conf_directory }}/{{ celery_conf_file_name }}"
     owner="{{ celery_user }}"
-    group="{{ celery_user }}"
+    group="{{ celery_group }}"
     mode=0644
-- name: Start supervisord service.
+- name: Create celery log directory.
+  file: >
+    path="{{ celery_log_directory }}"
+    state=directory
+    owner="{{ celery_user }}"
+    group="{{ celery_group }}"
+    mode=0755
+  become: yes
+- name: Create gunicorn pid directory.
+  file: >
+    path="{{ celery_pid_directory }}"
+    state=directory
+    owner="{{ celery_user }}"
+    group="{{ celery_group }}"
+    mode=0755
+  become: yes
+
+- name: Reload supervisord service.
   service: >
     name=supervisord
-    state=started
-    enabled=yes
+    state=reloaded
+  when: ansible_system == 'Linux'
