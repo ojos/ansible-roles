@@ -6,6 +6,14 @@
   when: ansible_system == 'Linux'
   become: yes
 
+- name: Install luarocks packages.
+  shell: >
+    {{ proxy_s3_luarocks_bin_file }} install {{ item }}
+  with_items: proxy_s3_luarocks_install_packages
+  when: proxy_s3_luarocks_install_packages|length > 0
+  become: yes
+  become_user: "{{ proxy_s3_user }}"
+
 - name: Replace http.server.conf.
   template: >
     src=nginx.http.server.conf.tpl
@@ -15,18 +23,18 @@
     mode=0644
   become: yes
 
-- name: Install passlib.
-  pip: >
-    name=passlib
-    state=latest
-  become: yes
+# - name: Install passlib.
+#   pip: >
+#     name=passlib
+#     state=latest
+#   become: yes
 
-- name: Create htpassword.
-  htpasswd: >
-    path="{{ proxy_s3_nginx_sub_conf_directory }}/{{ proxy_s3_htpassword_file_name }}"
-    name="{{ proxy_s3_auth_username }}"
-    password="{{ proxy_s3_auth_password }}"
-    owner="{{ proxy_s3_user }}"
-    group="{{ proxy_s3_group }}"
-    mode=0640
-  become: yes
+# - name: Create htpassword.
+#   htpasswd: >
+#     path="{{ proxy_s3_nginx_sub_conf_directory }}/{{ proxy_s3_htpassword_file_name }}"
+#     name="{{ proxy_s3_auth_username }}"
+#     password="{{ proxy_s3_auth_password }}"
+#     owner="{{ proxy_s3_user }}"
+#     group="{{ proxy_s3_group }}"
+#     mode=0640
+#   become: yes

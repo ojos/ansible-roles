@@ -45,9 +45,9 @@
     /usr/bin/make install
   args:
     chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
+  when: not bin_file.stat.exists or openresty_luarocks_force_install
   become: yes
   become_user: "{{ openresty_luarocks_user }}"
-  when: not bin_file.stat.exists or openresty_luarocks_force_install
 
 - name: Remove source directory.
   file: >
@@ -55,3 +55,21 @@
     state=absent
   become: yes
   when: openresty_luarocks_remove_src_directory
+
+- name: Change luajit directory owner.
+  file: >
+    path="{{ openresty_luarocks_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ openresty_luarocks_user }}"
+    group="{{ openresty_luarocks_group }}"
+  become: yes
+
+- name: Install luarocks packages.
+  shell: >
+    {{ openresty_luarocks_bin_file }} install {{ item }}
+  with_items: openresty_luarocks_install_packages
+  when: openresty_luarocks_install_packages|length > 0
+  become: yes
+  become_user: "{{ openresty_luarocks_user }}"
+

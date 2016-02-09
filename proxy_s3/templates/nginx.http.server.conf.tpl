@@ -26,6 +26,13 @@ server {
         ';
 
         access_by_lua '
+            local woothee = require "resty.woothee"
+            local r = woothee.parse(ngx.var.http_user_agent)
+
+            if r.name == "facebook" or r.name == "twitter" then
+                return
+            end
+
             if ngx.var.remote_user == "{{ proxy_s3_auth_username }}" and ngx.var.remote_passwd == "{{ proxy_s3_auth_password }}" then
                 return
             end
