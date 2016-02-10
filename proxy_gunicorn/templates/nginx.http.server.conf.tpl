@@ -17,6 +17,20 @@ server {
     root {{ proxy_gunicorn_static_dir }};
 
     location / {
+        # set $redirect "";
+        # if ($http_x_forwarded_proto != "https") {
+        #     set $redirect "1";
+        # }
+        # if ($http_user_agent !~* ELB-HealthChecker) {
+        #     set $redirect "${redirect}1";
+        # }
+        # if ($http_host ~ "{{ proxy_gunicorn_redirect_https_host }}") {
+        #     set $redirect "${redirect}1";
+        # }
+        # if ($redirect = "111") {
+        #     rewrite ^ https://$host$request_uri? permanent;
+        # }
+
         try_files $uri @proxy_to_app;
         break;
     }
