@@ -22,6 +22,7 @@
     repo="{{ xbuild_ansible_roles_repository }}"
     dest="{{ xbuild_ansible_directory }}/roles"
     update=yes
+    force=yes
     track_submodules=yes
     accept_hostkey=yes
   when: xbuild_ansible_roles_repository != ''

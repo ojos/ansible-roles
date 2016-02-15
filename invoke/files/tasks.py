@@ -122,6 +122,13 @@ def unittest(options=''):
     pass
 
 
+@task
+def ssh(env='vagrant', host='vagrant'):
+    cmd = 'ssh -F %(key_dir)s/ssh_config -i %(key_dir)s/%(env)s.pem %(host)s' % {
+        'key_dir': os.environ['KEY_HOME'], 'env': env, 'host': host}
+    run(cmd, pty=True)
+
+
 def _update_ansible_roles():
     cmd_list = [
         'cd %s/roles' % os.environ['ANSIBLE_HOME'],
