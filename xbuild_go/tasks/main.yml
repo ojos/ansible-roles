@@ -21,7 +21,7 @@
     group={{ xbuild_go_group }}
   become: yes
 
-name: Insert env in .envrc.
+- name: Insert env in .envrc.
   lineinfile: >
     dest={{ xbuild_go_envrc_directory }}/.envrc
     line="{{ item.value }}"
