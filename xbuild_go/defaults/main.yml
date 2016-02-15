@@ -5,5 +5,12 @@
   xbuild_go_os: linux
   xbuild_go_arch: amd64
   xbuild_go_install_directory: "{{ project_directory }}/go"
+  xbuild_go_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_go_remove_xbuild: yes
+  xbuild_go_environment_variables:
+    - value: "# go"
+      regexp: "^# go$"
+    - value: |
+        export PATH=$PROJECT_HOME/go/bin:$PATH
 
+      regexp: PATH=\$PROJECT_HOME/go/bin\:\$PATH

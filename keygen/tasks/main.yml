@@ -8,6 +8,7 @@
     group={{ keygen_group }}
     mode=0755
   become: yes
+  when: keygen_environments|length > 0
 
 - name: Generate ssh key.
   command: >
@@ -23,6 +24,7 @@
   register: ssh_config
   changed_when: no
   always_run: yes
+  when: keygen_environments|length > 0
 - name: Touch ssh_config.
   file: >
     path="{{ keygen_key_directory }}/ssh_config"
@@ -30,7 +32,7 @@
     owner={{ keygen_user }}
     group={{ keygen_group }}
     mode=0644
-  when: not ssh_config.stat.exists
+  when: not ssh_config.stat.exists and keygen_environments|length > 0
 
 - name: Insert hosts in ssh_config.
   lineinfile: >
