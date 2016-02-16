@@ -17,6 +17,11 @@ server {
     root {{ proxy_gunicorn_static_dir }};
 
     location / {
+        try_files $uri @proxy_to_app;
+        break;
+    }
+
+    location @proxy_to_app {
         # set $redirect "";
         # if ($http_x_forwarded_proto != "https") {
         #     set $redirect "1";
@@ -31,11 +36,6 @@ server {
         #     rewrite ^ https://$host$request_uri? permanent;
         # }
 
-        try_files $uri @proxy_to_app;
-        break;
-    }
-
-    location @proxy_to_app {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_redirect off;
