@@ -23,7 +23,7 @@
     - environment: develop
       providers:
         - ec2
-        - elasitccache
+        - elasitcache
         - elb
         - rds
         - route53
@@ -33,7 +33,7 @@
     - environment: staging
       providers:
         - ec2
-        - elasitccache
+        - elasitcache
         - elb
         - rds
         - route53
@@ -44,7 +44,7 @@
       providers:
         - autoscaling
         - ec2
-        - elasticache
+        - elasitcache
         - elb
         - rds_cluster
         - route53
