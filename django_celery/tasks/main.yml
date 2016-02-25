@@ -1,0 +1,36 @@
+---
+- name: Install django packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: django_celery_install_packages
+  environment:
+    PATH: "{{ django_celery_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: django_celery_install_packages|length > 0
+
+- name: Create celery log directory.
+  file: >
+    path="{{ django_celery_log_directory }}"
+    state=directory
+    owner="{{ django_celery_user }}"
+    group="{{ django_celery_group }}"
+    mode=0755
+  become: yes
+
+- name: Create celery pid directory.
+  file: >
+    path="{{ django_celery_pid_directory }}"
+    state=directory
+    owner="{{ django_celery_user }}"
+    group="{{ django_celery_group }}"
+    mode=0755
+  become: yes
+
+- name: Create supervisord process conf file.
+  template: >
+    src=django_celery.conf.tpl
+    dest={{ supervisord_include_conf_directory }}/django_celery.conf
+    owner="{{ django_celery_user }}"
+    group="{{ django_celery_group }}"
+    mode=0644
+  become: yes

@@ -74,6 +74,25 @@
     group={{ django_group }}
   become: yes
 
+- name: Create django log directory.
+  file: >
+    path="{{ django_log_directory }}"
+    state=directory
+    owner="{{ django_user }}"
+    group="{{ django_group }}"
+    mode=0755
+  become: yes
+
+- name: Create django db directory.
+  file: >
+    path="{{ django_db_directory }}"
+    state=directory
+    owner="{{ django_user }}"
+    group="{{ django_group }}"
+    mode=0755
+  when: django_db_directory != ''
+  become: yes
+
 - name: Create supervisord process conf file.
   template: >
     src=django.conf.tpl

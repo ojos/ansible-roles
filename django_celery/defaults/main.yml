@@ -1,0 +1,15 @@
+---
+  django_celery_python_bin_directory: "{{ django_python_bin_directory }}"
+  django_celery_user: "{{ django_user }}"
+  django_celery_group: "{{ django_group }}"
+  django_celery_log_directory: "{{ project_directory }}/log/celery"
+  django_celery_pid_directory: "{{ project_directory }}/run/celery"
+  django_celery_worker_log_file_name: worker.log
+  django_celery_worker_pid_file_name: worker.pid
+  django_celery_worker_pool_class: gevent
+  django_celery_worker_autoscale: 10,3
+  django_celery_beat_log_file_name: beat.log
+  django_celery_beat_pid_file_name: beat.pid
+  django_celery_install_packages:
+    - gevent
+    - django-celery

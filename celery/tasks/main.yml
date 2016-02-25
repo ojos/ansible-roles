@@ -8,7 +8,7 @@
     PATH: "{{ celery_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: celery_install_packages|length > 0
 
-- name: Create gunicorn conf directory.
+- name: Create celery conf directory.
   file: >
     path="{{ celery_conf_directory }}"
     state=directory
@@ -31,7 +31,7 @@
     group="{{ celery_group }}"
     mode=0755
   become: yes
-- name: Create gunicorn pid directory.
+- name: Create celery pid directory.
   file: >
     path="{{ celery_pid_directory }}"
     state=directory
