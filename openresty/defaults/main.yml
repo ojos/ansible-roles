@@ -37,8 +37,8 @@
   openresty_nginx_default_type: application/octet-stream
   openresty_nginx_client_max_body_size: 4G
   openresty_dependent_packages:
-    - pcre-devel
     - openssl-devel
+    - pcre-devel
   openresty_configure_options: >-
     --prefix={{ openresty_nginx_prefix }}
     --user={{ openresty_user }}

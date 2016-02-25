@@ -37,6 +37,7 @@
   nginx_client_max_body_size: 4G
   nginx_dependent_packages:
     - openssl-devel
+    - pcre-devel
   nginx_configure_options: >-
     --prefix={{ nginx_prefix }}
     --user={{ nginx_user }}
