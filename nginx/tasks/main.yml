@@ -61,7 +61,7 @@
   always_run: yes
 - name: Make nginx.
   shell: >
-    /usr/bin/make
+    {{ nginx_make_bin_file }}
   args:
     chdir: "{{ nginx_src_directory }}/nginx-{{ nginx_version }}"
   become: yes
