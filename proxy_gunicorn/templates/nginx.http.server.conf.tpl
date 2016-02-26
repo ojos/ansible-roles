@@ -22,19 +22,19 @@ server {
     }
 
     location @proxy_to_app {
-        # set $redirect "";
-        # if ($http_x_forwarded_proto != "https") {
-        #     set $redirect "1";
-        # }
-        # if ($http_user_agent !~* ELB-HealthChecker) {
-        #     set $redirect "${redirect}1";
-        # }
-        # if ($http_host ~ "{{ proxy_gunicorn_redirect_https_host }}") {
-        #     set $redirect "${redirect}1";
-        # }
-        # if ($redirect = "111") {
-        #     rewrite ^ https://$host$request_uri? permanent;
-        # }
+        set $redirect "";
+        if ($http_x_forwarded_proto != "https") {
+            set $redirect "1";
+        }
+        if ($http_user_agent !~* ELB-HealthChecker) {
+            set $redirect "${redirect}1";
+        }
+        if ($http_host ~ "{{ proxy_gunicorn_redirect_https_host }}") {
+            set $redirect "${redirect}1";
+        }
+        if ($redirect = "111") {
+            rewrite ^ https://$host$request_uri? permanent;
+        }
 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
