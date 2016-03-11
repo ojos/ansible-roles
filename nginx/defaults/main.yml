@@ -1,5 +1,5 @@
 ---
-  nginx_version: 1.9.10
+  nginx_version: 1.9.12
   nginx_src_directory: /usr/local/src
   nginx_remove_src_directory: no
   nginx_user: nginx
