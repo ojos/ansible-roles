@@ -56,7 +56,7 @@
   always_run: yes
 - name: Configure nginx source.
   shell: >
-    ./configure {{ nginx_upload_configure_options }} --add-module={{ nginx_upload_src_directory }}/{{ nginx_upload_module_name }}
+    ./configure {{ nginx_upload_configure_options }} --add-module={{ nginx_upload_src_directory }}/{{ nginx_upload_module_name }} --with-md5=/usr/local/Cellar/openssl/1.0.2e_1/include/openssl
   args:
     chdir: "{{ nginx_upload_src_directory }}/nginx-{{ nginx_upload_version }}"
   become: yes
