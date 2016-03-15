@@ -1,0 +1,8 @@
+---
+  nginx_build_user: "{{ xbuild_go_user }}"
+  nginx_build_group: "{{ xbuild_go_group }}"
+  nginx_build_dependent_packages:
+    - wget
+  nginx_build_repository: github.com/cubicdaiya/nginx-build
+  nginx_build_install_directory: "{{ xbuild_go_install_directory }}"
+  nginx_build_bin_directory: "{{ nginx_build_install_directory }}/bin"

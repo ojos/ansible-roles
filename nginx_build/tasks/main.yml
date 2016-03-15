@@ -1,0 +1,22 @@
+---
+- name: Install dependent packages(RedHat).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  become: yes
+  with_items: nginx_build_dependent_packages
+  when: ansible_os_family == 'RedHat' and nginx_build_dependent_packages|length > 0
+- name: Install dependent packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: nginx_build_dependent_packages
+  when: ansible_os_family == 'Darwin' and nginx_build_dependent_packages|length > 0
+
+- name: Install nginx_build.
+  shell: >
+    go get -u {{ nginx_build_repository }}
+  environment:
+    PATH: "{{ nginx_build_bin_directory }}:{{ ansible_env.PATH }}"
+    GOPATH: "{{ nginx_build_install_directory }}"

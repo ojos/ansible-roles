@@ -10,7 +10,9 @@
   xbuild_go_environment_variables:
     - value: "# go"
       regexp: "^# go$"
-    - value: |
-        export PATH=$PROJECT_HOME/go/bin:$PATH
-
+    - value: "export PATH=$PROJECT_HOME/go/bin:$PATH"
       regexp: PATH=\$PROJECT_HOME/go/bin\:\$PATH
+    - value: |
+        export GOPATH=$PROJECT_HOME/go
+
+      regexp: GOPATH=\$PROJECT_HOME/go
