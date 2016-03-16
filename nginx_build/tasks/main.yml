@@ -19,4 +19,5 @@
     go get -u {{ nginx_build_repository }}
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ ansible_env.PATH }}"
+    GOROOT: "{{ nginx_build_install_directory }}"
     GOPATH: "{{ nginx_build_install_directory }}"
