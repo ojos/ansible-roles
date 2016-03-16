@@ -20,3 +20,11 @@
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ ansible_env.PATH }}"
     GOROOT: "{{ nginx_build_install_directory }}"
+    GOPATH: "{{ nginx_build_install_directory }}"
+
+- name: Install nginx.
+  shell: >
+    nginx-build -d {{ project_directory }}/work -openssl
+  environment:
+    PATH: "{{ nginx_build_bin_directory }}:{{ ansible_env.PATH }}"
+
