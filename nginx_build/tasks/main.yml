@@ -26,5 +26,5 @@
   shell: >
     nginx-build -d {{ project_directory }}/work -openssl
   environment:
-    PATH: "{{ nginx_build_bin_directory }}:{{ ansible_env.PATH }}"
+    PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
 
