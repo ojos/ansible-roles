@@ -45,7 +45,7 @@
 
 - name: Source Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep openresty
+    find . -maxdepth 2 -type d | grep {{ nginx_build_type }}
   args:
     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}"
   register: source_dir
