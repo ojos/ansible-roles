@@ -136,7 +136,7 @@
 - name: Create global.conf.
   template: >
     src=nginx.global.conf.tpl
-    dest="{{ conf_dir.stdout }}}/conf.d/global.conf"
+    dest="{{ conf_dir.stdout }}/conf.d/global.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
