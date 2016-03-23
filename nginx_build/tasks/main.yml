@@ -53,7 +53,7 @@
   shell: >
     {{ nginx_build_make_bin_file }} install
   args:
-    chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}/{{ source_dir }}"
+    chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}/{{ source_dir.stdout }}"
   become: yes
 
 - name: Remove work directory.
