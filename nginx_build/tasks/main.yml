@@ -66,6 +66,10 @@
   args:
     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}"
   register: source_dir
+
+- name: debug.
+  debug: msg="{{ source_dir.stdout }}"
+
 - name: Make and Install.
   shell: >
     {{ nginx_build_make_bin_file }} install
@@ -197,6 +201,13 @@
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: sbin_dir
+
+- name: logs Directory.
+  shell: >
+    find . -maxdepth 2 -type d | grep logs | pwd
+  args:
+    chdir: "{{ nginx_build_prefix }}"
+  register: logs_dir
 
 # - name: Create nginx service file.
 #   template: >
