@@ -61,7 +61,6 @@
     path="{{ nginx_build_work_directory }}"
     state=absent
   become: yes
-  when: nginx_build_work_directory
 
 - name: html Directory.
   shell: >
