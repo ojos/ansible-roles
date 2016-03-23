@@ -133,6 +133,7 @@
     group="{{ nginx_build_group }}"
     mode=0755
   become: yes
+
 - name: Create global.conf.
   template: >
     src=nginx.global.conf.tpl
@@ -149,6 +150,14 @@
     group="{{ nginx_build_group }}"
     mode=0644
   become: yes
+- name: Remove commentout in http.conf.
+  lineinfile: >
+    dest="{{ conf_dir.stdout }}/conf.d/http.conf"
+    line="\1\2"
+    insertafter=EOF
+    state=present
+    regexp="^(\s+)# (include*+)$"
+
 - name: Create http.server.conf.
   template: >
     src=nginx.http.server.conf.tpl
@@ -157,6 +166,27 @@
     group="{{ nginx_build_group }}"
     mode=0644
   become: yes
+- name: Remove commentout in http.server.conf(1).
+  lineinfile: >
+    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
+    line="\1\2"
+    insertafter=EOF
+    state=present
+    regexp="^(\s+)# (location*+)$"
+- name: Remove commentout in http.server.conf(2).
+  lineinfile: >
+    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
+    line="\1\2"
+    insertafter=EOF
+    state=present
+    regexp="^(\s+)# (content_by_lua_file*+)$"
+- name: Remove commentout in http.server.conf(3).
+  lineinfile: >
+    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
+    line="\1\2"
+    insertafter=EOF
+    state=present
+    regexp="^(\s+)# (\})$"
 
 - name: Create lua directory.
   file: >
