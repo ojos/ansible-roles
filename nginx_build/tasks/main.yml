@@ -81,7 +81,7 @@
 
 - name: html Directory.
   shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep html}) && pwd)
+    echo $(cd $(find . -maxdepth 2 -type d | grep html) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: html_dir
@@ -112,7 +112,7 @@
 
 - name: conf Directory.
   shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep conf}) && pwd)
+    echo $(cd $(find . -maxdepth 2 -type d | grep conf) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: conf_dir
@@ -193,14 +193,14 @@
 
 - name: sbin Directory.
   shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep sbin}) && pwd)
+    echo $(cd $(find . -maxdepth 2 -type d | grep sbin) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: sbin_dir
 
 - name: logs Directory.
   shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep logs}) && pwd)
+    echo $(cd $(find . -maxdepth 2 -type d | grep logs) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: logs_dir
