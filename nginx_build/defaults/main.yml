@@ -34,16 +34,15 @@
   nginx_build_client_max_body_size: 4G
   nginx_build_lua_check_client_abort: "on"
   nginx_build_lua_code_cache: "on"
-  # nginx_home_directory: "$PROJECT_HOME/nginx"
-  # nginx_build_envrc_directory: "{{ direnv_envrc_directory }}"
-  # nginx_environment_variables:
-  #   - value: "# nginx"
-  #     regexp: "^# nginx$"
-  #   - value: "export NGINX_HOME={{ nginx_home_directory }}"
-  #     regexp: "^export NGINX_HOME"
-  #   - value: "export NGINX_BIN=$NGINX_HOME/sbin/nginx"
-  #     regexp: "^export NGINX_BIN"
-  #   - value: |
-  #       export NGINX_PID=$NGINX_HOME/run/nginx.pid
+  nginx_build_envrc_directory: "{{ direnv_envrc_directory }}"
+  nginx_build_environment_variables:
+    - value: "# nginx"
+      regexp: "^# nginx$"
+    - value: "export NGINX_HOME={{ nginx_home_dir.stdout }}"
+      regexp: "^export NGINX_HOME"
+    - value: "export NGINX_BIN=$NGINX_HOME/sbin/nginx"
+      regexp: "^export NGINX_BIN"
+    - value: |
+        export NGINX_PID=$NGINX_HOME/logs/nginx.pid
 
-  #     regexp: "^export NGINX_PID"
+      regexp: "^export NGINX_PID"

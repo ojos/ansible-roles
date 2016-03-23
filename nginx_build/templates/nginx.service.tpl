@@ -16,11 +16,11 @@
 ### END INIT INFO
 #
 
-PATH={{ sbin_dir.stdout }}:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:
+PATH={{ nginx_home_dir.stdout }}/sbin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:
 DESC="Nginx Daemon"
-DAEMON={{ sbin_dir.stdout }}/nginx
-CONF={{ conf_dir.stdout }}/nginx.conf
-PID={{ logs_dir.stdout }}/nginx.pid
+DAEMON={{ nginx_home_dir.stdout }}/sbin/nginx
+CONF={{ nginx_home_dir.stdout }}/conf/nginx.conf
+PID={{ nginx_home_dir.stdout }}/logs/nginx.pid
 SCRIPT={{ nginx_build_service_file }}
 
 if [ ! -x "$DAEMON" ] || [ ! -f "$CONF" ]; then

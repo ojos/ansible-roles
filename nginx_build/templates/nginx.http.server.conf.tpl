@@ -10,7 +10,7 @@ server {
     }
 
     # location ^~ /current_time {
-    #     content_by_lua_file {{ conf_dir.stdout }}/lua/current_time.lua;
+    #     content_by_lua_file {{ nginx_home_dir.stdout }}/lua/current_time.lua;
     # }
 
     location ^~ /favicon {

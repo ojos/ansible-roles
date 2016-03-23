@@ -79,16 +79,23 @@
     state=absent
   become: yes
 
-- name: html Directory.
+- name: nginx home Directory.
   shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep html) && pwd)
+    echo $(cd $(find . -maxdepth 2 -type d | grep conf)/../ && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
-  register: html_dir
+  register: nginx_home_dir
+
+# - name: html Directory.
+#   shell: >
+#     echo $(cd $(find . -maxdepth 2 -type d | grep html) && pwd)
+#   args:
+#     chdir: "{{ nginx_build_prefix }}"
+#   register: html_dir
 - name: Copy favicon.ico.
   copy: >
     src=favicon.ico
-    dest="{{ html_dir.stdout }}/favicon.ico"
+    dest="{{ nginx_home_dir.stdout }}/html/favicon.ico"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -96,7 +103,7 @@
 - name: Copy 404.html.
   copy: >
     src=404.html
-    dest="{{ html_dir.stdout }}/404.html"
+    dest="{{ nginx_home_dir.stdout }}/html/404.html"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -104,22 +111,22 @@
 - name: Copy 50x.html.
   copy: >
     src=50x.html
-    dest="{{ html_dir.stdout }}/50x.html"
+    dest="{{ nginx_home_dir.stdout }}/html/50x.html"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
   become: yes
 
-- name: conf Directory.
-  shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep conf) && pwd)
-  args:
-    chdir: "{{ nginx_build_prefix }}"
-  register: conf_dir
+# - name: conf Directory.
+#   shell: >
+#     echo $(cd $(find . -maxdepth 2 -type d | grep conf) && pwd)
+#   args:
+#     chdir: "{{ nginx_build_prefix }}"
+#   register: conf_dir
 - name: Create nginx.conf.
   template: >
     src=nginx.conf.tpl
-    dest="{{ conf_dir.stdout }}/nginx.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/nginx.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -127,7 +134,7 @@
 
 - name: Create nginx configure sub directory.
   file: >
-    path="{{ conf_dir.stdout }}/conf.d"
+    path="{{ nginx_home_dir.stdout }}/conf/conf.d"
     state=directory
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
@@ -137,7 +144,7 @@
 - name: Create global.conf.
   template: >
     src=nginx.global.conf.tpl
-    dest="{{ conf_dir.stdout }}/conf.d/global.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/global.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -145,14 +152,14 @@
 - name: Create http.conf.
   template: >
     src=nginx.http.conf.tpl
-    dest="{{ conf_dir.stdout }}/conf.d/http.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
   become: yes
 - name: Remove commentout in http.conf.
   lineinfile: >
-    dest="{{ conf_dir.stdout }}/conf.d/http.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.conf"
     line='\1\2'
     insertafter=EOF
     state=present
@@ -164,14 +171,14 @@
 - name: Create http.server.conf.
   template: >
     src=nginx.http.server.conf.tpl
-    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
   become: yes
 - name: Remove commentout in http.server.conf(1).
   lineinfile: >
-    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
     line='\1\2'
     insertafter=EOF
     state=present
@@ -181,7 +188,7 @@
   become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
-    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
     line='\1\2'
     insertafter=EOF
     state=present
@@ -191,7 +198,7 @@
   become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
-    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
     line='\1\2'
     insertafter=EOF
     state=present
@@ -200,28 +207,29 @@
   when: nginx_build_type == 'openresty'
   become: yes
 
+- name: Create http.lua.conf.
+  template: >
+    src=nginx.http.lua.conf.tpl
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.lua.conf"
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
+    mode=0644
+  when: nginx_build_type == 'openresty'
+  become: yes
+
 - name: Create lua directory.
   file: >
-    path="{{ conf_dir.stdout }}/lua"
+    path="{{ nginx_home_dir.stdout  }}/lua"
     state=directory
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0755
   when: nginx_build_type == 'openresty'
   become: yes
-- name: Create http.lua.conf.
-  template: >
-    src=nginx.http.lua.conf.tpl
-    dest="{{ conf_dir.stdout }}/conf.d/http.lua.conf"
-    owner="{{ nginx_build_user }}"
-    group="{{ nginx_build_group }}"
-    mode=0644
-  when: nginx_build_type == 'openresty'
-  become: yes
 - name: Copy current_time.lua.
   copy: >
     src=current_time.lua
-    dest={{ conf_dir.stdout }}/lua/current_time.lua
+    dest={{ nginx_home_dir.stdout }}/lua/current_time.lua
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -252,19 +260,19 @@
     group="{{ nginx_build_group }}"
   become: yes
 
-- name: sbin Directory.
-  shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep sbin) && pwd)
-  args:
-    chdir: "{{ nginx_build_prefix }}"
-  register: sbin_dir
+# - name: sbin Directory.
+#   shell: >
+#     echo $(cd $(find . -maxdepth 2 -type d | grep sbin) && pwd)
+#   args:
+#     chdir: "{{ nginx_build_prefix }}"
+#   register: sbin_dir
 
-- name: logs Directory.
-  shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep logs) && pwd)
-  args:
-    chdir: "{{ nginx_build_prefix }}"
-  register: logs_dir
+# - name: logs Directory.
+#   shell: >
+#     echo $(cd $(find . -maxdepth 2 -type d | grep logs) && pwd)
+#   args:
+#     chdir: "{{ nginx_build_prefix }}"
+#   register: logs_dir
 
 - name: Create nginx service file.
   template: >
@@ -283,12 +291,12 @@
   become: yes
   when: ansible_system == 'Linux'
 
-# - name: Insert env in .envrc.
-#   lineinfile: >
-#     dest={{ nginx_envrc_directory }}/.envrc
-#     line="{{ item.value }}"
-#     insertafter=EOF
-#     state=present
-#     regexp={{ item.regexp }}
-#   with_items: nginx_environment_variables
-#   when: nginx_envrc_directory != '' and nginx_environment_variables|length > 0
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ nginx_build_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: nginx_build_environment_variables
+  when: nginx_build_envrc_directory != '' and nginx_build_environment_variables|length > 0

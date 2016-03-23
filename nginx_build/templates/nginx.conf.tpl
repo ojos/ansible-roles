@@ -1,2 +1,2 @@
-include {{ conf_dir.stdout }}/conf.d/global.conf;
-include {{ conf_dir.stdout }}/conf.d/http.conf;
+include {{ nginx_home_dir.stdout }}/conf/conf.d/global.conf;
+include {{ nginx_home_dir.stdout }}/conf/conf.d/http.conf;
