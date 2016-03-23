@@ -1,51 +1,66 @@
 ---
-- name: Install dependent packages(RedHat).
-  yum: >
-    name={{ item.name | default(item) }}
-    state={{ item.state | default('latest') }}
-  become: yes
-  with_items: nginx_build_dependent_packages
-  when: ansible_os_family == 'RedHat' and nginx_build_dependent_packages|length > 0
-- name: Install dependent packages(Darwin).
-  homebrew: >
-    name={{ item.name | default(item) }}
-    state={{ item.state | default('latest') }}
-    install_options={{ item.install_option | default('') }}
-  with_items: nginx_build_dependent_packages
-  when: ansible_os_family == 'Darwin' and nginx_build_dependent_packages|length > 0
+# - name: Install dependent packages(RedHat).
+#   yum: >
+#     name={{ item.name | default(item) }}
+#     state={{ item.state | default('latest') }}
+#   become: yes
+#   with_items: nginx_build_dependent_packages
+#   when: ansible_os_family == 'RedHat' and nginx_build_dependent_packages|length > 0
+# - name: Install dependent packages(Darwin).
+#   homebrew: >
+#     name={{ item.name | default(item) }}
+#     state={{ item.state | default('latest') }}
+#     install_options={{ item.install_option | default('') }}
+#   with_items: nginx_build_dependent_packages
+#   when: ansible_os_family == 'Darwin' and nginx_build_dependent_packages|length > 0
 
-- name: Install nginx_build.
-  shell: >
-    go get -u {{ nginx_build_repository }}
-  environment:
-    PATH: "{{ nginx_build_bin_directory }}:{{ ansible_env.PATH }}"
-    GOROOT: "{{ nginx_build_install_directory }}"
-    GOPATH: "{{ nginx_build_gopath_directory }}"
+# - name: Install nginx_build.
+#   shell: >
+#     go get -u {{ nginx_build_repository }}
+#   environment:
+#     PATH: "{{ nginx_build_bin_directory }}:{{ ansible_env.PATH }}"
+#     GOROOT: "{{ nginx_build_install_directory }}"
+#     GOPATH: "{{ nginx_build_gopath_directory }}"
 
-- name: Configure nginx.
-  shell: >
-    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_nginx_configure_options }} {{ nginx_build_configure_options }}
-  environment:
-    PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
-  when: nginx_build_type == 'nginx'
+# - name: Configure nginx.
+#   shell: >
+#     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_nginx_configure_options }} {{ nginx_build_configure_options }}
+#   environment:
+#     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+#   when: nginx_build_type == 'nginx'
 
-- name: Configure openresty.
-  shell: >
-    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_openresty_configure_options }} {{ nginx_build_configure_options }}
-  environment:
-    PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
-  when: nginx_build_type == 'openresty'
+# - name: Configure openresty.
+#   shell: >
+#     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_openresty_configure_options }} {{ nginx_build_configure_options }}
+#   environment:
+#     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+#   when: nginx_build_type == 'openresty'
 
-- name: Configure tengine.
-  shell: >
-    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_tengine_configure_options }} {{ nginx_build_configure_options }}
-  environment:
-    PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
-  when: nginx_build_type == 'tengine'
+# - name: Configure tengine.
+#   shell: >
+#     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_tengine_configure_options }} {{ nginx_build_configure_options }}
+#   environment:
+#     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+#   when: nginx_build_type == 'tengine'
 
-- name: Make nginx.
+- name: Source Directory.
   shell: >
-    {{ nginx_build_make_bin_file }}
+    find . -maxdepth 2 -type d | grep openresty
   args:
-    chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}/{{ nginx_build_version }}/{{ nginx_build_type }}-{{ nginx_build_version }}"
-  become: yes
+    chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}"
+  register: source_dir
+- name: debug.
+  debug: msg="{{ source_dir }}"
+# - name: Make and Install.
+#   shell: >
+#     {{ nginx_build_make_bin_file }} install
+#   args:
+#     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}/{{ nginx_build_version }}/{{ nginx_build_type }}-{{ nginx_build_version }}"
+#   become: yes
+
+# - name: Remove work directory.
+#   file: >
+#     path="{{ nginx_build_work_directory }}"
+#     state=absent
+#   become: yes
+#   when: nginx_build_work_directory
