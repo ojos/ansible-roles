@@ -1,6 +1,6 @@
 server {
     listen       80;
-    client_max_body_size {{ openresty_nginx_client_max_body_size }};
+    client_max_body_size {{ nginx_build_client_max_body_size }};
     server_name  localhost;
 
     error_page   404              /404.html;
@@ -10,7 +10,7 @@ server {
     }
 
     location ^~ /current_time {
-        content_by_lua_file {{ openresty_nginx_conf_prefix }}/lua/current_time.lua;
+        content_by_lua_file {{ conf_dir.stdout }}/lua/current_time.lua;
     }
 
     location ^~ /favicon {
@@ -20,7 +20,7 @@ server {
     }
 
     location / {
-        default_type text/html;
-        content_by_lua 'ngx.say("<h1>It\'s, Work!!</h1>")';
+        root   html;
+        index  index.html index.htm;
     }
 }

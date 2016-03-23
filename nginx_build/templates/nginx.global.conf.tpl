@@ -1,9 +1,7 @@
-user  {{ openresty_user }};
-worker_processes  {{ openresty_nginx_worker_processes }};
-error_log  {{ openresty_nginx_error_log_file }};
-pid  {{ openresty_nginx_pid_file }};
-worker_rlimit_nofile  {{ openresty_nginx_worker_rlimit_nofile }};
+user  {{ nginx_build_user }};
+worker_processes  {{ nginx_build_worker_processes }};
+worker_rlimit_nofile  {{ nginx_build_worker_rlimit_nofile }};
 events {
-    worker_connections  {{ openresty_nginx_worker_connections }};
-    multi_accept {{ openresty_nginx_multi_accept }};
+    worker_connections  {{ nginx_build_worker_connections }};
+    multi_accept {{ nginx_build_multi_accept }};
 }

@@ -1,12 +1,11 @@
 http {
-    default_type       {{ openresty_nginx_default_type }};
-    access_log         {{ openresty_nginx_access_log_file }};
-    sendfile           {{ openresty_nginx_sendfile }};
-    keepalive_timeout  {{ openresty_nginx_keepalive_timeout }};
-    resolver           {{ openresty_nginx_resolver }} valid={{ openresty_nginx_resolver_valid }};
-    resolver_timeout   {{ openresty_nginx_resolver_timeout }};
-    server_tokens      {{ openresty_nginx_server_tokens }};
-    include            {{ openresty_nginx_conf_prefix }}/mime.types;
-    include            {{ openresty_nginx_sub_conf_directory }}/http.lua.conf;
-    include            {{ openresty_nginx_sub_conf_directory }}/http.server.conf;
+    default_type       {{ nginx_build_default_type }};
+    sendfile           {{ nginx_build_sendfile }};
+    keepalive_timeout  {{ nginx_build_keepalive_timeout }};
+    resolver           {{ nginx_build_resolver }} valid={{ nginx_build_resolver_valid }};
+    resolver_timeout   {{ nginx_build_resolver_timeout }};
+    server_tokens      {{ nginx_build_server_tokens }};
+    include            {{ conf_dir.stdout }}/mime.types;
+    include            {{ conf_dir.stdout }}/conf.d/http.lua.conf;
+    include            {{ conf_dir.stdout }}/conf.d/http.server.conf;
 }

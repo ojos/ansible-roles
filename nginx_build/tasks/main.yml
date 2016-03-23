@@ -45,7 +45,7 @@
 
 - name: Source Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep {{ nginx_build_type }}
+    find . -maxdepth 2 -type d | grep {{ nginx_build_type }} && pwd
   args:
     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}"
   register: source_dir
@@ -53,7 +53,7 @@
   shell: >
     {{ nginx_build_make_bin_file }} install
   args:
-    chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}/{{ source_dir.stdout }}"
+    chdir: "{{ source_dir.stdout }}"
   become: yes
 
 - name: Remove work directory.
@@ -64,14 +64,14 @@
 
 - name: html Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep html
+    find . -maxdepth 2 -type d | grep html && pwd
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: html_dir
 - name: Copy favicon.ico.
   copy: >
     src=favicon.ico
-    dest={{ nginx_build_prefix }}/{{ html_dir.stdout }}/favicon.ico
+    dest="{{ html_dir.stdout }}/favicon.ico"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -79,7 +79,7 @@
 - name: Copy 404.html.
   copy: >
     src=404.html
-    dest={{ nginx_build_prefix }}/{{ html_dir.stdout }}/404.html
+    dest="{{ html_dir.stdout }}/404.html"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -87,7 +87,7 @@
 - name: Copy 50x.html.
   copy: >
     src=50x.html
-    dest={{ nginx_build_prefix }}/{{ html_dir.stdout }}/50x.html
+    dest="{{ html_dir.stdout }}/50x.html"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -95,14 +95,14 @@
 
 - name: conf Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep conf
+    find . -maxdepth 2 -type d | grep conf && pwd
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: conf_dir
 - name: Create nginx.conf.
   template: >
     src=nginx.conf.tpl
-    dest={{ nginx_build_prefix }}/{{ conf_dir.stdout }}/nginx.conf
+    dest="{{ conf_dir.stdout }}/nginx.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -110,7 +110,7 @@
 
 - name: Create nginx configure sub directory.
   file: >
-    path="{{ nginx_build_prefix }}/{{ conf_dir.stdout }}/conf.d"
+    path="{{ conf_dir.stdout }}/conf.d"
     state=directory
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
@@ -119,7 +119,7 @@
 - name: Create global.conf.
   template: >
     src=nginx.global.conf.tpl
-    dest={{ nginx_build_prefix }}/{{ conf_dir.stdout }}/conf.d/global.conf
+    dest="{{ conf_dir.stdout }}}/conf.d/global.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -127,7 +127,7 @@
 - name: Create http.conf.
   template: >
     src=nginx.http.conf.tpl
-    dest={{ nginx_build_prefix }}/{{ conf_dir.stdout }}/conf.d/http.conf
+    dest="{{ conf_dir.stdout }}/conf.d/http.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -135,7 +135,7 @@
 - name: Create http.server.conf.
   template: >
     src=nginx.http.server.conf.tpl
-    dest={{ nginx_build_prefix }}/{{ conf_dir.stdout }}/conf.d/http.server.conf
+    dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -143,7 +143,7 @@
 - name: Create http.lua.conf.
   template: >
     src=nginx.http.lua.conf.tpl
-    dest={{ nginx_build_prefix }}/{{ conf_dir.stdout }}/conf.d/http.lua.conf
+    dest="{{ conf_dir.stdout }}/conf.d/http.lua.conf"
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
@@ -173,6 +173,30 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
   become: yes
+
+- name: sbin Directory.
+  shell: >
+    find . -maxdepth 2 -type d | grep sbin && pwd
+  args:
+    chdir: "{{ nginx_build_prefix }}"
+  register: sbin_dir
+
+# - name: Create nginx service file.
+#   template: >
+#     src=nginx.service.tpl
+#     dest="{{ nginx_build_service_file }}"
+#     owner="{{ nginx_build_user }}"
+#     group="{{ nginx_build_group }}"
+#     mode=0755
+#   become: yes
+#   when: ansible_system == 'Linux'
+
+# - name: Register nginx service.
+#   service: >
+#     name=nginx
+#     enabled=yes
+#   become: yes
+#   when: ansible_system == 'Linux'
 
 # - name: Insert env in .envrc.
 #   lineinfile: >

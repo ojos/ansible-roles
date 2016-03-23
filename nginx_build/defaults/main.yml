@@ -9,7 +9,7 @@
   nginx_build_gopath_directory: "{{ xbuild_go_gopath_directory }}"
   nginx_build_bin_directory: "{{ nginx_build_install_directory }}/bin"
   nginx_build_make_bin_file: /usr/bin/make
-  nginx_build_type: openresty
+  nginx_build_type: nginx
   nginx_build_work_directory: "{{ project_directory }}/work"
   nginx_build_prefix: "{{ project_directory }}/{{ nginx_build_type }}"
   nginx_build_nginx_configure_options: "-clear -openssl"
@@ -19,6 +19,21 @@
     --prefix={{ nginx_build_prefix }}
     --user={{ nginx_build_user }}
     --group={{ nginx_build_group }}
+  nginx_build_service_file: /etc/rc.d/init.d/nginx
+  nginx_build_worker_processes: auto
+  nginx_build_worker_rlimit_nofile: 4096
+  nginx_build_worker_connections: 1024
+  nginx_build_keepalive_timeout: 65
+  nginx_build_sendfile: "on"
+  nginx_build_multi_accept: "on"
+  nginx_build_resolver: 8.8.8.8
+  nginx_build_resolver_valid: 300s
+  nginx_build_resolver_timeout: 10s
+  nginx_build_server_tokens: "off"
+  nginx_build_default_type: application/octet-stream
+  nginx_build_client_max_body_size: 4G
+  nginx_build_lua_check_client_abort: "on"
+  nginx_build_lua_code_cache: "on"
   # nginx_home_directory: "$PROJECT_HOME/nginx"
   # nginx_build_envrc_directory: "{{ direnv_envrc_directory }}"
   # nginx_environment_variables:
