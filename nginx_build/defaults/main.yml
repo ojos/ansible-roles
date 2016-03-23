@@ -1,6 +1,6 @@
 ---
-  nginx_build_user: "{{ xbuild_go_user }}"
-  nginx_build_group: "{{ xbuild_go_group }}"
+  nginx_build_user: nginx
+  nginx_build_group: nginx
   nginx_build_remove_work_directory: no
   nginx_build_dependent_packages:
     - wget
