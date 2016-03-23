@@ -28,7 +28,6 @@
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'nginx'
-  register: hoge
 
 - name: Configure openresty.
   shell: >
@@ -44,13 +43,9 @@
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'tengine'
 
-- name: debug.
-  debug: msg="{{ hoge }}"
-
-# - name: Make nginx.
-#   shell: >
-#     {{ nginx_build_make_bin_file }}
-#   args:
-#     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}/{{  }}"
-#   become: yes
-#   when: not made_file.stat.exists or nginx_force_install
+- name: Make nginx.
+  shell: >
+    {{ nginx_build_make_bin_file }}
+  args:
+    chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}/{{ nginx_build_version }}/{{ nginx_build_type }}-{{ nginx_build_version }}"
+  become: yes
