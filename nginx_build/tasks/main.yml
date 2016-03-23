@@ -157,10 +157,29 @@
     group="{{ nginx_build_group }}"
     mode=0644
   become: yes
+
+- name: Create lua directory.
+  file: >
+    path="{{ conf_dir.stdout }}/lua"
+    state=directory
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
+    mode=0755
+  when: nginx_build_type == 'openresty'
+  become: yes
 - name: Create http.lua.conf.
   template: >
     src=nginx.http.lua.conf.tpl
     dest="{{ conf_dir.stdout }}/conf.d/http.lua.conf"
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
+    mode=0644
+  when: nginx_build_type == 'openresty'
+  become: yes
+- name: Copy current_time.lua.
+  copy: >
+    src=current_time.lua
+    dest={{ conf_dir.stdout }}/lua/current_time.lua
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
