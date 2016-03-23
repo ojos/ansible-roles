@@ -22,9 +22,31 @@
     GOROOT: "{{ nginx_build_install_directory }}"
     GOPATH: "{{ nginx_build_gopath_directory }}"
 
-- name: Install nginx.
+- name: Configure nginx.
   shell: >
-    nginx-build -d {{ project_directory }}/work -openssl
+    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_nginx_configure_options }} {{ nginx_build_configure_options }}
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+  when: nginx_build_type == 'nginx'
 
+- name: Configure openresty.
+  shell: >
+    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_openresty_configure_options }} {{ nginx_build_configure_options }}
+  environment:
+    PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+  when: nginx_build_type == 'openresty'
+
+- name: Configure tengine.
+  shell: >
+    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_tengine_configure_options }} {{ nginx_build_configure_options }}
+  environment:
+    PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+  when: nginx_build_type == 'tengine'
+
+# - name: Make nginx.
+#   shell: >
+#     {{ nginx_make_bin_file }}
+#   args:
+#     chdir: "{{ nginx_src_directory }}/nginx-{{ nginx_version }}"
+#   become: yes
+#   when: not made_file.stat.exists or nginx_force_install

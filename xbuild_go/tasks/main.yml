@@ -26,7 +26,7 @@
     path="{{ xbuild_go_gopath_directory }}"
     state=directory
     owner="{{ xbuild_go_user }}"
-    group="{{ xbuild_go_user }}"
+    group="{{ xbuild_go_group }}"
     mode=0755
   become: yes
 
