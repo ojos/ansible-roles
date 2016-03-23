@@ -45,7 +45,7 @@
 
 - name: Source Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep {{ nginx_build_type }} && pwd
+    find . -maxdepth 2 -type d | grep {{ nginx_build_type }} | pwd
   args:
     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}"
   register: source_dir
@@ -64,7 +64,7 @@
 
 - name: html Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep html && pwd
+    find . -maxdepth 2 -type d | grep html | pwd
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: html_dir
@@ -95,7 +95,7 @@
 
 - name: conf Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep conf && pwd
+    find . -maxdepth 2 -type d | grep conf | pwd
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: conf_dir
@@ -176,7 +176,7 @@
 
 - name: sbin Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep sbin && pwd
+    find . -maxdepth 2 -type d | grep sbin | pwd
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: sbin_dir
