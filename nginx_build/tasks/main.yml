@@ -157,6 +157,8 @@
     insertafter=EOF
     state=present
     regexp="^(\s+)# (include*+)$"
+  when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Create http.server.conf.
   template: >
@@ -173,6 +175,8 @@
     insertafter=EOF
     state=present
     regexp="^(\s+)# (location*+)$"
+  when: nginx_build_type == 'openresty'
+  become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
     dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
@@ -180,6 +184,8 @@
     insertafter=EOF
     state=present
     regexp="^(\s+)# (content_by_lua_file*+)$"
+  when: nginx_build_type == 'openresty'
+  become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
     dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
@@ -187,6 +193,8 @@
     insertafter=EOF
     state=present
     regexp="^(\s+)# (\})$"
+  when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Create lua directory.
   file: >
