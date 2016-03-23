@@ -153,10 +153,10 @@
 - name: Remove commentout in http.conf.
   lineinfile: >
     dest="{{ conf_dir.stdout }}/conf.d/http.conf"
-    line="\1\2"
+    line='\1\2'
     insertafter=EOF
     state=present
-    regexp="^(\s+)# (include.+)$"
+    regexp='^(\s+)# (include.+)$'
   when: nginx_build_type == 'openresty'
   become: yes
 
@@ -171,28 +171,28 @@
 - name: Remove commentout in http.server.conf(1).
   lineinfile: >
     dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
-    line="\1\2"
+    line='\1\2'
     insertafter=EOF
     state=present
-    regexp="^(\s+)# (location.+)$"
+    regexp='^(\s+)# (location.+)$'
   when: nginx_build_type == 'openresty'
   become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
     dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
-    line="\1\2"
+    line='\1\2'
     insertafter=EOF
     state=present
-    regexp="^(\s+)# (content_by_lua_file.+)$"
+    regexp='^(\s+)# (content_by_lua_file.+)$''
   when: nginx_build_type == 'openresty'
   become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
     dest="{{ conf_dir.stdout }}/conf.d/http.server.conf"
-    line="\1\2"
+    line='\1\2'
     insertafter=EOF
     state=present
-    regexp="^(\s+)# (\})$"
+    regexp='^(\s+)# (\})$''
   when: nginx_build_type == 'openresty'
   become: yes
 
