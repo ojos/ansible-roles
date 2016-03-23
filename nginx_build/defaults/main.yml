@@ -9,7 +9,7 @@
   nginx_build_gopath_directory: "{{ xbuild_go_gopath_directory }}"
   nginx_build_bin_directory: "{{ nginx_build_install_directory }}/bin"
   nginx_build_make_bin_file: /usr/bin/make
-  nginx_build_type: tengine
+  nginx_build_type: openresty
   nginx_build_work_directory: "{{ project_directory }}/work"
   nginx_build_prefix: "{{ project_directory }}/{{ nginx_build_type }}"
   nginx_build_nginx_configure_options: "-openssl"
@@ -19,3 +19,16 @@
     --prefix={{ nginx_build_prefix }}
     --user={{ nginx_build_user }}
     --group={{ nginx_build_group }}
+  # nginx_home_directory: "$PROJECT_HOME/nginx"
+  # nginx_build_envrc_directory: "{{ direnv_envrc_directory }}"
+  # nginx_environment_variables:
+  #   - value: "# nginx"
+  #     regexp: "^# nginx$"
+  #   - value: "export NGINX_HOME={{ nginx_home_directory }}"
+  #     regexp: "^export NGINX_HOME"
+  #   - value: "export NGINX_BIN=$NGINX_HOME/sbin/nginx"
+  #     regexp: "^export NGINX_BIN"
+  #   - value: |
+  #       export NGINX_PID=$NGINX_HOME/run/nginx.pid
+
+  #     regexp: "^export NGINX_PID"
