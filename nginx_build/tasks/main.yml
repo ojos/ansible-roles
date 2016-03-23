@@ -156,7 +156,7 @@
     line="\1\2"
     insertafter=EOF
     state=present
-    regexp="^(\s+)# (include*+)$"
+    regexp="^(\s+)# (include.+)$"
   when: nginx_build_type == 'openresty'
   become: yes
 
@@ -174,7 +174,7 @@
     line="\1\2"
     insertafter=EOF
     state=present
-    regexp="^(\s+)# (location*+)$"
+    regexp="^(\s+)# (location.+)$"
   when: nginx_build_type == 'openresty'
   become: yes
 - name: Remove commentout in http.server.conf(2).
@@ -183,7 +183,7 @@
     line="\1\2"
     insertafter=EOF
     state=present
-    regexp="^(\s+)# (content_by_lua_file*+)$"
+    regexp="^(\s+)# (content_by_lua_file.+)$"
   when: nginx_build_type == 'openresty'
   become: yes
 - name: Remove commentout in http.server.conf(3).
