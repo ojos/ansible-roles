@@ -62,14 +62,10 @@
 
 - name: Source Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep {{ nginx_build_type }} | pwd
+    echo $(cd $(find . -maxdepth 2 -type d | grep {{ nginx_build_type }}) && pwd)
   args:
     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}"
   register: source_dir
-
-- name: debug.
-  debug: msg="{{ source_dir.stdout }}"
-
 - name: Make and Install.
   shell: >
     {{ nginx_build_make_bin_file }} install
@@ -85,7 +81,7 @@
 
 - name: html Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep html | pwd
+    echo $(cd $(find . -maxdepth 2 -type d | grep html}) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: html_dir
@@ -116,7 +112,7 @@
 
 - name: conf Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep conf | pwd
+    echo $(cd $(find . -maxdepth 2 -type d | grep conf}) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: conf_dir
@@ -197,34 +193,34 @@
 
 - name: sbin Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep sbin | pwd
+    echo $(cd $(find . -maxdepth 2 -type d | grep sbin}) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: sbin_dir
 
 - name: logs Directory.
   shell: >
-    find . -maxdepth 2 -type d | grep logs | pwd
+    echo $(cd $(find . -maxdepth 2 -type d | grep logs}) && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: logs_dir
 
-# - name: Create nginx service file.
-#   template: >
-#     src=nginx.service.tpl
-#     dest="{{ nginx_build_service_file }}"
-#     owner="{{ nginx_build_user }}"
-#     group="{{ nginx_build_group }}"
-#     mode=0755
-#   become: yes
-#   when: ansible_system == 'Linux'
+- name: Create nginx service file.
+  template: >
+    src=nginx.service.tpl
+    dest="{{ nginx_build_service_file }}"
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
+    mode=0755
+  become: yes
+  when: ansible_system == 'Linux'
 
-# - name: Register nginx service.
-#   service: >
-#     name=nginx
-#     enabled=yes
-#   become: yes
-#   when: ansible_system == 'Linux'
+- name: Register nginx service.
+  service: >
+    name=nginx
+    enabled=yes
+  become: yes
+  when: ansible_system == 'Linux'
 
 # - name: Insert env in .envrc.
 #   lineinfile: >
