@@ -69,9 +69,6 @@ server {
 
         proxy_pass https://$s3_bucket;
 
-        # auth_basic "Restricted";
-        # auth_basic_user_file "{{ proxy_s3_nginx_sub_conf_directory }}/{{ proxy_s3_htpassword_file_name }}";
-
         if ($request_method = OPTIONS ) {
             add_header Access-Control-Allow-Origin *;
             add_header Access-Control-Allow-Methods "GET, OPTIONS";

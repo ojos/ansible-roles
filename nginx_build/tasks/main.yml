@@ -86,12 +86,6 @@
     chdir: "{{ nginx_build_prefix }}"
   register: nginx_home_dir
 
-# - name: html Directory.
-#   shell: >
-#     echo $(cd $(find . -maxdepth 2 -type d | grep html) && pwd)
-#   args:
-#     chdir: "{{ nginx_build_prefix }}"
-#   register: html_dir
 - name: Copy favicon.ico.
   copy: >
     src=favicon.ico
@@ -117,12 +111,6 @@
     mode=0644
   become: yes
 
-# - name: conf Directory.
-#   shell: >
-#     echo $(cd $(find . -maxdepth 2 -type d | grep conf) && pwd)
-#   args:
-#     chdir: "{{ nginx_build_prefix }}"
-#   register: conf_dir
 - name: Create nginx.conf.
   template: >
     src=nginx.conf.tpl
@@ -245,7 +233,7 @@
   when: ansible_distribution == 'Amazon'
 - name: Replace nginx http server resolver.
   replace: >
-    dest="{{ nginx_sub_conf_dir.stdoutectory }}/http.conf"
+    dest="{{ nginx_sub_conf_dir.stdout }}/http.conf"
     replace="\1           {{ resolver.stdout }}"
     regexp='(^\s+resolver)           \d+\.\d+\.\d+\.\d'
   when: ansible_distribution == 'Amazon'
@@ -259,20 +247,6 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
   become: yes
-
-# - name: sbin Directory.
-#   shell: >
-#     echo $(cd $(find . -maxdepth 2 -type d | grep sbin) && pwd)
-#   args:
-#     chdir: "{{ nginx_build_prefix }}"
-#   register: sbin_dir
-
-# - name: logs Directory.
-#   shell: >
-#     echo $(cd $(find . -maxdepth 2 -type d | grep logs) && pwd)
-#   args:
-#     chdir: "{{ nginx_build_prefix }}"
-#   register: logs_dir
 
 - name: Create nginx service file.
   template: >
