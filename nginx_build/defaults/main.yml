@@ -10,7 +10,7 @@
   nginx_build_bin_directory: "{{ nginx_build_install_directory }}/bin"
   nginx_build_prefix: "{{ project_directory }}/nginx"
   nginx_build_make_bin_file: /usr/bin/make
-  nginx_build_type: nginx
+  nginx_build_type: openresty
   nginx_build_work_directory: "{{ project_directory }}/work"
   nginx_build_nginx_configure_options: '-openssl'
   nginx_build_openresty_configure_options: '-openresty -pcre -openssl'
