@@ -28,6 +28,7 @@
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'nginx'
+  register: hoge
 
 - name: Configure openresty.
   shell: >
@@ -42,7 +43,6 @@
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'tengine'
-  register: hoge
 
 - name: debug.
   debug: msg="{{ hoge }}"
