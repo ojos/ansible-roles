@@ -81,7 +81,7 @@
 
 - name: nginx home Directory.
   shell: >
-    echo $(cd $(find . -maxdepth 2 -type d | grep ^./conf$)/../ && pwd)
+    echo $(cd $(find . -maxdepth 2 -type d | grep ./conf$)/../ && pwd)
   args:
     chdir: "{{ nginx_build_prefix }}"
   register: nginx_home_dir
