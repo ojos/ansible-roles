@@ -11,7 +11,7 @@
     name="{{ nginx_build_user }}"
     shell=/bin/false
     system=yes
-    home="{{ nginx_prefix }}/nginx"
+    home="{{ nginx_build_prefix }}/nginx"
     createhome=no
   when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(nginx_build_user) < 1
   become: yes
