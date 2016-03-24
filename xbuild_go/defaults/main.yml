@@ -1,7 +1,7 @@
 ---
   xbuild_go_user: "{{ ansible_user_uid }}"
   xbuild_go_group: "{{ ansible_user_gid }}"
-  xbuild_go_version: 1.6.0
+  xbuild_go_version: 1.6
   xbuild_go_os: linux
   xbuild_go_arch: amd64
   xbuild_go_install_directory: "{{ project_directory }}/go"
