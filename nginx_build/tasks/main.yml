@@ -1,19 +1,19 @@
 ---
 - name: user list.
   shell: >
-    cut -d: -f1 /etc/passwd  
+    cut -d: -f1 /etc/passwd
   register: user_list  
   changed_when: false  
   always_run: yes 
   when: ansible_os_family != 'Darwin'
 - name: Create nginx user.
   user: >
-    name="{{ nginx_user }}"
+    name="{{ nginx_build_user }}"
     shell=/bin/false
     system=yes
     home="{{ nginx_prefix }}/nginx"
     createhome=no
-  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(nginx_user) < 1
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(nginx_build_user) < 1
   become: yes
 
 - name: Install dependent packages(RedHat).
