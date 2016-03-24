@@ -12,10 +12,13 @@
   nginx_build_type: nginx
   nginx_build_work_directory: "{{ project_directory }}/work"
   nginx_build_prefix: "{{ project_directory }}/{{ nginx_build_type }}"
-  nginx_build_nginx_configure_options: "-clear -openssl"
-  nginx_build_openresty_configure_options: "-clear -openresty -pcre -openssl"
-  nginx_build_tengine_configure_options: "-clear -tengine -openssl"
+  nginx_build_openresty_configure_options: "-openresty"
+  nginx_build_tengine_configure_options: "-tengine"
   nginx_build_configure_options: >-
+    -clear
+    -pcre
+    -openssl
+    -zlib
     --prefix={{ nginx_build_prefix }}
     --user={{ nginx_build_user }}
     --group={{ nginx_build_group }}

@@ -41,7 +41,7 @@
 
 - name: Configure nginx.
   shell: >
-    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_nginx_configure_options }} {{ nginx_build_configure_options }}
+    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_configure_options }}
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'nginx'
