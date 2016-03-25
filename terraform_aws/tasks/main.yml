@@ -10,7 +10,7 @@
     path="{{ terraform_aws_directory }}/{{ item }}"
     state=directory
     mode=0755
-  with_items: terraform_aws_environments
+  with_items: "{{ terraform_aws_environments }}"
   when: terraform_aws_environments|length > 0
 
 - name: Copy config.tf.
@@ -18,14 +18,14 @@
     src=config.tf
     dest={{ terraform_aws_directory }}/{{ item }}/config.tf
     mode=0644
-  with_items: terraform_aws_environments
+  with_items: "{{ terraform_aws_environments }}"
   when: terraform_aws_environments|length > 0
 - name: Replace environment in config.tf.
   replace: >
     dest={{ terraform_aws_directory }}/{{ item }}/config.tf
     replace="\1\"{{ item }}\""
     regexp='^(\s+default\s=\s)".+"'
-  with_items: terraform_aws_environments
+  with_items: "{{ terraform_aws_environments }}"
   when: terraform_aws_environments|length > 0
 
 - name: Copy template files.
@@ -45,5 +45,5 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: terraform_aws_environment_variables
+  with_items: "{{ terraform_aws_environment_variables }}"
   when: terraform_aws_envrc_directory != '' and terraform_aws_environment_variables|length > 0

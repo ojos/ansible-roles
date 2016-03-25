@@ -28,7 +28,7 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: vagrant_aws_environment_variables
+  with_items: "{{ vagrant_aws_environment_variables }}"
   when: vagrant_aws_envrc_directory != '' and vagrant_aws_environment_variables|length > 0
 
 - name: List of files in the terraform vagrant directory.
@@ -37,13 +37,6 @@
   register: terraform_vagrant_directory  
   changed_when: false  
   always_run: yes
-
-# - name: Remove tf file.
-#   file: >
-#     path="{{ vagrant_aws_terraform_directory }}/{{ item }}"
-#     state=absent
-#   when: item != 'ec2.tf' and item != 'config.tf' and item != 'vpc_security_group.tf'
-#   with_items: terraform_vagrant_directory.stdout_lines
 
 - name: Copy ec2.tf.
   copy: >

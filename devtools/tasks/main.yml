@@ -17,7 +17,7 @@
   yum: >
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
-  with_items: devtools_packages
+  with_items: "{{ devtools_packages }}"
   when: ansible_os_family == 'RedHat' and devtools_packages|length > 0
   become: yes
 
@@ -26,7 +26,7 @@
   homebrew_tap: >
     tap={{ item }}
     state=present
-  with_items: devtools_repositories
+  with_items: "{{ devtools_repositories }}"
   when: ansible_os_family == 'Darwin' and devtools_repositories|length > 0
 - name: Update Homebrew(Darwin).
   homebrew: >
@@ -37,5 +37,5 @@
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
     install_options={{ item.install_option | default('') }}
-  with_items: devtools_packages
+  with_items: "{{ devtools_packages }}"
   when: ansible_os_family == 'Darwin' and devtools_packages|length > 0

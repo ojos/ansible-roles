@@ -9,7 +9,7 @@
 - name: Install luarocks packages.
   shell: >
     {{ proxy_s3_luarocks_bin_file }} install {{ item }}
-  with_items: proxy_s3_luarocks_install_packages
+  with_items: "{{ proxy_s3_luarocks_install_packages }}"
   when: proxy_s3_luarocks_install_packages|length > 0
   become: yes
   become_user: "{{ proxy_s3_user }}"

@@ -15,7 +15,7 @@
     ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ keygen_key_directory }}/{{ item }}.pem -N '{{ keygen_passphrase }}'
   args:
     creates: "{{ keygen_key_directory }}/{{ item }}.pem"
-  with_items: keygen_environments
+  with_items: "{{ keygen_environments }}"
   when: keygen_environments|length > 0
 
 - name: SSH config.
@@ -40,7 +40,7 @@
     line="{{ keygen_ssh_host_config }}"
     insertafter=EOF
     state=present
-  with_items: keygen_environments
+  with_items: "{{ keygen_environments }}"
   when: keygen_environments|length > 0 and not ssh_config.stat.exists
 
 - name: Insert env in .envrc.
@@ -50,5 +50,5 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: keygen_environment_variables
+  with_items: "{{ keygen_environment_variables }}"
   when: keygen_envrc_directory != '' and keygen_environment_variables|length > 0

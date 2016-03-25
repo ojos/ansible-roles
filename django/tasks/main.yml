@@ -3,7 +3,7 @@
   pip: >
     name={{ item }}
     state=latest
-  with_items: django_install_packages
+  with_items: "{{ django_install_packages }}"
   environment:
     PATH: "{{ django_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: django_install_packages|length > 0

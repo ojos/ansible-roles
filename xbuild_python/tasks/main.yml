@@ -4,14 +4,14 @@
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
   become: yes
-  with_items: xbuild_python_dependent_packages
+  with_items: "{{ xbuild_python_dependent_packages }}"
   when: ansible_os_family == 'RedHat' and xbuild_python_dependent_packages|length > 0
 - name: Install dependent packages(Darwin).
   homebrew: >
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
     install_options={{ item.install_option | default('') }}
-  with_items: xbuild_python_dependent_packages
+  with_items: "{{ xbuild_python_dependent_packages }}"
   when: ansible_os_family == 'Darwin' and xbuild_python_dependent_packages|length > 0
 
 - name: Python directory.
@@ -31,7 +31,7 @@
   pip: >
     name={{ item }}
     state=latest
-  with_items: xbuild_python_packages
+  with_items: "{{ xbuild_python_packages }}"
   when: xbuild_python_packages|length > 0
   environment:
     PATH: "{{ xbuild_python_install_directory }}/bin:{{ ansible_env.PATH }}"
@@ -53,7 +53,7 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: xbuild_python_environment_variables
+  with_items: "{{ xbuild_python_environment_variables }}"
   when: xbuild_python_envrc_directory != '' and xbuild_python_environment_variables|length > 0
 
 - name: Remove xbuild directory.

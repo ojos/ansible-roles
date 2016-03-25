@@ -6,5 +6,5 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: awsenv_environment_variables
+  with_items: "{{ awsenv_environment_variables }}"
   when: awsenv_envrc_directory != '' and awsenv_environment_variables|length > 0

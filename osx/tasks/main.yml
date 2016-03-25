@@ -57,7 +57,7 @@
 - name: Restore from the time machine.
   shell: >
     tmutil restore {{ osx_time_machine_root }}{{ item }} `dirname {{ item }}`
-  with_items: osx_time_machine_directories
+  with_items: "{{ osx_time_machine_directories }}"
   when: osx_restore_time_machine and is_mount.stat.exists and osx_time_machine_directories|length > 0 
 
 

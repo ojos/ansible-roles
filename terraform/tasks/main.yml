@@ -22,5 +22,5 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: terraform_environment_variables
+  with_items: "{{ terraform_environment_variables }}"
   when: terraform_envrc_directory != '' and terraform_environment_variables|length > 0

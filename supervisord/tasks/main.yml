@@ -3,7 +3,7 @@
   pip: >
     name={{ item }}
     state=latest
-  with_items: supervisord_install_packages
+  with_items: "{{ supervisord_install_packages }}"
   environment:
     PATH: "{{ supervisord_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: supervisord_install_packages|length > 0
@@ -56,7 +56,7 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: supervisord_environment_variables
+  with_items: "{{ supervisord_environment_variables }}"
   when: supervisord_envrc_directory != '' and supervisord_environment_variables|length > 0
 
 - name: Create supervisord service file.

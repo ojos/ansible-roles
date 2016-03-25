@@ -68,7 +68,7 @@
 - name: Install luarocks packages.
   shell: >
     {{ openresty_luarocks_bin_file }} install {{ item }}
-  with_items: openresty_luarocks_install_packages
+  with_items: "{{ openresty_luarocks_install_packages }}"
   when: openresty_luarocks_install_packages|length > 0
   become: yes
   become_user: "{{ openresty_luarocks_user }}"

@@ -86,7 +86,7 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: direnv_environment_variables
+  with_items: "{{ direnv_environment_variables }}"
   when: direnv_envrc_directory != '' and direnv_environment_variables|length > 0
 
 - name: direnv allow.
