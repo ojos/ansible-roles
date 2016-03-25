@@ -62,6 +62,7 @@
     chdir: "{{ project_directory }}"
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+  become: yes
   when: nginx_build_type == 'openresty'
 # - name: Configure openresty.
 #   shell: >
