@@ -47,6 +47,7 @@
     GOROOT: "{{ nginx_build_install_directory }}"
     GOPATH: "{{ nginx_build_gopath_directory }}"
   when: nginx_build_type == 'nginx'
+  become: yes
 
 - name: Configure openresty.
   shell: >
@@ -56,6 +57,7 @@
     GOROOT: "{{ nginx_build_install_directory }}"
     GOPATH: "{{ nginx_build_gopath_directory }}"
   when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Configure tengine.
   shell: >
@@ -65,6 +67,7 @@
     GOROOT: "{{ nginx_build_install_directory }}"
     GOPATH: "{{ nginx_build_gopath_directory }}"
   when: nginx_build_type == 'tengine'
+  become: yes
 
 - name: Source Directory.
   shell: >
