@@ -4,7 +4,7 @@
     tap={{ item }}
     state=present
   become: yes
-  with_items: devtools_repositories
+  with_items: {{ devtools_repositories }}
   when: ansible_os_family == 'RedHat' and devtools_repositories|length > 0
 - name: Update Yum(RedHat).
   yum: >
