@@ -43,7 +43,7 @@
   shell: >
     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_configure_options }}
   args:
-    chdir: "{{ nginx_build_prefix }}"
+    chdir: "{{ project_directory }}"
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
     GOROOT: "{{ nginx_build_install_directory }}"
@@ -54,7 +54,7 @@
   shell: >
     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_openresty_configure_options }} {{ nginx_build_configure_options }}
   args:
-    chdir: "{{ nginx_build_prefix }}"
+    chdir: "{{ project_directory }}"
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
     GOROOT: "{{ nginx_build_install_directory }}"
@@ -65,7 +65,7 @@
   shell: >
     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_tengine_configure_options }} {{ nginx_build_configure_options }}
   args:
-    chdir: "{{ nginx_build_prefix }}"
+    chdir: "{{ project_directory }}"
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
     GOROOT: "{{ nginx_build_install_directory }}"
