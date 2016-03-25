@@ -48,15 +48,32 @@
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'nginx'
 
+- name: Generate shell script.
+  template: >
+    src=openresty.sh.tpl
+    dest="{{ project_directory }}/openresty.sh"
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
+    mode=0755
+  become: yes
+  when: nginx_build_type == 'openresty'
 - name: Configure openresty.
   shell: >
-    nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_openresty_configure_options }} {{ nginx_build_configure_options }}
+    ./openresty.sh
   args:
     chdir: "{{ project_directory }}"
-    executable: /bin/bash
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'openresty'
+# - name: Configure openresty.
+#   shell: >
+#     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_openresty_configure_options }} {{ nginx_build_configure_options }}
+#   args:
+#     chdir: "{{ project_directory }}"
+#     executable: /bin/bash
+#   environment:
+#     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+#   when: nginx_build_type == 'openresty'
 
 - name: Configure tengine.
   shell: >
