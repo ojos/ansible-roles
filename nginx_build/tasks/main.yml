@@ -52,8 +52,6 @@
   template: >
     src=openresty.sh.tpl
     dest="{{ project_directory }}/openresty.sh"
-    owner="{{ nginx_build_user }}"
-    group="{{ nginx_build_group }}"
     mode=0755
   become: yes
   when: nginx_build_type == 'openresty'
