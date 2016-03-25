@@ -44,6 +44,8 @@
     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_configure_options }}
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+    GOROOT: "{{ nginx_build_install_directory }}"
+    GOPATH: "{{ nginx_build_gopath_directory }}"
   when: nginx_build_type == 'nginx'
 
 - name: Configure openresty.
@@ -51,6 +53,8 @@
     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_openresty_configure_options }} {{ nginx_build_configure_options }}
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+    GOROOT: "{{ nginx_build_install_directory }}"
+    GOPATH: "{{ nginx_build_gopath_directory }}"
   when: nginx_build_type == 'openresty'
 
 - name: Configure tengine.
@@ -58,6 +62,8 @@
     nginx-build -d {{ nginx_build_work_directory }} {{ nginx_build_tengine_configure_options }} {{ nginx_build_configure_options }}
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
+    GOROOT: "{{ nginx_build_install_directory }}"
+    GOPATH: "{{ nginx_build_gopath_directory }}"
   when: nginx_build_type == 'tengine'
 
 - name: Source Directory.
