@@ -4,5 +4,5 @@
   gtk_firefox_install_archive_url: https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US
   gtk_firefox_dependent_packages:
     - wget
-    - xorg-x11-server-Xvfbtra
+    - xorg-x11-server-Xvfb
     - libXcomposite
