@@ -14,7 +14,7 @@
 
 - name: installeded list.
   shell: >
-    yum list installeded
+    yum list installed
   register: installeded_list
   changed_when: false
   always_run: yes
