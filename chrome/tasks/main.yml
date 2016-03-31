@@ -1,0 +1,14 @@
+---
+- name: Install google-chrome repository(RedHat).
+  copy: >
+    src=google-chrome.repo
+    dest=/etc/yum.repos.d/google-chrome.repo
+    mode=0644
+  when: ansible_os_family == 'RedHat'
+  become: yes
+
+- name: Install google-chrome-stable.
+  yum: >
+    name=google-chrome-stable
+    state=present
+  become: yes
