@@ -27,7 +27,7 @@
   when: ansible_distribution == 'Amazon' and yum_repos_repositories.count('base')
   become: yes
 
-- nama: To enable repositories.
+- name: To enable repositories.
   shell: >
     yum-config-manager --enable {{ item }}
   with_items: "{{ yum_repos_repositories }}"
