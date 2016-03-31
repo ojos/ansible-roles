@@ -18,6 +18,7 @@
   register: installeded_list
   changed_when: false
   always_run: yes
+  become: yes
 - name: Install Remi repository.
   yum: >
     name="{{ yum_repos_remi_rpm_url }}"
