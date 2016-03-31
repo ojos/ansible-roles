@@ -1,0 +1,13 @@
+- name: Install python selenium.
+  pip: >
+    name=selenium
+    state=latest
+  environment:
+    PATH: "{{ xbuild_python_install_directory }}/bin:{{ ansible_env.PATH }}"
+
+- name: Install xvfbwrapper.
+  pip: >
+    name=xvfbwrapper
+    state=latest
+  environment:
+    PATH: "{{ xbuild_python_install_directory }}/bin:{{ ansible_env.PATH }}"
