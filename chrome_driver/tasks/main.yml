@@ -27,4 +27,5 @@
     src={{ chrome_driver_url }}
     dest={{ chrome_driver_bin_directory }}
     copy=no
+  become: yes
 
