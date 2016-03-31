@@ -7,8 +7,8 @@
   when: ansible_os_family == 'RedHat'
   become: yes
 
-- name: Install google-chrome-stable.
-  yum: >
-    name=google-chrome-stable
-    state=present
-  become: yes
+# - name: Install google-chrome-stable.
+#   yum: >
+#     name=google-chrome-stable
+#     state=present
+#   become: yes

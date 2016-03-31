@@ -2,5 +2,5 @@
   yum_repos_repositories:
     - epel
     - remi
-    - cent-base
+    - base
   yum_repos_remi_rpm_url: http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
