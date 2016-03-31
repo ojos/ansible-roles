@@ -14,7 +14,7 @@
 
 - name: Install Remi repository.
   yum: >
-    name=remi-release
+    name="{{ yum_repos_remi_rpm_url }}"
     state=present
   when: yum_repos_repositories.count('remi')
   become: yes
