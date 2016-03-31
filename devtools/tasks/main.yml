@@ -1,7 +1,7 @@
 ---
 - name: External Yum repositories(RedHat).
   yum: >
-    tap={{ item }}
+    name={{ item }}
     state=present
   become: yes
   with_items: "{{ devtools_repositories }}"

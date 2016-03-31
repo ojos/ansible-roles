@@ -1,20 +1,20 @@
 ---
 - name: Install yum-utils.
   yum: >
-    tap=yum-utils
+    name=yum-utils
     state=present
   become: yes
 
 - name: Install EPEL repository.
   yum: >
-    tap=epel-release
+    name=epel-release
     state=present
   when: yum_repos_repositories.count('epel')
   become: yes
 
 - name: Install Remi repository.
   yum: >
-    tap=remi-release
+    name=remi-release
     state=present
   when: yum_repos_repositories.count('remi')
   become: yes
