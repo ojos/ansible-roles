@@ -30,3 +30,10 @@
     {{ gtk_firefox_install_shell_file }}
   when: ansible_distribution == 'Amazon'
   become: yes
+
+- name: Remove xbuild directory.
+  file: >
+    path=/usr/local/lib/libpixman-1.so.0
+    state=absent
+  when: ansible_distribution == 'Amazon'
+  become: yes

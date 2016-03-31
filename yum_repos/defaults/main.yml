@@ -1,0 +1,5 @@
+---
+  yum_repos_repositories:
+    - epel
+    - remi
+    - cent-base
