@@ -28,7 +28,7 @@
   become: yes
 
 - nama: To enable repositories.
-  shell:
+  shell: >
     yum-config-manager --enable {{ item }}
   with_items: "{{ yum_repos_repositories }}"
   become: yes
