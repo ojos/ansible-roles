@@ -1,0 +1,6 @@
+---
+  chrome_driver_url: http://chromedriver.storage.googleapis.com/2.21/chromedriver_linux64.zip
+  chrome_driver_bin_directory: /usr/local/sbin
+  chrome_driver_dependent_packages:
+    - xorg-x11-server-Xvfb
+    - libexif
