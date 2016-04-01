@@ -31,7 +31,7 @@
   when: ansible_distribution == 'Amazon'
   become: yes
 
-- name: Remove xbuild directory.
+- name: Remove libpixman-1.so.0.
   file: >
     path=/usr/local/lib/libpixman-1.so.0
     state=absent

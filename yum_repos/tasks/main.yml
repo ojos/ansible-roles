@@ -12,12 +12,17 @@
   when: yum_repos_repositories.count('epel')
   become: yes
 
+- name: repo list.
+  shell: >
+    ls /etc/yum.repos.d
+  register: repo_list
+  changed_when: false
+  always_run: yes
 - name: Install Remi repository.
   yum: >
     name="{{ yum_repos_remi_rpm_url }}"
     state=present
-  when: yum_repos_repositories.count('remi')
-  ignore_errors: True
+  when: yum_repos_repositories.count('remi') and repo_list.stdout_lines.count('remi.repo') < 1
   become: yes
 
 - name: Install CentOS6-Base repository(Amazonlinux).
