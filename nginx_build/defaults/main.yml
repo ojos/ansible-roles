@@ -4,9 +4,9 @@
   nginx_build_remove_work_directory: no
   nginx_build_dependent_packages:
     - wget
-    - pcre
-    - openssl
-    - zlib
+    # - pcre-devel
+    # - openssl-devel
+    # - zlib-devel
   nginx_build_repository: github.com/cubicdaiya/nginx-build
   nginx_build_install_directory: "{{ xbuild_go_install_directory }}"
   nginx_build_gopath_directory: "{{ xbuild_go_gopath_directory }}"
@@ -19,6 +19,9 @@
   nginx_build_tengine_configure_options: "-tengine"
   nginx_build_configure_options: >-
     -clear
+    -pcre
+    -openssl
+    -zlib
     --prefix={{ nginx_build_prefix }}
     --user={{ nginx_build_user }}
     --group={{ nginx_build_group }}
