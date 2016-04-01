@@ -2,4 +2,4 @@
 dependencies:
   - { role: xbuild_python }
   - { role: chrome_driver }
-  # - { role: gtk_firefox }
+  - { role: gtk_firefox }
