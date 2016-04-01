@@ -57,6 +57,7 @@
   environment:
     PATH: "{{ nginx_build_bin_directory }}:{{ nginx_build_gopath_directory }}/bin:{{ ansible_env.PATH }}"
   when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Configure tengine.
   shell: >
