@@ -26,7 +26,7 @@
   shell: >
     {{ openresty_luarocks_make_bin_file }} install
   args:
-    chdir: "{{ openresty_luarocks_work_directory }}/openresty-{{ openresty_luarocks_version }}"
+    chdir: "{{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}"
   become: yes
 
 - name: Remove work directory.
