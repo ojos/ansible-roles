@@ -5,7 +5,7 @@
   proxy_s3_region: 'ap-northeast-1'
   proxy_s3_auth_username: 'username'
   proxy_s3_auth_password: 'password'
-  proxy_s3_nginx_client_max_body_size: "{{ nginx_build_client_max_body_size }}"
+  proxy_s3_nginx_client_max_body_size: "{{ openresty_client_max_body_size }}"
   proxy_s3_ignore_auth_user_agents:
     - facebook
     - twitter
