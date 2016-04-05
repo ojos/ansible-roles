@@ -11,10 +11,10 @@
   openresty_make_bin_file: /usr/bin/make
   openresty_prefix: "{{ project_directory }}/openresty"
   openresty_configure_options: >-
+    --with-luajit
     --prefix={{ openresty_prefix }}
     --user={{ openresty_user }}
     --group={{ openresty_group }}
-    --with-luajit
   openresty_service_file: /etc/rc.d/init.d/nginx
   openresty_worker_processes: auto
   openresty_worker_rlimit_nofile: 4096
