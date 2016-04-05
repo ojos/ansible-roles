@@ -42,9 +42,9 @@
       regexp: "^# nginx$"
     - value: "export NGINX_HOME={{ nginx_home_dir.stdout }}"
       regexp: "^export NGINX_HOME"
-    - value: "export NGINX_BIN=$NGINX_HOME/sbin/nginx"
-      regexp: "^export NGINX_BIN"
-    - value: |
-        export NGINX_PID=$NGINX_HOME/logs/nginx.pid
-
+    - value: "export NGINX_PID=$NGINX_HOME/logs/nginx.pid"
       regexp: "^export NGINX_PID"
+    - value: |
+        export PATH=$NGINX_HOME/sbin:$PATH
+
+      regexp: PATH=\$NGINX_HOME/sbin\:\$PATH

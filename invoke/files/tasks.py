@@ -42,7 +42,7 @@ def _ngx_reload(deamon, pid):
 @task
 def ngx(command):
     """Nginxのラッパー"""
-    deamon = os.environ['NGINX_BIN']
+    deamon = '%s/sbin/nginx' % os.environ['NGINX_HOME']
     pid = os.path.exists(os.environ['NGINX_PID'])
 
     if command == 'start':

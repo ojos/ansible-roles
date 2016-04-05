@@ -19,9 +19,7 @@
       regexp: "^# luajit$"
     - value: "export LUAJIT_HOME={{ openresty_luarocks_prefix }}"
       regexp: "^export LUAJIT_HOME"
-    - value: "export LUAJIT_BIN=$LUAJIT_HOME/bin/luajit"
-      regexp: "^export LUAJIT_BIN"
     - value: |
-        export LUAROCKS_BIN=$LUAJIT_HOME/bin/luarocks
+        export PATH=$LUAJIT_HOME/bin:$PATH
 
-      regexp: "^export LUAROCKS_BIN"
+      regexp: PATH=\$LUAJIT_HOME/bin\:\$PATH
