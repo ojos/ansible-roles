@@ -1,8 +1,17 @@
 ---
+- name: Create work directory.
+  file: >
+    path="{{ openresty_luarocks_work_directory }}"
+    state=directory
+    owner="{{ openresty_luarocks_user }}"
+    group="{{ openresty_luarocks_group }}"
+    mode=0755
+  become: yes
+
 - name: Extract luarocks source.
   unarchive: >
     src="http://luarocks.org/releases/luarocks-{{ openresty_luarocks_version }}.tar.gz"
-    dest="{{ openresty_luarocks_src_directory }}"
+    dest="{{ openresty_luarocks_work_directory }}"
     copy=no
   become: yes
 
@@ -10,51 +19,21 @@
   shell: >
     ./configure {{ openresty_luarocks_configure_options }}
   args:
-    chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
+    chdir: "{{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}"
   become: yes
 
-- name: Made file.
-  stat: >
-    path="{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}/made"
-  register: made_file
-  changed_when: no
-  always_run: yes
-- name: Build luarocks.
+- name: Make and Install.
   shell: >
-    /usr/bin/make build
+    {{ openresty_luarocks_make_bin_file }} install
   args:
-    chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
+    chdir: "{{ openresty_luarocks_work_directory }}/openresty-{{ openresty_luarocks_version }}"
   become: yes
-  when: not made_file.stat.exists or openresty_luarocks_force_install
 
-- name: Touch Maked file.
+- name: Remove work directory.
   file: >
-    path={{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}/made
-    state=touch
-  become: yes
-  when: not made_file.stat.exists
-
-- name: Binary file.
-  stat: >
-    path={{ openresty_luarocks_prefix }}/bin/luarocks
-  register: bin_file
-  changed_when: no
-  always_run: yes
-- name: Install luarocks.
-  shell: >
-    /usr/bin/make install
-  args:
-    chdir: "{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
-  when: not bin_file.stat.exists or openresty_luarocks_force_install
-  become: yes
-  become_user: "{{ openresty_luarocks_user }}"
-
-- name: Remove source directory.
-  file: >
-    path="{{ openresty_luarocks_src_directory }}/luarocks-{{ openresty_luarocks_version }}"
+    path="{{ openresty_luarocks_work_directory }}"
     state=absent
   become: yes
-  when: openresty_luarocks_remove_src_directory
 
 - name: Change luajit directory owner.
   file: >
@@ -72,4 +51,14 @@
   when: openresty_luarocks_install_packages|length > 0
   become: yes
   become_user: "{{ openresty_luarocks_user }}"
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ openresty_luarocks_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ openresty_luarocks_environment_variables }}"
+  when: openresty_luarocks_envrc_directory != '' and openresty_luarocks_environment_variables|length > 0
 

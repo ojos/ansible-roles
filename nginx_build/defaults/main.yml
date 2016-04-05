@@ -2,7 +2,6 @@
   nginx_build_user: nginx
   nginx_build_group: nginx
   nginx_build_work_directory: "{{ project_directory }}/work"
-  nginx_build_remove_work_directory: no
   nginx_build_dependent_packages:
     - wget
   nginx_build_repository: github.com/cubicdaiya/nginx-build

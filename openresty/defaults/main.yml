@@ -3,7 +3,6 @@
   openresty_group: nginx
   openresty_version: 1.9.7.4
   openresty_work_directory: "{{ project_directory }}/work"
-  openresty_remove_work_directory: no
   openresty_dependent_packages:
     - openssl-devel
     - pcre-devel
