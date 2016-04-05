@@ -1,19 +1,16 @@
 ---
   nginx_build_user: nginx
   nginx_build_group: nginx
+  nginx_build_work_directory: "{{ project_directory }}/work"
   nginx_build_remove_work_directory: no
   nginx_build_dependent_packages:
     - wget
-    # - pcre-devel
-    # - openssl-devel
-    # - zlib-devel
   nginx_build_repository: github.com/cubicdaiya/nginx-build
   nginx_build_install_directory: "{{ xbuild_go_install_directory }}"
   nginx_build_gopath_directory: "{{ xbuild_go_gopath_directory }}"
   nginx_build_bin_directory: "{{ nginx_build_install_directory }}/bin"
   nginx_build_make_bin_file: /usr/bin/make
   nginx_build_type: nginx
-  nginx_build_work_directory: "{{ project_directory }}/work"
   nginx_build_prefix: "{{ project_directory }}/{{ nginx_build_type }}"
   nginx_build_openresty_configure_options: "-openresty"
   nginx_build_tengine_configure_options: "-tengine"
