@@ -9,7 +9,7 @@
 - name: Replace http.server.conf.
   template: >
     src=nginx.http.server.conf.tpl
-    dest={{ proxy_gunicorn_nginx_sub_conf_directory }}/http.server.conf
+    dest={{ proxy_gunicorn_nginx_home_directory }}/conf/conf.d/http.server.conf
     owner="{{ proxy_gunicorn_user }}"
     group="{{ proxy_gunicorn_group }}"
     mode=0644
