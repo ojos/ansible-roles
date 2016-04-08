@@ -212,7 +212,6 @@
   environment:
     PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
   with_items:
-    - autoreconf -fiv
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-examples"
     - make
     - make install
