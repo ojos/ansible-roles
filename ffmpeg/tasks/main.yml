@@ -39,6 +39,7 @@
     dest={{ ffmpeg_work_directory }}/yasm
     update=yes
     accept_hostkey=yes
+    force=yes
   become: yes
 
 - name: Configure, Make and Install yasm.
@@ -58,6 +59,7 @@
     dest={{ ffmpeg_work_directory }}/libx264
     update=yes
     accept_hostkey=yes
+    force=yes
   become: yes
 
 - name: Configure, Make and Install libx264.
@@ -78,6 +80,7 @@
     dest={{ ffmpeg_work_directory }}/libfdk_aac
     update=yes
     accept_hostkey=yes
+    force=yes
   become: yes
 
 - name: Configure, Make and Install libfdk_aac.
@@ -126,6 +129,7 @@
     dest={{ ffmpeg_work_directory }}/opus
     update=yes
     accept_hostkey=yes
+    force=yes
   become: yes
 
 - name: Configure, Make and Install libopus.
@@ -199,6 +203,7 @@
     dest={{ ffmpeg_work_directory }}/libvpx
     update=yes
     accept_hostkey=yes
+    force=yes
   become: yes
 
 - name: Configure, Make and Install libvpx.
@@ -221,6 +226,7 @@
     dest={{ ffmpeg_work_directory }}/ffmpeg
     update=yes
     accept_hostkey=yes
+    force=yes
   become: yes
 
 - name: Configure, Make and Install libvpx.
