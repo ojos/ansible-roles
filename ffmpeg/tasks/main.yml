@@ -43,11 +43,11 @@
 
 - name: Configure, Make and Install yasm.
   shell: "{{ item }}" 
-    args:
-      chdir: "{{ ffmpeg_work_directory }}/yasm" 
-    with_items:
-      - autoreconf -fiv
-      - "./configure --prefix='{{ ffmpeg_prefix }}'"
-      - make
-      - make install
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/yasm" 
+  with_items:
+    - autoreconf -fiv
+    - "./configure --prefix='{{ ffmpeg_prefix }}'"
+    - make
+    - make install
   become: yes
