@@ -15,18 +15,14 @@
     copy=no
   become: yes
 
-- name: Configure luarocks source.
-  shell: >
-    ./configure {{ openresty_luarocks_configure_options }}
+- name: Configure, Make and Install luarocks.
+  shell: "{{ item }}" 
   args:
     chdir: "{{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}"
-  become: yes
-
-- name: Make and Install.
-  shell: >
-    {{ openresty_luarocks_make_bin_file }} install
-  args:
-    chdir: "{{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}"
+  with_items:
+    - "./configure {{ openresty_luarocks_configure_options }}"
+    - make
+    - make install
   become: yes
 
 - name: Remove work directory.
