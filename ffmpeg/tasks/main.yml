@@ -48,7 +48,6 @@
     accept_hostkey=yes
     force=yes
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Configure, Make and Install yasm.
   shell: "{{ item }}" 
@@ -60,7 +59,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Clone libx264 repository.
   git: >
@@ -70,7 +68,6 @@
     accept_hostkey=yes
     force=yes
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Configure, Make and Install libx264.
   shell: "{{ item }}" 
@@ -83,7 +80,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Clone libfdk_aac repository.
   git: >
@@ -107,7 +103,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Extract libmp3lame source.
   unarchive: >
@@ -115,7 +110,6 @@
     dest="{{ ffmpeg_work_directory }}"
     copy=no
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: libmp3lame source Directory.
   shell: >
@@ -136,7 +130,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Clone libopus repository.
   git: >
@@ -146,7 +139,6 @@
     accept_hostkey=yes
     force=yes
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Configure, Make and Install libopus.
   shell: "{{ item }}" 
@@ -160,7 +152,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Extract libogg source.
   unarchive: >
@@ -168,7 +159,6 @@
     dest="{{ ffmpeg_work_directory }}"
     copy=no
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: libogg source Directory.
   shell: >
@@ -189,7 +179,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Extract libvorbis source.
   unarchive: >
@@ -197,7 +186,6 @@
     dest="{{ ffmpeg_work_directory }}"
     copy=no
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: libvorbis source Directory.
   shell: >
@@ -218,7 +206,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Clone libvpx repository.
   git: >
@@ -228,7 +215,6 @@
     accept_hostkey=yes
     force=yes
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Configure, Make and Install libvpx.
   shell: "{{ item }}" 
@@ -241,7 +227,6 @@
     - make
     - make install
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 
 - name: Clone ffmpeg repository.
@@ -252,7 +237,6 @@
     accept_hostkey=yes
     force=yes
     version={{ ffmpeg_branch_name }}
-  become: yes
 
 - name: Configure, Make and Install ffmpeg.
   shell: "{{ item }}" 
@@ -277,7 +261,6 @@
       --enable-openssl
     - make
     - make install
-  become: yes
 
 - name: Remove work directory.
   file: >

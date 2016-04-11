@@ -1,6 +1,6 @@
 ---
-  imagemagick_user: imagemagick
-  imagemagick_group: imagemagick
+  imagemagick_user: "{{ project_user }}"
+  imagemagick_group: "{{ project_group }}"
   imagemagick_dependent_packages:
     - libjpeg-devel
     - libpng-devel

@@ -45,7 +45,6 @@
     src="{{ imagemagick_source_url }}"
     dest="{{ imagemagick_work_directory }}"
     copy=no
-  become: yes
 
 - name: imagemagick source Directory.
   shell: >
@@ -64,7 +63,6 @@
     - "./configure --prefix='{{ imagemagick_prefix }}'"
     - make
     - make install
-  become: yes
 
 - name: Remove work directory.
   file: >
