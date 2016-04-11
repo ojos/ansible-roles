@@ -14,6 +14,7 @@
     dest="{{ openresty_luarocks_work_directory }}"
     copy=no
   become: yes
+  become_user: "{{ openresty_luarocks_user }}"
 
 - name: Configure, Make and Install luarocks.
   shell: "{{ item }}" 
@@ -24,6 +25,7 @@
     - make
     - make install
   become: yes
+  become_user: "{{ openresty_luarocks_user }}"
 
 - name: Remove work directory.
   file: >
