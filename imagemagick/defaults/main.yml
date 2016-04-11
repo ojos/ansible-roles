@@ -11,7 +11,7 @@
   imagemagick_environment_variables:
     - value: "# imagemagick"
       regexp: "^# imagemagick$"
-    - value: "export IMAGEMAGICK_HOME={{ nginx_home_dir.stdout }}"
+    - value: "export IMAGEMAGICK_HOME=$PROJECT_HOME/imagemagick"
       regexp: "^export IMAGEMAGICK_HOME"
     - value: |
         export PATH=$IMAGEMAGICK_HOME/bin:$PATH
