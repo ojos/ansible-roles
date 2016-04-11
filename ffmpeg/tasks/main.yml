@@ -23,6 +23,13 @@
   with_items: "{{ ffmpeg_dependent_packages }}"
   when: ansible_os_family == 'RedHat' and ffmpeg_dependent_packages|length > 0
   become: yes
+- name: Install dependent packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: "{{ ffmpeg_dependent_packages }}"
+  when: ansible_os_family == 'Darwin' and ffmpeg_dependent_packages|length > 0
 
 - name: Create work directory.
   file: >
