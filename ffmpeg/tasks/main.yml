@@ -47,6 +47,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Configure, Make and Install yasm.
@@ -58,6 +59,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}'"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Clone libx264 repository.
@@ -67,6 +69,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Configure, Make and Install libx264.
@@ -79,6 +82,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --enable-static"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Clone libfdk_aac repository.
@@ -88,6 +92,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Configure, Make and Install libfdk_aac.
@@ -101,6 +106,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Extract libmp3lame source.
@@ -108,6 +114,7 @@
     src="{{ ffmpeg_libmp3lame_source_url }}"
     dest="{{ ffmpeg_work_directory }}"
     copy=no
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: libmp3lame source Directory.
@@ -116,6 +123,7 @@
   args:
     chdir: "{{ ffmpeg_work_directory }}"
   register: libmp3lame_dir
+  when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libmp3lame.
   shell: "{{ item }}" 
@@ -127,6 +135,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared --enable-nasm"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Clone libopus repository.
@@ -136,6 +145,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Configure, Make and Install libopus.
@@ -149,6 +159,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Extract libogg source.
@@ -156,6 +167,7 @@
     src="{{ ffmpeg_libogg_source_url }}"
     dest="{{ ffmpeg_work_directory }}"
     copy=no
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: libogg source Directory.
@@ -164,6 +176,7 @@
   args:
     chdir: "{{ ffmpeg_work_directory }}"
   register: libogg_dir
+  when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libogg.
   shell: "{{ item }}" 
@@ -175,6 +188,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Extract libvorbis source.
@@ -182,6 +196,7 @@
     src="{{ ffmpeg_libvorbis_source_url }}"
     dest="{{ ffmpeg_work_directory }}"
     copy=no
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: libvorbis source Directory.
@@ -190,6 +205,7 @@
   args:
     chdir: "{{ ffmpeg_work_directory }}"
   register: libvorbis_dir
+  when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libvorbis.
   shell: "{{ item }}" 
@@ -201,6 +217,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --with-ogg='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Clone libvpx repository.
@@ -210,6 +227,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 - name: Configure, Make and Install libvpx.
@@ -222,6 +240,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-examples"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
   become: yes
 
 
