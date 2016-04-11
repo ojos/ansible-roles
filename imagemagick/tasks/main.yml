@@ -1,0 +1,85 @@
+---
+- name: user list.
+  shell: >
+    cut -d: -f1 /etc/passwd  
+  register: user_list  
+  changed_when: false  
+  always_run: yes
+  when: ansible_os_family != 'Darwin'
+- name: Create imagemagick user.
+  user: >
+    name="{{ imagemagick_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ imagemagick_prefix }}"
+    createhome=no
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(imagemagick_user) < 1 
+  become: yes
+
+- name: Install/Upgrade dependent packages(RedHat).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ imagemagick_dependent_packages }}"
+  when: ansible_os_family == 'RedHat' and imagemagick_dependent_packages|length > 0
+  become: yes
+
+- name: Create work directory.
+  file: >
+    path="{{ imagemagick_work_directory }}"
+    state=directory
+    owner="{{ imagemagick_user }}"
+    group="{{ imagemagick_group }}"
+    mode=0755
+  become: yes
+
+- name: Extract imagemagick source.
+  unarchive: >
+    src="{{ imagemagick_source_url }}"
+    dest="{{ imagemagick_work_directory }}"
+    copy=no
+  become: yes
+
+- name: imagemagick source Directory.
+  shell: >
+    echo $(cd $(find . -maxdepth 1 -type d | grep ./ImageMagick) && pwd)
+  args:
+    chdir: "{{ imagemagick_work_directory }}"
+  register: imagemagick_dir
+
+- name: Configure, Make and Install imagemagick.
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ imagemagick_dir.stdout }}"
+  environment:
+    PATH: "{{ imagemagick_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - "./configure --prefix='{{ imagemagick_prefix }}'"
+    - make
+    - make install
+  become: yes
+
+- name: Remove work directory.
+  file: >
+    path="{{ imagemagick_work_directory }}"
+    state=absent
+  become: yes
+
+- name: Change imagemagick directory owner.
+  file: >
+    path="{{ imagemagick_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ imagemagick_user }}"
+    group="{{ imagemagick_group }}"
+  become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ imagemagick_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ imagemagick_environment_variables }}"
+  when: imagemagick_envrc_directory != '' and imagemagick_environment_variables|length > 0

@@ -225,9 +225,10 @@
     update=yes
     accept_hostkey=yes
     force=yes
+    version={{ ffmpeg_branch_name }}
   become: yes
 
-- name: Configure, Make and Install libvpx.
+- name: Configure, Make and Install ffmpeg.
   shell: "{{ item }}" 
   args:
     chdir: "{{ ffmpeg_work_directory }}/ffmpeg"

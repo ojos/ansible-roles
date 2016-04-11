@@ -1,0 +1,19 @@
+---
+  imagemagick_user: imagemagick
+  imagemagick_group: imagemagick
+  imagemagick_dependent_packages:
+    - libjpeg-devel
+    - libpng-devel
+  imagemagick_prefix: "{{ project_directory }}/imagemagick"
+  imagemagick_work_directory: "{{ project_directory }}/work"
+  imagemagick_source_url: http://www.imagemagick.org/download/ImageMagick.tar.gz
+  imagemagick_envrc_directory: "{{ direnv_envrc_directory }}"
+  imagemagick_environment_variables:
+    - value: "# imagemagick"
+      regexp: "^# imagemagick$"
+    - value: "export IMAGEMAGICK_HOME={{ nginx_home_dir.stdout }}"
+      regexp: "^export IMAGEMAGICK_HOME"
+    - value: |
+        export PATH=$IMAGEMAGICK_HOME/bin:$PATH
+
+      regexp: PATH=\$IMAGEMAGICK_HOME/bin\:\$PATH
