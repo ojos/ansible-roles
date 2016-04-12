@@ -40,24 +40,21 @@
     copy=no
   become: yes
 
+- name: Configure, Make and Install openresty.
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
+  with_items:
+    - "./configure {{ openresty_configure_options }}"
+    - make
+    - make install
+  become: yes
+
 - name: Configure openresty source.
   shell: >
     ./configure {{ openresty_configure_options }}
   args:
     chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
-  become: yes
-
-- name: Make and Install.
-  shell: >
-    {{ openresty_make_bin_file }} install
-  args:
-    chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
-  become: yes
-
-- name: Remove work directory.
-  file: >
-    path="{{ openresty_work_directory }}"
-    state=absent
   become: yes
 
 - name: nginx home Directory.
