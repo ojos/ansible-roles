@@ -12,6 +12,7 @@
   django_app_name: core.wsgi
   django_log_directory: "{{ project_directory }}/log/django"
   django_db_directory: ""
+  django_dependent_packages: []
   django_install_packages:
     - Django
     - pycrypto

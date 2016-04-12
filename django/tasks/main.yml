@@ -1,4 +1,12 @@
 ---
+- name: Install/Upgrade dependent packages(RedHat).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ django_dependent_packages }}"
+  when: ansible_os_family == 'RedHat' and django_dependent_packages|length > 0
+  become: yes
+
 - name: Install django packages.
   pip: >
     name={{ item }}
