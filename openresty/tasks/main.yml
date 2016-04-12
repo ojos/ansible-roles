@@ -64,29 +64,17 @@
     chdir: "{{ openresty_prefix }}"
   register: nginx_home_dir
 
-- name: Copy favicon.ico.
+- name: Copy static files.
   copy: >
-    src=favicon.ico
-    dest="{{ nginx_home_dir.stdout }}/html/favicon.ico"
+    src="{{ item }}"
+    dest="{{ nginx_home_dir.stdout }}/html/{{ item }}"
     owner="{{ openresty_user }}"
     group="{{ openresty_group }}"
     mode=0644
-  become: yes
-- name: Copy 404.html.
-  copy: >
-    src=404.html
-    dest="{{ nginx_home_dir.stdout }}/html/404.html"
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
-    mode=0644
-  become: yes
-- name: Copy 50x.html.
-  copy: >
-    src=50x.html
-    dest="{{ nginx_home_dir.stdout }}/html/50x.html"
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
-    mode=0644
+  with_items:
+    - favicon.ico
+    - 404.html
+    - 50x.html
   become: yes
 
 - name: Create nginx.conf.
@@ -107,22 +95,20 @@
     mode=0755
   become: yes
 
-- name: Create global.conf.
+- name: Create sub conf files.
   template: >
-    src=nginx.global.conf.tpl
-    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/global.conf"
+    src="nginx.{{ item }}.tpl"
+    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/{{ item }}"
     owner="{{ openresty_user }}"
     group="{{ openresty_group }}"
     mode=0644
+  with_items:
+    - global.conf
+    - http.conf
+    - http.server.conf
+    - http.lua.conf
   become: yes
-- name: Create http.conf.
-  template: >
-    src=nginx.http.conf.tpl
-    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.conf"
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
-    mode=0644
-  become: yes
+
 - name: Remove commentout in http.conf.
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.conf"
@@ -133,14 +119,6 @@
     backrefs=yes
   become: yes
 
-- name: Create http.server.conf.
-  template: >
-    src=nginx.http.server.conf.tpl
-    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
-    mode=0644
-  become: yes
 - name: Remove commentout in http.server.conf(1).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -167,15 +145,6 @@
     state=present
     regexp='^(\s+)# (\})$'
     backrefs=yes
-  become: yes
-
-- name: Create http.lua.conf.
-  template: >
-    src=nginx.http.lua.conf.tpl
-    dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.lua.conf"
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
-    mode=0644
   become: yes
 
 - name: Create lua directory.
