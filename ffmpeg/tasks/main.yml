@@ -89,7 +89,6 @@
     accept_hostkey=yes
     force=yes
   when: ansible_os_family == 'RedHat'
-  become: yes
 
 - name: Configure, Make and Install libfdk_aac.
   shell: "{{ item }}" 

@@ -1,5 +1,5 @@
 ---
-- name: Install django packages.
+- name: Install celery packages.
   pip: >
     name={{ item }}
     state=latest
