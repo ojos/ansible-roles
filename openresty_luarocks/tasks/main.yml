@@ -31,10 +31,10 @@
 #     state=absent
 #   become: yes
 
-# - name: luarocks path.
-#   shell: >
-#     {{ openresty_luarocks_bin_file }} path | sed "s/export.*'\(.*\)'/\1;;/"
-#   register: luarocks_path_list
+- name: luarocks path.
+  shell: >
+    {{ openresty_luarocks_bin_file }} path | sed "s/export.*'\(.*\)'/\1;;/"
+  register: luarocks_path_list
 
 - name: degug.
   debug: msg="{{ luarocks_path_list }}"
