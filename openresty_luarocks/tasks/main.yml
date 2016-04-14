@@ -1,35 +1,35 @@
 ---
-# - name: Create work directory.
-#   file: >
-#     path="{{ openresty_luarocks_work_directory }}"
-#     state=directory
-#     owner="{{ openresty_luarocks_user }}"
-#     group="{{ openresty_luarocks_group }}"
-#     mode=0777
-#   become: yes
+- name: Create work directory.
+  file: >
+    path="{{ openresty_luarocks_work_directory }}"
+    state=directory
+    owner="{{ openresty_luarocks_user }}"
+    group="{{ openresty_luarocks_group }}"
+    mode=0777
+  become: yes
 
-# - name: Extract luarocks source.
-#   unarchive: >
-#     src="http://luarocks.org/releases/luarocks-{{ openresty_luarocks_version }}.tar.gz"
-#     dest="{{ openresty_luarocks_work_directory }}"
-#     copy=no
-#   become: yes
+- name: Extract luarocks source.
+  unarchive: >
+    src="http://luarocks.org/releases/luarocks-{{ openresty_luarocks_version }}.tar.gz"
+    dest="{{ openresty_luarocks_work_directory }}"
+    copy=no
+  become: yes
 
-# - name: Configure, Make and Install luarocks.
-#   shell: "{{ item }}" 
-#   args:
-#     chdir: "{{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}"
-#   with_items:
-#     - "./configure {{ openresty_luarocks_configure_options }}"
-#     - make build
-#     - make install
-#   become: yes
+- name: Configure, Make and Install luarocks.
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}"
+  with_items:
+    - "./configure {{ openresty_luarocks_configure_options }}"
+    - make build
+    - make install
+  become: yes
 
-# - name: Remove work directory.
-#   file: >
-#     path="{{ openresty_luarocks_work_directory }}"
-#     state=absent
-#   become: yes
+- name: Remove work directory.
+  file: >
+    path="{{ openresty_luarocks_work_directory }}"
+    state=absent
+  become: yes
 
 - name: luarocks path.
   shell: >
@@ -46,33 +46,33 @@
   replace: >
     dest="{{ openresty_luarocks_nginx_lua_conf_file }}"
     replace="\1'{{ luarocks_path_list.stdout_lines[1] }}';"
-    regexp="(^lua_package_cpath\s+)'.+';"
+    regexp="(^lua_package_cpath\s+)'.*';"
   become: yes
 
-# - name: Change luajit directory owner.
-#   file: >
-#     path="{{ openresty_luarocks_prefix }}"
-#     state=directory
-#     recurse=yes
-#     owner="{{ openresty_luarocks_user }}"
-#     group="{{ openresty_luarocks_group }}"
-#   become: yes
+- name: Change luajit directory owner.
+  file: >
+    path="{{ openresty_luarocks_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ openresty_luarocks_user }}"
+    group="{{ openresty_luarocks_group }}"
+  become: yes
 
-# - name: Install luarocks packages.
-#   shell: >
-#     {{ openresty_luarocks_bin_file }} install {{ item }}
-#   with_items: "{{ openresty_luarocks_install_packages }}"
-#   when: openresty_luarocks_install_packages|length > 0
-#   become: yes
-#   become_user: "{{ openresty_luarocks_user }}"
+- name: Install luarocks packages.
+  shell: >
+    {{ openresty_luarocks_bin_file }} install {{ item }}
+  with_items: "{{ openresty_luarocks_install_packages }}"
+  when: openresty_luarocks_install_packages|length > 0
+  become: yes
+  become_user: "{{ openresty_luarocks_user }}"
 
-# - name: Insert env in .envrc.
-#   lineinfile: >
-#     dest={{ openresty_luarocks_envrc_directory }}/.envrc
-#     line="{{ item.value }}"
-#     insertafter=EOF
-#     state=present
-#     regexp={{ item.regexp }}
-#   with_items: "{{ openresty_luarocks_environment_variables }}"
-#   when: openresty_luarocks_envrc_directory != '' and openresty_luarocks_environment_variables|length > 0
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ openresty_luarocks_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ openresty_luarocks_environment_variables }}"
+  when: openresty_luarocks_envrc_directory != '' and openresty_luarocks_environment_variables|length > 0
 
