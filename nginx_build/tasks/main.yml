@@ -74,12 +74,11 @@
   args:
     chdir: "{{ nginx_build_work_directory }}/{{ nginx_build_type }}"
   register: source_dir
-- name: Make and Install.
+- name: Install.
   shell: >
     {{ nginx_build_make_bin_file }} install
   args:
     chdir: "{{ source_dir.stdout }}"
-  become: yes
 
 - name: Remove work directory.
   file: >
@@ -101,7 +100,6 @@
     update=yes
     accept_hostkey=yes
   when: nginx_build_nginx_repository != ''
-  become: yes
 
 - name: Copy static files.
   copy: >
@@ -115,7 +113,6 @@
     - 404.html
     - 50x.html
   when: nginx_build_nginx_repository == ''
-  become: yes
 
 - name: nginx conf file.
   stat: >
@@ -131,7 +128,6 @@
     group="{{ nginx_build_group }}"
     mode=0644
   when: not nginx_conf_file.stat.exists
-  become: yes
 
 - name: nginx conf sub directory.
   stat: >
@@ -147,7 +143,6 @@
     group="{{ nginx_build_group }}"
     mode=0755
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 
 - name: Create sub conf files.
   template: >
@@ -161,7 +156,6 @@
     - http.conf
     - http.server.conf
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 
 - name: Remove commentout in http.conf.
   lineinfile: >
@@ -172,7 +166,6 @@
     regexp='^(\s+)# (include.+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
-  become: yes
 
 - name: Remove commentout in http.server.conf(1).
   lineinfile: >
@@ -183,7 +176,6 @@
     regexp='^(\s+)# (location.+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
-  become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -193,7 +185,6 @@
     regexp='^(\s+)# (\s+content_by_lua_file .+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
-  become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -203,7 +194,6 @@
     regexp='^(\s+)# (\})$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
-  become: yes
 
 - name: Create http.lua.conf.
   template: >
@@ -213,7 +203,6 @@
     group="{{ nginx_build_group }}"
     mode=0644
   when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
-  become: yes
 
 - name: nginx lua directory.
   stat: >
@@ -229,7 +218,6 @@
     group="{{ nginx_build_group }}"
     mode=0755
   when: not nginx_lua_dir.stat.exists and nginx_build_type == 'openresty'
-  become: yes
 - name: Copy current_time.lua.
   copy: >
     src=current_time.lua
@@ -238,7 +226,6 @@
     group="{{ nginx_build_group }}"
     mode=0644
   when: not nginx_lua_dir.stat.exists and nginx_build_type == 'openresty'
-  become: yes
 
 - name: Extract resolver.
   shell: >
@@ -253,7 +240,6 @@
     replace="\1           {{ resolver.stdout }}"
     regexp='(^\s+resolver)           \d+\.\d+\.\d+\.\d'
   when: ansible_distribution == 'Amazon'
-  become: yes
 
 - name: Change nginx directory owner.
   file: >
