@@ -99,7 +99,7 @@
     chdir: "{{ nginx_home_dir.stdout }}"
   with_items:
     - git init
-    - "git remote add origin {{ openresty_nginx_repository }}"
+    - "git remote add origin {{ nginx_build_nginx_repository }}"
     - git fetch origin
     - git merge origin/master
 
