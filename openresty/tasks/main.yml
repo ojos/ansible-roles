@@ -61,7 +61,7 @@
     chdir: "{{ openresty_prefix }}"
   register: nginx_home_dir
 
-- name: Change nginx directory owner.
+- name: Change openresty directory owner.
   file: >
     path="{{ openresty_prefix }}"
     state=directory
@@ -221,7 +221,7 @@
     group="{{ openresty_group }}"
   become: yes
 
-- name: Create nginx service file.
+- name: Create openresty service file.
   template: >
     src=nginx.service.tpl
     dest="{{ openresty_service_file }}"

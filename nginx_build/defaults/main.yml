@@ -1,6 +1,6 @@
 ---
-  nginx_build_user: "{{ project_user }}"
-  nginx_build_group: "{{ project_group }}"
+  nginx_build_user: nginx
+  nginx_build_group: nginx
   nginx_build_work_directory: "{{ project_directory }}/work"
   nginx_build_dependent_packages:
     - wget

@@ -1,8 +1,8 @@
 ---
   openresty_luarocks_version: 2.3.0
   openresty_luarocks_work_directory: "{{ project_directory }}/work"
-  openresty_luarocks_user: "{{ project_user }}"
-  openresty_luarocks_group: "{{ project_group }}"
+  openresty_luarocks_user: nginx
+  openresty_luarocks_group: nginx
   openresty_luarocks_make_bin_file:  /usr/bin/make
   openresty_luarocks_prefix: "{{ project_directory }}/openresty/luajit"
   openresty_luarocks_configure_directory: "{{ project_directory }}/openresty/luarocks"
