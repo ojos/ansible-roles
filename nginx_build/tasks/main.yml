@@ -87,6 +87,15 @@
     state=absent
   become: yes
 
+- name: Change nginx directory owner.
+  file: >
+    path="{{ nginx_build_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
+  become: yes
+
 - name: nginx home Directory.
   shell: >
     echo $(cd $(find . -maxdepth 2 -type d | grep ./conf$)/../ && pwd)
@@ -101,12 +110,11 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
-  become: yes
   with_items:
     - favicon.ico
     - 404.html
     - 50x.html
-  
+  become: yes
 
 - name: Create nginx.conf.
   template: >
@@ -133,11 +141,11 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
-  become: yes
   with_items:
     - global.conf
     - http.conf
     - http.server.conf
+  become: yes
 
 - name: Remove commentout in http.conf.
   lineinfile: >
