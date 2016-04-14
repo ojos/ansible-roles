@@ -125,12 +125,6 @@
     - 50x.html
   when: nginx_build_nginx_repository == ''
 
-- name: nginx conf file.
-  stat: >
-    path="{{ nginx_home_dir.stdout }}/conf/nginx.conf"
-  register: nginx_conf_file
-  changed_when: no
-  always_run: yes
 - name: Create nginx.conf.
   template: >
     src=nginx.conf.tpl
@@ -138,7 +132,6 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
-  when: not nginx_conf_file.stat.exists
 
 - name: nginx conf sub directory.
   stat: >
