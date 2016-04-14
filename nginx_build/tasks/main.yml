@@ -93,6 +93,15 @@
     chdir: "{{ nginx_build_prefix }}"
   register: nginx_home_dir
 
+- name: Change nginx directory owner.
+  file: >
+    path="{{ nginx_build_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ ansible_user_uid }}"
+    group="{{ ansible_user_gid }}"
+  become: yes
+
 - name: Clone nginx directory.
   shell: "{{ item }}" 
   args:
