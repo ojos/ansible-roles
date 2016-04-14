@@ -7,6 +7,7 @@
     - openssl-devel
     - pcre-devel
     - zlib-devel
+    - readline-devel
   openresty_make_bin_file: /usr/bin/make
   openresty_prefix: "{{ project_directory }}/openresty"
   openresty_configure_options: >-
