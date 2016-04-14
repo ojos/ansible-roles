@@ -61,12 +61,14 @@
   register: nginx_home_dir
 
 - name: Clone nginx directory.
-  git: >
-    repo="{{ openresty_nginx_repository }}"
-    dest="{{ nginx_home_dir.stdout }}"
-    update=yes
-    accept_hostkey=yes
-  when: openresty_nginx_repository != ''
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ nginx_home_dir.stdout }}"
+  with_items:
+    - git init
+    - "git remote add origin {{ openresty_nginx_repository }}"
+    - git fetch origin
+    - git merge origin/master
 
 - name: Copy static files.
   copy: >
