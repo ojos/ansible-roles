@@ -49,9 +49,9 @@
     regexp="(^lua_package_cpath\s+)'.*';"
   become: yes
 
-- name: Change luajit directory owner.
+- name: Change openresty directory owner.
   file: >
-    path="{{ openresty_luarocks_prefix }}"
+    path="{{ openresty_luarocks_openresty_directory }}"
     state=directory
     recurse=yes
     owner="{{ openresty_luarocks_user }}"
