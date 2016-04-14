@@ -1,60 +1,57 @@
 ---
-- name: user list.
-  shell: >
-    cut -d: -f1 /etc/passwd  
-  register: user_list  
-  changed_when: false  
-  always_run: yes
-  when: ansible_os_family != 'Darwin'
-- name: Create openresty user.
-  user: >
-    name="{{ openresty_user }}"
-    shell=/bin/false
-    system=yes
-    home="{{ openresty_prefix }}"
-    createhome=no
-  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(openresty_user) < 1 
-  become: yes
+# - name: user list.
+#   shell: >
+#     cut -d: -f1 /etc/passwd  
+#   register: user_list  
+#   changed_when: false  
+#   always_run: yes
+#   when: ansible_os_family != 'Darwin'
+# - name: Create openresty user.
+#   user: >
+#     name="{{ openresty_user }}"
+#     shell=/bin/false
+#     system=yes
+#     home="{{ openresty_prefix }}"
+#     createhome=no
+#   when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(openresty_user) < 1 
+#   become: yes
 
-- name: Install/Upgrade dependent packages(RedHat).
-  yum: >
-    name={{ item.name | default(item) }}
-    state={{ item.state | default('latest') }}
-  with_items: "{{ openresty_dependent_packages }}"
-  when: ansible_os_family == 'RedHat' and openresty_dependent_packages|length > 0
-  become: yes
+# - name: Install/Upgrade dependent packages(RedHat).
+#   yum: >
+#     name={{ item.name | default(item) }}
+#     state={{ item.state | default('latest') }}
+#   with_items: "{{ openresty_dependent_packages }}"
+#   when: ansible_os_family == 'RedHat' and openresty_dependent_packages|length > 0
+#   become: yes
 
-- name: Create work directory.
-  file: >
-    path="{{ openresty_work_directory }}"
-    state=directory
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
-    mode=0755
-  become: yes
+# - name: Create work directory.
+#   file: >
+#     path="{{ openresty_work_directory }}"
+#     state=directory
+#     owner="{{ openresty_user }}"
+#     group="{{ openresty_group }}"
+#     mode=0755
 
-- name: Extract openresty source.
-  unarchive: >
-    src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
-    dest="{{ openresty_work_directory }}"
-    copy=no
-  become: yes
+# - name: Extract openresty source.
+#   unarchive: >
+#     src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
+#     dest="{{ openresty_work_directory }}"
+#     copy=no
 
-- name: Configure, Make and Install openresty.
-  shell: "{{ item }}" 
-  args:
-    chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
-  with_items:
-    - "./configure {{ openresty_configure_options }}"
-    - make
-    - make install
-  become: yes
+# - name: Configure, Make and Install openresty.
+#   shell: "{{ item }}" 
+#   args:
+#     chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
+#   with_items:
+#     - "./configure {{ openresty_configure_options }}"
+#     - make
+#     - make install
 
-- name: Remove work directory.
-  file: >
-    path="{{ openresty_work_directory }}"
-    state=absent
-  become: yes
+# - name: Remove work directory.
+#   file: >
+#     path="{{ openresty_work_directory }}"
+#     state=absent
+#   become: yes
 
 - name: nginx home Directory.
   shell: >
@@ -70,7 +67,6 @@
     update=yes
     accept_hostkey=yes
   when: openresty_nginx_repository != ''
-  become: yes
 
 - name: Copy static files.
   copy: >
@@ -84,7 +80,6 @@
     - 404.html
     - 50x.html
   when: openresty_nginx_repository == ''
-  become: yes
 
 - name: nginx conf file.
   stat: >
@@ -100,7 +95,6 @@
     group="{{ openresty_group }}"
     mode=0644
   when: not nginx_conf_file.stat.exists
-  become: yes
 
 - name: nginx conf sub directory.
   stat: >
@@ -116,7 +110,6 @@
     group="{{ openresty_group }}"
     mode=0755
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 
 - name: Create sub conf files.
   template: >
@@ -131,7 +124,6 @@
     - http.server.conf
     - http.lua.conf
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 
 - name: Remove commentout in http.conf.
   lineinfile: >
@@ -142,7 +134,6 @@
     regexp='^(\s+)# (include.+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 
 - name: Remove commentout in http.server.conf(1).
   lineinfile: >
@@ -153,7 +144,6 @@
     regexp='^(\s+)# (location.+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -163,7 +153,6 @@
     regexp='^(\s+)# (\s+content_by_lua_file .+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -173,7 +162,6 @@
     regexp='^(\s+)# (\})$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
-  become: yes
 
 - name: nginx lua directory.
   stat: >
@@ -189,7 +177,6 @@
     group="{{ openresty_group }}"
     mode=0755
   when: not nginx_lua_dir.stat.exists
-  become: yes
 - name: Copy current_time.lua.
   copy: >
     src=current_time.lua
@@ -198,7 +185,6 @@
     group="{{ openresty_group }}"
     mode=0644
   when: not nginx_lua_dir.stat.exists
-  become: yes
 
 - name: Extract resolver.
   shell: >
@@ -213,7 +199,6 @@
     replace="\1           {{ resolver.stdout }}"
     regexp='(^\s+resolver)           \d+\.\d+\.\d+\.\d'
   when: ansible_distribution == 'Amazon'
-  become: yes
 
 - name: Change nginx directory owner.
   file: >
