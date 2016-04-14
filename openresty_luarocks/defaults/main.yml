@@ -5,9 +5,11 @@
   openresty_luarocks_group: nginx
   openresty_luarocks_make_bin_file:  /usr/bin/make
   openresty_luarocks_prefix: "{{ project_directory }}/openresty/luajit"
+  openresty_luarocks_configure_directory: "{{ project_directory }}/openresty/luarocks"
   openresty_luarocks_lua_suffix: "jit-2.1.0-beta1"
   openresty_luarocks_configure_options: >-
     --prefix={{ openresty_luarocks_prefix }}
+    --sysconfdir={{ openresty_luarocks_configure_directory }}
     --with-lua={{ openresty_luarocks_prefix }}/
     --lua-suffix={{ openresty_luarocks_lua_suffix }}
     --with-lua-include={{ openresty_luarocks_prefix }}/include/luajit-2.1
