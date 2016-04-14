@@ -98,8 +98,8 @@
   copy: >
     src="{{ item }}"
     dest="{{ nginx_home_dir.stdout }}/html/{{ item }}"
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
     mode=0644
   with_items:
     - favicon.ico
@@ -129,8 +129,8 @@
   template: >
     src="nginx.{{ item }}.tpl"
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/{{ item }}"
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
     mode=0644
   with_items:
     - global.conf
