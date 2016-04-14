@@ -87,15 +87,6 @@
     state=absent
   become: yes
 
-- name: Change nginx directory owner.
-  file: >
-    path="{{ nginx_build_prefix }}"
-    state=directory
-    recurse=yes
-    owner="{{ nginx_build_user }}"
-    group="{{ nginx_build_group }}"
-  become: yes
-
 - name: nginx home Directory.
   shell: >
     echo $(cd $(find . -maxdepth 2 -type d | grep ./conf$)/../ && pwd)
@@ -114,6 +105,7 @@
     - favicon.ico
     - 404.html
     - 50x.html
+  become: yes
 
 - name: Create nginx.conf.
   template: >
@@ -122,6 +114,7 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
+  become: yes
 
 - name: Create nginx configure sub directory.
   file: >
@@ -130,6 +123,7 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0755
+  become: yes
 
 - name: Create sub conf files.
   template: >
@@ -142,6 +136,7 @@
     - global.conf
     - http.conf
     - http.server.conf
+  become: yes
 
 - name: Remove commentout in http.conf.
   lineinfile: >
@@ -152,6 +147,7 @@
     regexp='^(\s+)# (include.+)$'
     backrefs=yes
   when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Remove commentout in http.server.conf(1).
   lineinfile: >
@@ -162,6 +158,7 @@
     regexp='^(\s+)# (location.+)$'
     backrefs=yes
   when: nginx_build_type == 'openresty'
+  become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -171,6 +168,7 @@
     regexp='^(\s+)# (\s+content_by_lua_file .+)$'
     backrefs=yes
   when: nginx_build_type == 'openresty'
+  become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -180,6 +178,7 @@
     regexp='^(\s+)# (\})$'
     backrefs=yes
   when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Create http.lua.conf.
   template: >
@@ -189,6 +188,7 @@
     group="{{ nginx_build_group }}"
     mode=0644
   when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Create lua directory.
   file: >
@@ -198,6 +198,7 @@
     group="{{ nginx_build_group }}"
     mode=0755
   when: nginx_build_type == 'openresty'
+  become: yes
 - name: Copy current_time.lua.
   copy: >
     src=current_time.lua
@@ -206,6 +207,7 @@
     group="{{ nginx_build_group }}"
     mode=0644
   when: nginx_build_type == 'openresty'
+  become: yes
 
 - name: Extract resolver.
   shell: >
@@ -220,15 +222,16 @@
     replace="\1           {{ resolver.stdout }}"
     regexp='(^\s+resolver)           \d+\.\d+\.\d+\.\d'
   when: ansible_distribution == 'Amazon'
+  become: yes
 
-# - name: Change nginx directory owner.
-#   file: >
-#     path="{{ nginx_build_prefix }}"
-#     state=directory
-#     recurse=yes
-#     owner="{{ nginx_build_user }}"
-#     group="{{ nginx_build_group }}"
-#   become: yes
+- name: Change nginx directory owner.
+  file: >
+    path="{{ nginx_build_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ nginx_build_user }}"
+    group="{{ nginx_build_group }}"
+  become: yes
 
 - name: Create nginx service file.
   template: >
