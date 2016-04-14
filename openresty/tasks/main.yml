@@ -50,11 +50,10 @@
     - make install
   become: yes
 
-- name: Configure openresty source.
-  shell: >
-    ./configure {{ openresty_configure_options }}
-  args:
-    chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
+- name: Remove work directory.
+  file: >
+    path="{{ openresty_work_directory }}"
+    state=absent
   become: yes
 
 - name: nginx home Directory.
