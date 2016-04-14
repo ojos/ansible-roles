@@ -28,8 +28,6 @@
   file: >
     path="{{ openresty_work_directory }}"
     state=directory
-    # owner="{{ openresty_user }}"
-    # group="{{ openresty_group }}"
     mode=0755
 
 - name: Extract openresty source.
