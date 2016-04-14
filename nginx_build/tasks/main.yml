@@ -94,6 +94,15 @@
     chdir: "{{ nginx_build_prefix }}"
   register: nginx_home_dir
 
+- name: Clone nginx directory.
+  git: >
+    repo="{{ nginx_build_nginx_repository }}"
+    dest="{{ nginx_home_dir.stdout }}"
+    update=yes
+    accept_hostkey=yes
+  when: nginx_build_nginx_repository != ''
+  become: yes
+
 - name: Copy static files.
   copy: >
     src="{{ item }}"
@@ -105,8 +114,15 @@
     - favicon.ico
     - 404.html
     - 50x.html
+  when: nginx_build_nginx_repository == ''
   become: yes
 
+- name: nginx conf file.
+  stat: >
+    path="{{ nginx_home_dir.stdout }}/conf/nginx.conf"
+  register: nginx_conf_file
+  changed_when: no
+  always_run: yes
 - name: Create nginx.conf.
   template: >
     src=nginx.conf.tpl
@@ -114,8 +130,15 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
+  when: not nginx_conf_file.stat.exists
   become: yes
 
+- name: nginx conf sub directory.
+  stat: >
+    path="{{ nginx_home_dir.stdout }}/conf/conf.d"
+  register: nginx_sub_conf_dir
+  changed_when: no
+  always_run: yes
 - name: Create nginx configure sub directory.
   file: >
     path="{{ nginx_home_dir.stdout }}/conf/conf.d"
@@ -123,6 +146,7 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0755
+  when: not nginx_sub_conf_dir.stat.exists
   become: yes
 
 - name: Create sub conf files.
@@ -136,6 +160,7 @@
     - global.conf
     - http.conf
     - http.server.conf
+  when: not nginx_sub_conf_dir.stat.exists
   become: yes
 
 - name: Remove commentout in http.conf.
@@ -146,7 +171,7 @@
     state=present
     regexp='^(\s+)# (include.+)$'
     backrefs=yes
-  when: nginx_build_type == 'openresty'
+  when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
   become: yes
 
 - name: Remove commentout in http.server.conf(1).
@@ -157,7 +182,7 @@
     state=present
     regexp='^(\s+)# (location.+)$'
     backrefs=yes
-  when: nginx_build_type == 'openresty'
+  when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
   become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
@@ -167,7 +192,7 @@
     state=present
     regexp='^(\s+)# (\s+content_by_lua_file .+)$'
     backrefs=yes
-  when: nginx_build_type == 'openresty'
+  when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
   become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
@@ -177,7 +202,7 @@
     state=present
     regexp='^(\s+)# (\})$'
     backrefs=yes
-  when: nginx_build_type == 'openresty'
+  when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
   become: yes
 
 - name: Create http.lua.conf.
@@ -187,17 +212,23 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
-  when: nginx_build_type == 'openresty'
+  when: not nginx_sub_conf_dir.stat.exists and nginx_build_type == 'openresty'
   become: yes
 
+- name: nginx lua directory.
+  stat: >
+    path="{{ nginx_home_dir.stdout }}/lua"
+  register: nginx_lua_dir
+  changed_when: no
+  always_run: yes
 - name: Create lua directory.
   file: >
-    path="{{ nginx_home_dir.stdout  }}/lua"
+    path="{{ nginx_home_dir.stdout }}/lua"
     state=directory
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0755
-  when: nginx_build_type == 'openresty'
+  when: not nginx_lua_dir.stat.exists and nginx_build_type == 'openresty'
   become: yes
 - name: Copy current_time.lua.
   copy: >
@@ -206,7 +237,7 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
-  when: nginx_build_type == 'openresty'
+  when: not nginx_lua_dir.stat.exists and nginx_build_type == 'openresty'
   become: yes
 
 - name: Extract resolver.

@@ -36,6 +36,7 @@
   nginx_build_client_max_body_size: 4G
   nginx_build_lua_check_client_abort: "on"
   nginx_build_lua_code_cache: "on"
+  nginx_build_nginx_repository: ''
   nginx_build_envrc_directory: "{{ direnv_envrc_directory }}"
   nginx_build_environment_variables:
     - value: "# nginx"

@@ -29,6 +29,7 @@
   openresty_client_max_body_size: 4G
   openresty_lua_check_client_abort: "on"
   openresty_lua_code_cache: "on"
+  openresty_nginx_repository: ''
   openresty_envrc_directory: "{{ direnv_envrc_directory }}"
   openresty_environment_variables:
     - value: "# nginx"
