@@ -101,11 +101,12 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
+  become: yes
   with_items:
     - favicon.ico
     - 404.html
     - 50x.html
-  become: yes
+  
 
 - name: Create nginx.conf.
   template: >
@@ -132,11 +133,11 @@
     owner="{{ nginx_build_user }}"
     group="{{ nginx_build_group }}"
     mode=0644
+  become: yes
   with_items:
     - global.conf
     - http.conf
     - http.server.conf
-  become: yes
 
 - name: Remove commentout in http.conf.
   lineinfile: >
