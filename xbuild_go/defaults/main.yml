@@ -1,6 +1,6 @@
 ---
-  xbuild_go_user: "{{ ansible_user_uid }}"
-  xbuild_go_group: "{{ ansible_user_gid }}"
+  xbuild_go_user: "{{ project_user }}"
+  xbuild_go_group: "{{ project_group }}"
   xbuild_go_version: 1.6
   xbuild_go_os: linux
   xbuild_go_arch: amd64

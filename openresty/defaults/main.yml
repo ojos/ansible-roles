@@ -1,6 +1,6 @@
 ---
-  openresty_user: nginx
-  openresty_group: nginx
+  openresty_user: "{{ project_user }}"
+  openresty_group: "{{ project_group }}"
   openresty_version: 1.9.7.4
   openresty_work_directory: "{{ project_directory }}/work"
   openresty_dependent_packages:
