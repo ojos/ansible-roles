@@ -29,12 +29,14 @@
     path="{{ openresty_work_directory }}"
     state=directory
     mode=0755
+  become: yes
 
 - name: Extract openresty source.
   unarchive: >
     src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_work_directory }}"
     copy=no
+  become: yes
 
 - name: Configure, Make and Install openresty.
   shell: "{{ item }}" 
@@ -44,6 +46,7 @@
     - "./configure {{ openresty_configure_options }}"
     - make
     - make install
+  become: yes
 
 - name: Remove work directory.
   file: >
