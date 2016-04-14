@@ -36,15 +36,15 @@
     {{ openresty_luarocks_bin_file }} path | sed "s/export.*'\(.*\)'/\1;;/"
   register: luarocks_path_list
 
-- name: degug.
-  debug: msg="{{ luarocks_path_list }}"
+# - name: degug.
+#   debug: msg="{{ luarocks_path_list }}"
 
-# - name: Replace lua_package_path.
-#   replace: >
-#     dest="{{ openresty_luarocks_nginx_lua_conf_file }}"
-#     replace="\1'{{ luarocks_path_list.stdout_lines[0] }}';"
-#     regexp="(^lua_package_path\s+)'.+';"
-#   become: yes
+- name: Replace lua_package_path.
+  replace: >
+    dest="{{ openresty_luarocks_nginx_lua_conf_file }}"
+    replace="\1'{{ luarocks_path_list.stdout_lines[0] }}';"
+    regexp="(^lua_package_path\s+)'.*';"
+  become: yes
 # - name: Replace lua_package_cpath.
 #   replace: >
 #     dest="{{ openresty_luarocks_nginx_lua_conf_file }}"
