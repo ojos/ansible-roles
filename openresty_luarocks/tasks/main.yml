@@ -5,7 +5,7 @@
     state=directory
     owner="{{ openresty_luarocks_user }}"
     group="{{ openresty_luarocks_group }}"
-    mode=0755
+    mode=0777
   become: yes
 
 - name: Extract luarocks source.
