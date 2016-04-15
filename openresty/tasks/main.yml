@@ -91,7 +91,7 @@
     - favicon.ico
     - 404.html
     - 50x.html
-  when: openresty_nginx_repository == ''
+  become: yes
 
 - name: Create nginx.conf.
   template: >
@@ -100,6 +100,7 @@
     owner="{{ openresty_user }}"
     group="{{ openresty_group }}"
     mode=0644
+  become: yes
 
 - name: nginx conf sub directory.
   stat: >
@@ -115,6 +116,7 @@
     group="{{ openresty_group }}"
     mode=0755
   when: not nginx_sub_conf_dir.stat.exists
+  become: yes
 
 - name: Create sub conf files.
   template: >
@@ -129,6 +131,7 @@
     - http.server.conf
     - http.lua.conf
   when: not nginx_sub_conf_dir.stat.exists
+  become: yes
 
 - name: Remove commentout in http.conf.
   lineinfile: >
@@ -139,6 +142,7 @@
     regexp='^(\s+)# (include.+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
+  become: yes
 
 - name: Remove commentout in http.server.conf(1).
   lineinfile: >
@@ -149,6 +153,7 @@
     regexp='^(\s+)# (location.+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
+  become: yes
 - name: Remove commentout in http.server.conf(2).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -158,6 +163,7 @@
     regexp='^(\s+)# (\s+content_by_lua_file .+)$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
+  become: yes
 - name: Remove commentout in http.server.conf(3).
   lineinfile: >
     dest="{{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf"
@@ -167,6 +173,7 @@
     regexp='^(\s+)# (\})$'
     backrefs=yes
   when: not nginx_sub_conf_dir.stat.exists
+  become: yes
 
 - name: nginx lua directory.
   stat: >
@@ -182,6 +189,7 @@
     group="{{ openresty_group }}"
     mode=0755
   when: not nginx_lua_dir.stat.exists
+  become: yes
 - name: Copy current_time.lua.
   copy: >
     src=current_time.lua
@@ -190,6 +198,7 @@
     group="{{ openresty_group }}"
     mode=0644
   when: not nginx_lua_dir.stat.exists
+  become: yes
 
 - name: Extract resolver.
   shell: >
@@ -204,6 +213,7 @@
     replace="\1           {{ resolver.stdout }}"
     regexp='(^\s+resolver)           \d+\.\d+\.\d+\.\d'
   when: ansible_distribution == 'Amazon'
+  become: yes
 
 - name: Change nginx directory owner.
   file: >
