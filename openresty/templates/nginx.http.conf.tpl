@@ -5,7 +5,7 @@ http {
     resolver           {{ openresty_resolver }} valid={{ openresty_resolver_valid }};
     resolver_timeout   {{ openresty_resolver_timeout }};
     server_tokens      {{ openresty_server_tokens }};
-    include            {{ nginx_home_dir.stdout }}/conf/mime.types;
-    # include            {{ nginx_home_dir.stdout }}/conf/conf.d/http.lua.conf;
-    include            {{ nginx_home_dir.stdout }}/conf/conf.d/http.server.conf;
+    include            mime.types;
+    # include            conf.d/http.lua.conf;
+    include            conf.d/http.server.conf;
 }
