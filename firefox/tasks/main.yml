@@ -2,32 +2,32 @@
   yum: >
     name={{ item.name | default(item) }}
     state={{ item.state | default('latest') }}
-  with_items: "{{ gtk_firefox_dependent_packages }}"
-  when: ansible_distribution == 'Amazon' and gtk_firefox_dependent_packages|length > 0
+  with_items: "{{ firefox_dependent_packages }}"
+  when: ansible_distribution == 'Amazon' and firefox_dependent_packages|length > 0
   become: yes
 
 - name: Download install shell.
   get_url: >
-    url={{ gtk_firefox_install_shell_url}}
-    dest={{ gtk_firefox_install_shell_file }}
+    url={{ firefox_install_shell_url}}
+    dest={{ firefox_install_shell_file }}
     mode=0755
   when: ansible_distribution == 'Amazon'
   become: yes
 
 - name: Replace archive url.
   lineinfile: >
-    dest={{ gtk_firefox_install_shell_file }}
+    dest={{ firefox_install_shell_file }}
     regexp='^(.+)http://download.cdn.mozilla.net.+$'
-    line="\1{{ gtk_firefox_install_archive_url }}"
+    line="\1{{ firefox_install_archive_url }}"
     state=present
     insertafter=EOF
     backrefs=yes
   when: ansible_distribution == 'Amazon'
   become: yes
 
-- name: Install gtk-firefox.
+- name: Install Firefox(AmazonLinux).
   shell: >
-    {{ gtk_firefox_install_shell_file }}
+    {{ firefox_install_shell_file }}
   when: ansible_distribution == 'Amazon'
   become: yes
 
@@ -38,7 +38,7 @@
   when: ansible_distribution == 'Amazon'
   become: yes
 
-- name: Install Firefox.
+- name: Install Firefox(Darwin).
   homebrew_cask: >
     name=firefox
     state=present
