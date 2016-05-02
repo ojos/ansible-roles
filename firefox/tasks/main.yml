@@ -37,3 +37,11 @@
     state=absent
   when: ansible_distribution == 'Amazon'
   become: yes
+
+- name: Install Firefox.
+  homebrew_cask: >
+    name=firefox
+    state=present
+  when: ansible_os_family == 'Darwin'
+  environment: 
+    HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
