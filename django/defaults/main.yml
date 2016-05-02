@@ -22,3 +22,11 @@
     - mysqlclient
     - django-redis
     - boto
+  django_envrc_directory: "{{ direnv_envrc_directory }}"
+  django_environment_variables:
+    - value: "# django"
+      regexp: "^# django$"
+    - value: |
+        export DJANGO_HOME=$PROJECT_HOME/{{ django_project }}
+
+      regexp: "^export DJANGO_HOME"
