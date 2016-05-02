@@ -17,7 +17,7 @@
     -clear
     -pcre
     -openssl
-    -zlib
+    # -zlib
     --prefix={{ nginx_build_prefix }}
     --user={{ nginx_build_user }}
     --group={{ nginx_build_group }}
