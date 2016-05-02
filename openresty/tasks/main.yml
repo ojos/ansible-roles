@@ -25,9 +25,9 @@
   become: yes
 
 - name: Install/Upgrade dependent packages(Darwin).
-  brew: >
+  homebrew: >
     name={{ item.name | default(item) }}
-    state={{ item.state | default('present') }}
+    state={{ item.state | default('latest') }}
   with_items: "{{ openresty_dependent_packages }}"
   when: ansible_os_family == 'Darwin' and openresty_dependent_packages|length > 0
 
