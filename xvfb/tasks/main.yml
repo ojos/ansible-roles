@@ -8,7 +8,7 @@
 
 - name: Install/Upgrade Homebrew Cask packages
   homebrew_cask: >
-    name=Caskroom/cask/xquartz
+    name=xquartz
     state=present
   when: ansible_os_family == 'Darwin'
   environment: 
