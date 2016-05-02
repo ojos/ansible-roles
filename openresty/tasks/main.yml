@@ -24,6 +24,13 @@
   when: ansible_os_family == 'RedHat' and openresty_dependent_packages|length > 0
   become: yes
 
+- name: Install/Upgrade dependent packages(Darwin).
+  brew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('present') }}
+  with_items: "{{ openresty_dependent_packages }}"
+  when: ansible_os_family == 'Darwin' and openresty_dependent_packages|length > 0
+
 - name: Create work directory.
   file: >
     path="{{ openresty_work_directory }}"
@@ -38,7 +45,7 @@
     copy=no
   become: yes
 
-- name: Configure, Make and Install openresty.
+- name: Configure, Make and Install openresty(RedHat).
   shell: "{{ item }}" 
   args:
     chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
@@ -46,6 +53,22 @@
     - "./configure {{ openresty_configure_options }}"
     - make
     - make install
+  when: ansible_os_family == 'RedHat'
+  become: yes
+
+- name: Configure, Make and Install openresty.
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
+  with_items:
+    - "./configure \
+      --with-cc-opt='-I/usr/local/opt/openssl/include/ -I/usr/local/opt/pcre/include/' \
+      --with-ld-opt='-L/usr/local/opt/openssl/lib/ -L/usr/local/opt/pcre/lib/' \
+      -j8 \
+      {{ openresty_configure_options }}"
+    - make
+    - make install
+  when: ansible_os_family == 'Darwin'
   become: yes
 
 - name: Remove work directory.
