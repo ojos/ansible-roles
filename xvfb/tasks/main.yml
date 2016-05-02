@@ -6,9 +6,10 @@
   when: ansible_os_family == 'RedHat'
   become: yes
 
-
-- name: Install/Upgrade devtools packages(Darwin).
-  homebrew: >
+- name: Install/Upgrade Homebrew Cask packages
+  homebrew_cask: >
     name=Caskroom/cask/xquartz
     state=latest
   when: ansible_os_family == 'Darwin'
+  environment: 
+    HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
