@@ -124,10 +124,10 @@
 
 - name: Insert env in .envrc.
   lineinfile: >
-    dest={{ supervisord_envrc_directory }}/.envrc
+    dest={{ django_envrc_directory }}/.envrc
     line="{{ item.value }}"
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items: "{{ supervisord_environment_variables }}"
-  when: supervisord_envrc_directory != '' and supervisord_environment_variables|length > 0
+  with_items: "{{ django_environment_variables }}"
+  when: django_envrc_directory != '' and django_environment_variables|length > 0
