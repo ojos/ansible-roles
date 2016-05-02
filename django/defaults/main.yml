@@ -9,7 +9,7 @@
   django_app: app
   django_app_repository: ""
   django_app_template_repository: https://github.com/ojos/django-app-skel/zipball/master
-  django_app_name: core.wsgi
+  django_app_name: core
   django_log_directory: "{{ project_directory }}/log/django"
   django_db_directory: ""
   django_dependent_packages: []

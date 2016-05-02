@@ -1,0 +1,14 @@
+---
+- name: Install/Upgrade devtools packages(RedHat).
+  yum: >
+    name=xorg-x11-server-Xvfb
+    state=latest
+  when: ansible_os_family == 'RedHat'
+  become: yes
+
+
+- name: Install/Upgrade devtools packages(Darwin).
+  homebrew: >
+    name=Caskroom/cask/xquartz
+    state=latest
+  when: ansible_os_family == 'Darwin'
