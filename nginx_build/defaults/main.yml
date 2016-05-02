@@ -14,10 +14,10 @@
   nginx_build_openresty_configure_options: "-openresty"
   nginx_build_tengine_configure_options: "-tengine"
   nginx_build_configure_options: >-
-    -clear
+    # -clear
     -pcre
     -openssl
-    # -zlib
+    -zlib
     --prefix={{ nginx_build_prefix }}
     --user={{ nginx_build_user }}
     --group={{ nginx_build_group }}
