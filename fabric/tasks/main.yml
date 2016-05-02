@@ -6,7 +6,7 @@
   environment:
     PATH: "{{ fabric_python_bin_directory }}:{{ ansible_env.PATH }}"
 
-- name: Copy tasks.py.
+- name: Copy fabfile.py.
   copy: >
     src=fabfile.py
     dest={{ fabric_tasks_file_directory }}/fabfile.py
@@ -14,9 +14,9 @@
     force=yes
   become: yes
 
-- name: Change tasks.py owner.
+- name: Change fabfile.py owner.
   file: >
-    path="{{ fabric_tasks_file_directory }}/tasks.py"
+    path="{{ fabric_tasks_file_directory }}/fabfile.py"
     state=file
     owner={{ fabric_user }}
     group={{ fabric_group }}
