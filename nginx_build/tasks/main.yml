@@ -111,6 +111,7 @@
     - "git remote add origin {{ nginx_build_nginx_repository }}"
     - git fetch origin
     - git merge origin/master
+  when: nginx_build_nginx_repository != ''
 
 - name: Copy static files.
   copy: >
