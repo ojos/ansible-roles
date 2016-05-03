@@ -46,8 +46,8 @@
 - name: To enable Identity file.
   replace: >
     dest={{ keygen_key_directory }}/ssh_config
-    replace="IdentityFile \1"
-    regexp='(^#\sIdentityFile\s(.+)$'
+    replace="\1"
+    regexp='(^#\s(IdentityFile\s.+)$'
   when: keygen_Identity_file and keygen_environments|length > 0 and not ssh_config.stat.exists
 
 - name: Insert env in .envrc.
