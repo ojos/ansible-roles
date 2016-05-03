@@ -43,6 +43,13 @@
   with_items: "{{ keygen_environments }}"
   when: keygen_environments|length > 0 and not ssh_config.stat.exists
 
+- name: To enable Identity file.
+  replace: >
+    dest={{ keygen_key_directory }}/ssh_config
+    replace="IdentityFile \1"
+    regexp='(^#\sIdentityFile\s(.+)$'
+  when: keygen_Identity_file and keygen_environments|length > 0 and not ssh_config.stat.exists
+
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ keygen_envrc_directory }}/.envrc

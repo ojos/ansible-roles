@@ -7,6 +7,16 @@ import re
 
 from fabric.api import *  # NOQA
 
+env.use_ssh_config = True
+env.ssh_config_path = '%s/ssh_config' % os.environ['KEY_HOME']
+
+
+def _exec(command, remote=run, *args, **kwargs):
+    if len(env.hosts) > 0:
+        remote(command, *args, **kwargs)
+    else:
+        local(command, *args, **kwargs)
+
 
 @task
 def subl():
@@ -24,7 +34,7 @@ def atom():
 def djng(command, args=''):
     """Django(manage.py)のラッパー"""
     cmd = 'python %s/manage.py %s %s' % (os.environ['DJANGO_HOME'], command, args)
-    local(cmd)
+    _exec(cmd)
 
 
 def _ngx_start(deamon, pid):
