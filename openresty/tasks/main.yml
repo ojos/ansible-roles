@@ -199,12 +199,6 @@
   when: not nginx_sub_conf_dir.stat.exists
   become: yes
 
-- name: nginx lua directory.
-  stat: >
-    path="{{ nginx_home_dir.stdout }}/lua"
-  register: nginx_lua_dir
-  changed_when: no
-  always_run: yes
 - name: Create lua directory.
   file: >
     path="{{ nginx_home_dir.stdout  }}/lua"
@@ -212,16 +206,14 @@
     owner="{{ openresty_user }}"
     group="{{ openresty_group }}"
     mode=0755
-  when: not nginx_lua_dir.stat.exists
   become: yes
-- name: Copy current_time.lua.
-  copy: >
-    src=current_time.lua
-    dest={{ nginx_home_dir.stdout }}/lua/current_time.lua
-    owner="{{ openresty_user }}"
-    group="{{ openresty_group }}"
-    mode=0644
-  when: not nginx_lua_dir.stat.exists
+
+- name: Clone lualib directory.
+  git: >
+    repo="{{ openresty_lualib_repository }}"
+    dest="{{ nginx_home_dir.stdout  }}/lualib"
+    update=yes
+    accept_hostkey=yes
   become: yes
 
 - name: Extract resolver.

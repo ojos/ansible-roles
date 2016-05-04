@@ -16,6 +16,7 @@
     --user={{ openresty_user }}
     --group={{ openresty_group }}
   openresty_service_file: /etc/rc.d/init.d/nginx
+  openresty_lualib_repository: https://github.com/ojos/lua-library.git
   openresty_worker_processes: auto
   openresty_worker_rlimit_nofile: 4096
   openresty_worker_connections: 1024
