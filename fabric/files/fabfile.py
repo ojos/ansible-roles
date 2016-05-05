@@ -9,13 +9,14 @@ from fabric.api import *  # NOQA
 
 env.use_ssh_config = True
 env.ssh_config_path = '%s/ssh_config' % os.environ['KEY_HOME']
-REMOTE_WORK_DIRECTORY = '/var/www/app'
+REMOTE_WORK_DIRECTORY = '/var/www'
 
 
 def _exec(command, remote=run, *args, **kwargs):
     if len(env.hosts) > 0:
         with cd(REMOTE_WORK_DIRECTORY):
-            remote(command, *args, **kwargs)
+            cmd = 'source %s/.envrc && %s' % (REMOTE_WORK_DIRECTORY, command)
+            remote(cmd, *args, **kwargs)
     else:
         local(command, *args, **kwargs)
 
