@@ -12,13 +12,17 @@ env.ssh_config_path = '%s/ssh_config' % os.environ['KEY_HOME']
 REMOTE_WORK_DIRECTORY = '/var/www'
 
 
+def _is_local():
+    return len(env.hosts) == 0
+
+
 def _exec(command, remote=run, *args, **kwargs):
-    if len(env.hosts) > 0:
+    if _is_local():
+        local(command, *args, **kwargs)
+    else:
         with cd(REMOTE_WORK_DIRECTORY):
             cmd = 'source %s/.envrc && %s' % (REMOTE_WORK_DIRECTORY, command)
             remote(cmd, *args, **kwargs)
-    else:
-        local(command, *args, **kwargs)
 
 
 @task
@@ -62,18 +66,21 @@ def _ngx_reload(deamon, pid):
 @task
 def ngx(command):
     """Nginxのラッパー"""
-    deamon = '%s/sbin/nginx' % os.environ['NGINX_HOME']
-    pid = os.path.exists(os.environ['NGINX_PID'])
+    if _is_local():
+        deamon = '%s/sbin/nginx' % os.environ['NGINX_HOME']
+        pid = os.path.exists(os.environ['NGINX_PID'])
 
-    if command == 'start':
-        _ngx_start(deamon, pid)
-    elif command == 'stop':
-        _ngx_stop(deamon, pid)
-    elif command == 'reload':
-        _ngx_reload(deamon, pid)
-    elif command == 'restart':
-        _ngx_stop(deamon, pid)
-        _ngx_start(deamon, pid)
+        if command == 'start':
+            _ngx_start(deamon, pid)
+        elif command == 'stop':
+            _ngx_stop(deamon, pid)
+        elif command == 'reload':
+            _ngx_reload(deamon, pid)
+        elif command == 'restart':
+            _ngx_stop(deamon, pid)
+            _ngx_start(deamon, pid)
+    else:
+        sudo('service nginx %s' % command)
 
 
 def _sv_start(deamon, ctl, conf, pid):
@@ -99,20 +106,23 @@ def _sv_reload(deamon, ctl, conf, pid):
 @task
 def sv(command):
     """Supervisordサービスの起動/停止/再起動/リロード"""
-    deamon = 'supervisord'
-    ctl = 'supervisorctl'
-    conf = os.environ['SUPERVISORD_CONF']
-    pid = os.environ['SUPERVISORD_PID']
+    if _is_local():
+        deamon = 'supervisord'
+        ctl = 'supervisorctl'
+        conf = os.environ['SUPERVISORD_CONF']
+        pid = os.environ['SUPERVISORD_PID']
 
-    if command == 'start':
-        _sv_start(deamon, ctl, conf, pid)
-    elif command == 'stop':
-        _sv_stop(pid)
-    elif command == 'reload':
-        _sv_reload(deamon, ctl, conf, pid)
-    elif command == 'restart':
-        _sv_stop(pid)
-        _sv_start(deamon, ctl, conf, pid)
+        if command == 'start':
+            _sv_start(deamon, ctl, conf, pid)
+        elif command == 'stop':
+            _sv_stop(pid)
+        elif command == 'reload':
+            _sv_reload(deamon, ctl, conf, pid)
+        elif command == 'restart':
+            _sv_stop(pid)
+            _sv_start(deamon, ctl, conf, pid)
+    else:
+        sudo('service supervisord %s' % command)
 
 
 @task
@@ -146,7 +156,7 @@ def unittest(options=''):
 def ssh(env='vagrant', host='vagrant'):
     cmd = 'ssh -F %(key_dir)s/ssh_config -i %(key_dir)s/%(env)s.pem %(host)s' % {
         'key_dir': os.environ['KEY_HOME'], 'env': env, 'host': host}
-    local(cmd, pty=True)
+    local(cmd)
 
 
 def _update_ansible_roles():
