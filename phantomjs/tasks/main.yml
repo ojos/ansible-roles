@@ -1,0 +1,29 @@
+- name: Install dependent packages(Amazon Linux).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ phantomjs_dependent_packages }}"
+  when: ansible_distribution == 'Amazon' and phantomjs_dependent_packages|length > 0
+  become: yes
+
+- name: Download archive file(AmazonLinux).
+  unarchive: >
+    url={{ phantomjs_archive_url}}
+    dest={{ phantomjs_prefix }}
+    mode=0755
+  when: ansible_distribution == 'Amazon'
+  become: yes
+
+- name: Create symbolic link(AmazonLinux).
+  file: >
+    src={{ phantomjs_prefix }}/phantomjs-{{ phantomjs_version }}-{{ phantomjs_os }}-{{ phantomjs_arch }}/bin/phantomjs
+    dest={{ phantomjs_prefix }}/bin/phantomjs
+    state=link
+  when: ansible_distribution == 'Amazon'
+  become: yes
+
+- name: Install Phantomjs(Darwin).
+  homebrew: >
+    name=phantomjs
+    state=present
+  when: ansible_os_family == 'Darwin'
