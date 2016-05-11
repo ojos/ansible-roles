@@ -1,6 +1,6 @@
 ---
   phantomjs_os: linux
-  phantomjs_arch: i686
+  phantomjs_arch: x86_64
   phantomjs_version: 2.1.1
   phantomjs_archive_url: "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-{{ phantomjs_version }}-{{ phantomjs_os }}-{{ phantomjs_arch }}.tar.bz2"
   phantomjs_prefix: /usr/local
