@@ -8,7 +8,7 @@
 
 - name: Download archive file(AmazonLinux).
   unarchive: >
-    url={{ phantomjs_archive_url}}
+    src={{ phantomjs_archive_url}}
     dest={{ phantomjs_prefix }}
     mode=0755
   when: ansible_distribution == 'Amazon'
