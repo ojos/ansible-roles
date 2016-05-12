@@ -23,6 +23,7 @@
   xbuild_python_remove_xbuild: yes
   xbuild_python_packages: 
     - ipython
+    - pip
   xbuild_python_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_python_environment_variables:
     - value: "# python"
