@@ -21,7 +21,7 @@
     - werkzeug
     - mysqlclient
     - django-redis
-    - boto
+    - boto3
   django_envrc_directory: "{{ direnv_envrc_directory }}"
   django_environment_variables:
     - value: "# django"
