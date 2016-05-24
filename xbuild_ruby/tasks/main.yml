@@ -31,10 +31,11 @@
   gem: >
     name={{ item }}
     state=latest
-    user_install=False
-  executable: "{{ xbuild_ruby_install_directory }}/bin/gem"
+    user_install=no
   with_items: "{{ xbuild_ruby_packages }}"
   when: xbuild_ruby_packages|length > 0
+  environment:
+    PATH: "{{ xbuild_ruby_install_directory }}/bin:{{ ansible_env.PATH }}"
   become: yes
 
 - name: Update ruby gems.
