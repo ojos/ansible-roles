@@ -1,7 +1,7 @@
 ---
-  awsenv_access_key_id: AWS_ACCESS_KEY_ID
-  awsenv_secret_access_key: AWS_SECRET_ACCESS_KEY
-  awsenv_default_region: AWS_DEFAULT_REGION
+  awsenv_access_key_id: {{ awsconfig_access_key_id }}
+  awsenv_secret_access_key: {{ awsconfig_secret_access_key }}
+  awsenv_default_region: {{ awsconfig_region }}
   awsenv_default_availability_zone: AWS_DEFAULT_AVAILABILITY_ZONE
   awsenv_default_security_group: AWS_DEFAULT_SECURITY_GROUP
   awsenv_default_subnet_id: AWS_DEFAULT_SUBNET_ID

@@ -1,0 +1,31 @@
+---
+- name: AWS Config Directory.
+  stat: >
+    path="{{ ansible_env.HOME}}/.aws"
+  register: awsconfig_dir
+  changed_when: no
+  always_run: yes
+- name: Create AWS Config Directory.
+  file: >
+    path="{{ ansible_env.HOME}}/.aws"
+    state=directory
+    owner="{{ awsconfig_user }}"
+    group="{{ awsconfig_group }}"
+    mode=0755
+  when: not awsconfig_dir.stat.exists
+
+- name: Create config file.
+  template: >
+    src=config.tpl
+    dest="{{ ansible_env.HOME}}/.aws/config"
+    owner="{{ awsconfig_user }}"
+    group="{{ awsconfig_group }}"
+    mode=0644
+
+- name: Create credentials file.
+  template: >
+    src=credentials.tpl
+    dest="{{ ansible_env.HOME}}/.aws/credentials"
+    owner="{{ awsconfig_user }}"
+    group="{{ awsconfig_group }}"
+    mode=0644
