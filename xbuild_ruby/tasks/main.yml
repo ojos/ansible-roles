@@ -44,16 +44,12 @@
     user_install=no
   with_items: "{{ xbuild_ruby_packages }}"
   when: xbuild_ruby_packages|length > 0
-  become: yes
-  become_user: "{{ xbuild_ruby_user }}"
 
 - name: Update ruby gems.
   command: >
     update_rubygems
   environment:
     PATH: "{{ xbuild_ruby_install_directory }}/bin:{{ ansible_env.PATH }}"
-  become: yes
-  become_user: "{{ xbuild_ruby_user }}"
 
 - name: Insert env in .envrc.
   lineinfile: >
