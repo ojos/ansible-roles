@@ -12,7 +12,7 @@
     owner="{{ awsconfig_user }}"
     group="{{ awsconfig_group }}"
     mode=0755
-  when: not awsconfig_dir.stat.exists
+  when: ansible_os_family != 'Darwin' and not awsconfig_dir.stat.exists
 
 - name: Create config file.
   template: >
@@ -21,6 +21,7 @@
     owner="{{ awsconfig_user }}"
     group="{{ awsconfig_group }}"
     mode=0644
+  when: ansible_os_family != 'Darwin'
 
 - name: Create credentials file.
   template: >
@@ -29,3 +30,4 @@
     owner="{{ awsconfig_user }}"
     group="{{ awsconfig_group }}"
     mode=0644
+  when: ansible_os_family != 'Darwin'
