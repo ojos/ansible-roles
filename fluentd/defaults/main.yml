@@ -1,0 +1,4 @@
+---
+  fluentd_ruby_bin_directory: "{{ xbuild_ruby_install_directory }}/bin"
+  fluentd_install_packages:
+    - 'fluentd'

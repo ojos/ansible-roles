@@ -1,0 +1,9 @@
+---
+- name: Install fluentd packages.
+  gem: >
+    name={{ item }}
+    state=latest
+  with_items: "{{ fluentd_install_packages }}"
+  environment:
+    PATH: "{{ fluentd_ruby_bin_directory }}:{{ ansible_env.PATH }}"
+  when: fluentd_install_packages|length > 0

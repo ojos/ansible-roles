@@ -5,7 +5,8 @@
   xbuild_ruby_version: 2.3.1
   xbuild_ruby_install_directory: "{{ project_directory }}/ruby"
   xbuild_ruby_remove_xbuild: yes
-  xbuild_ruby_packages: []
+  xbuild_ruby_packages: 
+    - rubygems-update
   xbuild_ruby_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_ruby_environment_variables:
     - value: "# ruby"

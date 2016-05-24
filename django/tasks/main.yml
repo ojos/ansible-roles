@@ -115,7 +115,7 @@
 
 - name: Create supervisord process conf file.
   template: >
-    src=django.conf.tpl
+    src=supervisord.conf.tpl
     dest={{ supervisord_include_conf_directory }}/django.conf
     owner="{{ django_user }}"
     group="{{ django_group }}"

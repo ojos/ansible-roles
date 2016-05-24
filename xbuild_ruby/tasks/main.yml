@@ -37,6 +37,13 @@
     PATH: "{{ xbuild_ruby_install_directory }}/bin:{{ ansible_env.PATH }}"
   become: yes
 
+- name: Update ruby gems.
+  command: >
+    update_rubygems
+  environment:
+    PATH: "{{ xbuild_ruby_install_directory }}/bin:{{ ansible_env.PATH }}"
+  become: yes
+
 - name: Change ruby directory owner.
   file: >
     path={{ xbuild_ruby_install_directory }}
