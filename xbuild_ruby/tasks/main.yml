@@ -14,18 +14,17 @@
   with_items: "{{ xbuild_ruby_dependent_packages }}"
   when: ansible_os_family == 'Darwin' and xbuild_ruby_dependent_packages|length > 0
 
-# - name: Ruby directory.
-#   stat: >
-#     path={{ xbuild_ruby_install_directory }}
-#   register: ruby_directory
-#   changed_when: no
-#   always_run: yes
-# - name: Install ruby in xbuild.
-#   command: >
-#     {{ xbuild_install_directory }}/ruby-install {{ xbuild_ruby_version }}
-#     {{ xbuild_ruby_install_directory }}
-#   when: not ruby_directory.stat.exists
-#   become: yes
+- name: Ruby directory.
+  stat: >
+    path={{ xbuild_ruby_install_directory }}
+  register: ruby_directory
+  changed_when: no
+  always_run: yes
+- name: Install ruby in xbuild.
+  command: >
+    {{ xbuild_install_directory }}/ruby-install {{ xbuild_ruby_version }}
+    {{ xbuild_ruby_install_directory }}
+  when: not ruby_directory.stat.exists
 
 - name: Install ruby packages.
   gem: >
