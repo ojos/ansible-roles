@@ -8,9 +8,9 @@
   with_items: "{{ fluentd_install_packages }}"
   when: fluentd_install_packages|length > 0
 
-- name: Create fluentd directory.
+- name: Create fluentd conf directory.
   file: >
-    path="{{ fluentd_directory }}"
+    path="{{ fluentd_conf_directory }}"
     state=directory
     owner="{{ fluentd_user }}"
     group="{{ fluentd_group }}"
@@ -27,7 +27,7 @@
 - name: Create fluentd config file.
   template: >
     src=fluentd.conf.tpl
-    dest="{{ fluentd_directory }}/{{ fluentd_conf_file_name }}"
+    dest="{{ fluentd_conf_directory }}/{{ fluentd_conf_file_name }}"
     owner="{{ fluentd_user }}"
     group="{{ fluentd_group }}"
     mode=0644
