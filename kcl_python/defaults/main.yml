@@ -1,0 +1,29 @@
+---
+  kcl_python_user: "{{ supervisord_user }}"
+  kcl_python_group: "{{ supervisord_group }}"
+  kcl_python_bin_directory: "{{ supervisord_python_install_directory }}/bin"
+  kcl_python_directory: "{{ project_directory }}/kcl"
+  kcl_python_executable_file_name: kcl.py
+  kcl_python_properties_file_name: kcl.properties
+  kcl_python_stream_name: sample
+  kcl_python_application_name: PythonKCLSample
+  kcl_python_credentials_provider: AWSCredentialsProvider
+  kcl_python_processing_language: python/2.7
+  kcl_python_initial_position_in_stream: TRIM_HORIZON
+  kcl_python_region_name: "{{ awsconfig_region }}"
+  kcl_python_failover_time_millis: 10000
+  kcl_python_shard_sync_interval_millis: 60000
+  kcl_python_max_records: 10000
+  kcl_python_idle_time_between_reads_in_millis: 1000
+  kcl_python_call_process_records_even_for_empty_record_list: 'false'
+  kcl_python_parent_shard_poll_interval_millis: 10000
+  kcl_python_cleanup_leases_upon_shard_completion: 'true'
+  kcl_python_task_backoff_time_millis: 500
+  kcl_python_metrics_buffer_time_millis: 10000
+  kcl_python_metrics_max_queue_size: 10000
+  kcl_python_validate_sequence_number_before_checkpointing: 'true'
+  kcl_python_max_active_threads: 0
+  kcl_python_install_packages:
+    - amazon_kclpy
+  kcl_python_dependent_packages:
+    - java-1.7.0-openjdk
