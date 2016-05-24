@@ -1,4 +1,4 @@
-[program:fluentd]
+[program:kcl_py]
 command={{ startup_command.stdout }}
 directory={{ project_directory }}
 user={{ kcl_python_user }}

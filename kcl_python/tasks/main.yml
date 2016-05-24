@@ -64,7 +64,6 @@
   environment:
     PATH: "{{ kcl_python_bin_directory }}:{{ ansible_env.PATH }}"
 
-
 - name: Create supervisord process conf file.
   template: >
     src=supervisord.conf.tpl
