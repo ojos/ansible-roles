@@ -31,7 +31,7 @@
   gem: >
     name={{ item }}
     state=latest
-  executable: {{ xbuild_ruby_install_directory }}/bin/gem
+  executable: "{{ xbuild_ruby_install_directory }}/bin/gem"
   with_items: "{{ xbuild_ruby_packages }}"
   when: xbuild_ruby_packages|length > 0
   become: yes
