@@ -25,21 +25,7 @@
     {{ xbuild_install_directory }}/ruby-install {{ xbuild_ruby_version }}
     {{ xbuild_ruby_install_directory }}
   when: not ruby_directory.stat.exists
-
-- name: Install ruby packages.
-  gem: >
-    name={{ item }}
-    state=latest
-    executable={{ xbuild_ruby_install_directory }}/bin/gem
-    user_install=no
-  with_items: "{{ xbuild_ruby_packages }}"
-  when: xbuild_ruby_packages|length > 0
-
-- name: Update ruby gems.
-  command: >
-    update_rubygems
-  environment:
-    PATH: "{{ xbuild_ruby_install_directory }}/bin:{{ ansible_env.PATH }}"
+  become: yes
 
 - name: Change ruby directory owner.
   file: >
@@ -49,6 +35,25 @@
     owner={{ xbuild_ruby_user }}
     group={{ xbuild_ruby_group }}
   become: yes
+
+- name: Install ruby packages.
+  gem: >
+    name={{ item }}
+    state=latest
+    executable={{ xbuild_ruby_install_directory }}/bin/gem
+    user_install=no
+  with_items: "{{ xbuild_ruby_packages }}"
+  when: xbuild_ruby_packages|length > 0
+  become: yes
+  become_user: "{{ xbuild_ruby_user }}"
+
+- name: Update ruby gems.
+  command: >
+    update_rubygems
+  environment:
+    PATH: "{{ xbuild_ruby_install_directory }}/bin:{{ ansible_env.PATH }}"
+  become: yes
+  become_user: "{{ xbuild_ruby_user }}"
 
 - name: Insert env in .envrc.
   lineinfile: >
