@@ -4,6 +4,8 @@
   fluentd_ruby_bin_directory: "{{ xbuild_ruby_install_directory }}/bin"
   fluentd_directory: "{{ project_directory }}/fluentd"
   fluentd_conf_file_name: "fluentd.conf"
+  fluentd_log_directory: "{{ project_directory }}/log/fluentd"
+  fluentd_log_file_name: "main.log"
   fluentd_install_packages:
     - 'fluentd'
   fluentd_install_plugins: []
