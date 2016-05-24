@@ -1,4 +1,10 @@
 ---
+  fluentd_user: "{{ supervisord_user }}"
+  fluentd_group: "{{ supervisord_group }}"
   fluentd_ruby_bin_directory: "{{ xbuild_ruby_install_directory }}/bin"
+  fluentd_directory: "{{ project_directory }}/fluentd"
+  fluentd_conf_file_name: "fluentd.conf"
   fluentd_install_packages:
     - 'fluentd'
+  fluentd_install_plugins: []
+

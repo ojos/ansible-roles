@@ -7,3 +7,45 @@
     user_install=no
   with_items: "{{ fluentd_install_packages }}"
   when: fluentd_install_packages|length > 0
+
+- name: Create fluentd directory.
+  file: >
+    path="{{ fluentd_directory }}"
+    state=directory
+    owner="{{ fluentd_user }}"
+    group="{{ fluentd_group }}"
+    mode=0755
+  become: yes
+- name: Create fluentd plugin directory.
+  file: >
+    path="{{ fluentd_directory }}/plugin"
+    state=directory
+    owner="{{ fluentd_user }}"
+    group="{{ fluentd_group }}"
+    mode=0755
+  become: yes
+- name: Create fluentd config file.
+  template: >
+    src=fluentd.conf.tpl
+    dest="{{ fluentd_directory }}/{{ fluentd_conf_file_name }}"
+    owner="{{ fluentd_user }}"
+    group="{{ fluentd_group }}"
+    mode=0644
+  become: yes
+
+- name: Create supervisord process conf file.
+  template: >
+    src=supervisord.conf.tpl
+    dest={{ supervisord_include_conf_directory }}/fluentd.conf
+    owner="{{ fluentd_user }}"
+    group="{{ fluentd_group }}"
+    mode=0644
+  become: yes
+
+- name: Install fluentd plugins.
+  command: >
+    {{ fluentd_ruby_bin_directory }}/fluent-gem {{ item }}
+  with_items: "{{ fluentd_install_plugins }}"
+  environment:
+    PATH: "{{ fluentd_ruby_bin_directory }}:{{ ansible_env.PATH }}"
+  when: fluentd_install_plugins|length > 0
