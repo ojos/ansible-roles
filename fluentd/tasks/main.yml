@@ -44,7 +44,7 @@
 
 - name: Install fluentd plugins.
   command: >
-    {{ fluentd_ruby_bin_directory }}/fluent-gem {{ item }}
+    {{ fluentd_ruby_bin_directory }}/fluent-gem install {{ item }}
   with_items: "{{ fluentd_install_plugins }}"
   environment:
     PATH: "{{ fluentd_ruby_bin_directory }}:{{ ansible_env.PATH }}"
