@@ -24,7 +24,16 @@
     PATH: "{{ kcl_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: kcl_python_install_packages|length > 0
 
-- name: Create Kcl/Py directory.
+- name: Create Kcl/Py log directory.
+  file: >
+    path="{{ kcl_python_log_directory }}"
+    state=directory
+    owner="{{ kcl_python_user }}"
+    group="{{ kcl_python_group }}"
+    mode=0755
+  become: yes
+
+- name: Create Kcl/Py conf directory.
   file: >
     path="{{ kcl_python_conf_directory }}"
     state=directory
