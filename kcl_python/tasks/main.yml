@@ -26,7 +26,7 @@
 
 - name: Create Kcl/Py directory.
   file: >
-    path="{{ kcl_python_directory }}"
+    path="{{ kcl_python_conf_directory }}"
     state=directory
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_group }}"
@@ -36,7 +36,7 @@
 - name: Create executable file.
   template: >
     src=kcl.py.tpl
-    dest="{{ kcl_python_directory }}/{{ kcl_python_executable_file_name }}"
+    dest="{{ kcl_python_conf_directory }}/{{ kcl_python_executable_file_name }}"
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_group }}"
     mode=0644
@@ -45,7 +45,7 @@
 - name: Create properties file.
   template: >
     src=kcl.properties.tpl
-    dest="{{ kcl_python_directory }}/{{ kcl_python_properties_file_name }}"
+    dest="{{ kcl_python_conf_directory }}/{{ kcl_python_properties_file_name }}"
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_group }}"
     mode=0644
@@ -59,7 +59,7 @@
   always_run: yes
 - name: Print start-up command.
   shell: >
-    amazon_kclpy_helper.py --print_command --java {{ java_path.stdout }} --properties {{ kcl_python_directory }}/{{ kcl_python_properties_file_name }}
+    amazon_kclpy_helper.py --print_command --java {{ java_path.stdout }} --properties {{ kcl_python_conf_directory }}/{{ kcl_python_properties_file_name }}
   register: startup_command  
   changed_when: false  
   always_run: yes
