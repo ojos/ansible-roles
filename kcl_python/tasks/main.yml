@@ -48,7 +48,7 @@
     dest="{{ kcl_python_conf_directory }}/{{ kcl_python_executable_file_name }}"
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_group }}"
-    mode=0644
+    mode=0755
   become: yes
 
 - name: Create properties file.
