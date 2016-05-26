@@ -14,7 +14,7 @@ logger = getLogger(__name__)
 logger.setLevel(DEBUG)
 formatter = Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler = RotatingFileHandler(
-    filename='../../log/kcl/python.log',
+    filename='../../log/kcl/sub.log',
     maxBytes=1024 * 1024 * 100,
     backupCount=5
 )
