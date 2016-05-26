@@ -24,7 +24,7 @@
     PATH: "{{ kclpy_bin_directory }}:{{ ansible_env.PATH }}"
   when: kclpy_install_packages|length > 0
 
-- name: Create Kcl/Py log directory.
+- name: Create kclpy log directory.
   file: >
     path="{{ kclpy_log_directory }}"
     state=directory
@@ -49,10 +49,10 @@
     mode=0775
   become: yes
 
-- name: Create executable file.
-  template: >
-    src=kcl.py.tpl
-    dest="{{ kclpy_conf_directory }}/{{ kclpy_executable_file_name }}"
+- name: Copy executable file.
+  copy: >
+    src=kcl_app.py
+    dest"{{ kclpy_conf_directory }}/{{ kclpy_executable_file_name }}"
     owner="{{ kclpy_user }}"
     group="{{ kclpy_group }}"
     mode=0755

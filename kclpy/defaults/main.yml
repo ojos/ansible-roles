@@ -3,7 +3,7 @@
   kclpy_group: "{{ supervisord_group }}"
   kclpy_bin_directory: "{{ supervisord_python_install_directory }}/bin"
   kclpy_conf_directory: "{{ project_directory }}/etc/kcl"
-  kclpy_executable_file_name: kcl.py
+  kclpy_executable_file_name: kcl_app.py
   kclpy_properties_file_name: kclpy.properties
   kclpy_log_directory: "{{ project_directory }}/log/kcl"
   kclpy_log_file_name: "main.log"
