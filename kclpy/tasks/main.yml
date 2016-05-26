@@ -86,7 +86,7 @@
 - name: Create supervisord process conf file.
   template: >
     src=supervisord.conf.tpl
-    dest={{ supervisord_include_conf_directory }}/kcl_py.conf
+    dest={{ supervisord_include_conf_directory }}/kclpy.conf
     owner="{{ kclpy_user }}"
     group="{{ kclpy_user }}"
     mode=0644
