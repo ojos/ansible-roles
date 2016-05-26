@@ -38,3 +38,6 @@ def main():
     # every_minute_processor = MyStreamProcessor(checkpoint_freq_seconds=60)
     every_hundred_records_processor = MyStreamProcessor(records_per_checkpoint=100)
     kclpy.start(MyStreamProcessor())
+
+if __name__ == '__main__':
+    main()

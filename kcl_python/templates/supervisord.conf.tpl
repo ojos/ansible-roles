@@ -1,5 +1,5 @@
 [program:kcl_py]
-environment=AWS_ACCESS_KEY_ID="{{ awsconfig_access_key_id }}",AWS_SECRET_KEY="{{ awsconfig_secret_access_key }}"
+environment=AWS_ACCESS_KEY_ID="{{ awsconfig_access_key_id }}",AWS_SECRET_KEY="{{ awsconfig_secret_access_key }}",PATH="{{ supervisord_python_bin_directory }}:%(ENV_PATH)s"
 command={{ startup_command.stdout }}
 directory={{ kcl_python_conf_directory }}
 user={{ kcl_python_user }}

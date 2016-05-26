@@ -42,9 +42,9 @@
     mode=0755
   become: yes
 
-- name: Create executable file.
-  template: >
-    src=kcl.py.tpl
+- name: Copy executable file.
+  copy: >
+    src=kcl_app.py
     dest="{{ kcl_python_conf_directory }}/{{ kcl_python_executable_file_name }}"
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_group }}"
@@ -53,7 +53,7 @@
 
 - name: Create properties file.
   template: >
-    src=kcl.properties.tpl
+    src=kcl_app.properties.tpl
     dest="{{ kcl_python_conf_directory }}/{{ kcl_python_properties_file_name }}"
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_group }}"
