@@ -55,6 +55,7 @@
     dest"{{ kclpy_conf_directory }}/{{ kclpy_executable_file_name }}"
     owner="{{ kclpy_user }}"
     group="{{ kclpy_group }}"
+    force=yes
     mode=0755
   become: yes
 
