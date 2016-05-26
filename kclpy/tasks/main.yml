@@ -49,13 +49,14 @@
     mode=0775
   become: yes
 
-- name: Copy .gitconfig.
+- name: Copy executable file.
   copy: >
     src=kcl_app.py
     dest="{{ kclpy_conf_directory }}/{{ kclpy_executable_file_name }}"
     owner="{{ kclpy_user }}"
     group="{{ kclpy_group }}"
     mode=0755
+  become: yes
 
 - name: Create properties file.
   template: >
