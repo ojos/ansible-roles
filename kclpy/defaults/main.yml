@@ -1,0 +1,34 @@
+---
+  kclpy_user: "{{ supervisord_user }}"
+  kclpy_group: "{{ supervisord_group }}"
+  kclpy_bin_directory: "{{ supervisord_python_install_directory }}/bin"
+  kclpy_conf_directory: "{{ project_directory }}/etc/kcl"
+  kclpy_executable_file_name: kcl.py
+  kclpy_properties_file_name: kclpy.properties
+  kclpy_log_directory: "{{ project_directory }}/log/kcl"
+  kclpy_log_file_name: "main.log"
+  kclpy_executable_jar_version: 0.0.2
+  kclpy_executable_jar_file_name: sylvite.jar
+  kclpy_executable_jar_url: https://github.com/empiricalresults/sylvite/releases/download/
+  kclpy_stream_name: sample
+  kclpy_application_name: PythonKCLSample
+  kclpy_credentials_provider: EnvironmentVariableCredentialsProvider 
+  kclpy_processing_language: python/2.7
+  kclpy_initial_position_in_stream: TRIM_HORIZON
+  kclpy_region_name: "{{ awsconfig_region }}"
+  kclpy_failover_time_millis: 10000
+  kclpy_shard_sync_interval_millis: 60000
+  kclpy_max_records: 10000
+  kclpy_idle_time_between_reads_in_millis: 1000
+  kclpy_call_process_records_even_for_empty_record_list: 'false'
+  kclpy_parent_shard_poll_interval_millis: 10000
+  kclpy_cleanup_leases_upon_shard_completion: 'true'
+  kclpy_task_backoff_time_millis: 500
+  kclpy_metrics_buffer_time_millis: 10000
+  kclpy_metrics_max_queue_size: 10000
+  kclpy_validate_sequence_number_before_checkpointing: 'true'
+  kclpy_max_active_threads: 0
+  kclpy_install_packages:
+    - kclpy
+  kclpy_dependent_packages:
+    - java-1.7.0-openjdk
