@@ -4,6 +4,7 @@
     repo={{ item.repository }}
     dest={{ item.directory }}
     update=yes
+    force=yes
     track_submodules=yes
     accept_hostkey=yes
   with_items: "{{ deploy_sources }}"
