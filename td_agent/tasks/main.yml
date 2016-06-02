@@ -9,4 +9,5 @@
   command: >
     {{ td_agent_gem_bin_file }} install {{ item }}
   with_items: "{{ td_agent_plugins }}"
+  become: yes
   when: ansible_os_family == 'RedHat' and td_agent_plugins|length > 0
