@@ -1,0 +1,5 @@
+---
+  td_agent_install_shell_url: https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh
+  td_agent_gem_bin_file: /usr/sbin/td-agent-gem
+  td_agent_plugins: []
+

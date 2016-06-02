@@ -1,0 +1,6 @@
+---
+- name: Install td-agent(RedHat).
+  shell: >
+    curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh | sh
+  become: yes
+  when: ansible_os_family == 'RedHat'
