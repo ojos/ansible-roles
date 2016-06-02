@@ -4,3 +4,9 @@
     curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh | sh
   become: yes
   when: ansible_os_family == 'RedHat'
+
+- name: Install td-agent plugins.
+  command: >
+    {{ td_agent_gem_bin_file }} install {{ item }}
+  with_items: "{{ td_agent_plugins }}"
+  when: ansible_os_family == 'RedHat' and td_agent_plugins|length > 0
