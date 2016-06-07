@@ -1,0 +1,4 @@
+---
+dependencies:
+  - { role: mecab }
+  - { role: xbuild_python }
