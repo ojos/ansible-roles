@@ -92,18 +92,6 @@
   when: ansible_os_family == 'RedHat'
   become: yes
 
-- name: Create imagemagick user.
-  user: >
-    name="{{ imagemagick_user }}"
-    shell=/bin/false
-    system=yes
-    home="{{ imagemagick_prefix }}"
-    createhome=no
-  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(imagemagick_user) < 1 
-  become: yes
-
-
-
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ imagemagick_envrc_directory }}/.envrc

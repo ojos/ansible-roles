@@ -1,0 +1,17 @@
+---
+  mecab_user: "{{ project_user }}"
+  mecab_group: "{{ project_group }}"
+  mecab_dependent_packages: []
+  mecab_prefix: "{{ project_directory }}/mecab"
+  mecab_work_directory: "{{ project_directory }}/work"
+  mecab_repository: https://github.com/taku910/mecab.git
+  mecab_envrc_directory: "{{ direnv_envrc_directory }}"
+  mecab_environment_variables:
+    - value: "# mecab"
+      regexp: "^# mecab$"
+    - value: "export MECAB_HOME=$PROJECT_HOME/mecab"
+      regexp: "^export MECAB_HOME"
+    - value: |
+        export PATH=$MECAB_HOME/bin:$PATH
+
+      regexp: PATH=\$MECAB_HOME/bin\:\$PATH

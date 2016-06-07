@@ -1,0 +1,94 @@
+---
+- name: user list.
+  shell: >
+    cut -d: -f1 /etc/passwd  
+  register: user_list  
+  changed_when: false  
+  always_run: yes
+  when: ansible_os_family != 'Darwin'
+- name: Create mecab user.
+  user: >
+    name="{{ mecab_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ mecab_prefix }}"
+    createhome=no
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(mecab_user) < 1 
+  become: yes
+
+- name: Install/Upgrade dependent packages(RedHat).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ mecab_dependent_packages }}"
+  when: ansible_os_family == 'RedHat' and mecab_dependent_packages|length > 0
+  become: yes
+- name: Install dependent packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: "{{ mecab_dependent_packages }}"
+  when: ansible_os_family == 'Darwin' and mecab_dependent_packages|length > 0
+
+- name: Create work directory.
+  file: >
+    path="{{ mecab_work_directory }}"
+    state=directory
+    owner="{{ mecab_user }}"
+    group="{{ mecab_group }}"
+    mode=0755
+  become: yes
+
+- name: Clone repository.
+  git: >
+    repo={{ mecab_repository }}
+    dest={{ mecab_work_directory }}/mecab
+    update=yes
+    accept_hostkey=yes
+    force=yes
+
+- name: Configure, Make and Install mecab.
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ mecab_work_directory }}/mecab/mecab"
+  with_items:
+    - "./configure --prefix='{{ mecab_prefix }}' --enable-utf8-only"
+    - make
+    - make install
+
+- name: Configure, Make and Install mecab-ipadic.
+  shell: "{{ item }}" 
+  args:
+    chdir: "{{ mecab_work_directory }}/mecab/mecab-ipadic"
+  environment:
+    PATH: "{{ mecab_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - "./configure --prefix='{{ mecab_prefix }}' --with-charset=utf8"
+    - make
+    - make install
+
+- name: Remove work directory.
+  file: >
+    path="{{ mecab_work_directory }}"
+    state=absent
+  become: yes
+
+- name: Change mecab directory owner.
+  file: >
+    path="{{ mecab_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ mecab_user }}"
+    group="{{ mecab_group }}"
+  become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ mecab_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ mecab_environment_variables }}"
+  when: mecab_envrc_directory != '' and mecab_environment_variables|length > 0
