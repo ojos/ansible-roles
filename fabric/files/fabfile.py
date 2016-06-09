@@ -18,7 +18,8 @@ def _is_local():
 
 def _exec(command, remote=run, *args, **kwargs):
     if _is_local():
-        local(command, *args, **kwargs)
+        cmd = 'cd %s && %s ' % (os.environ['PROJECT_HOME'], command)
+        local(cmd, *args, **kwargs)
     else:
         with cd(REMOTE_WORK_DIRECTORY):
             cmd = 'source %s/.envrc && %s' % (REMOTE_WORK_DIRECTORY, command)
@@ -40,7 +41,7 @@ def atom():
 @task
 def djng(command, args=''):
     """Django(manage.py)のラッパー"""
-    cmd = 'python %s/manage.py %s %s' % (os.environ['DJANGO_HOME'], command, args)
+    cmd = 'python app/manage.py %s %s' % (command, args)
     _exec(cmd)
 
 
@@ -126,6 +127,17 @@ def sv(command):
 
 
 @task
+def tda(command):
+    if _is_local():
+        if command == 'start':
+            local('sudo launchctl load /Library/LaunchDaemons/td-agent.plist')
+        elif command == 'stop':
+            local('sudo launchctl unload /Library/LaunchDaemons/td-agent.plist')
+    else:
+        sudo('service td-agent %s' % command)
+
+
+@task
 def tf(command, env='vagrant', provider='aws'):
     """Terraformのラッパー"""
     public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
@@ -137,7 +149,7 @@ def tf(command, env='vagrant', provider='aws'):
 
 
 @task
-def pck(builder="amazon_ebs"):
+def pck(builder="ansible"):
     """Packerでイメージを構築"""
     cmd_list = [
         'cd %s' % os.environ['PACKER_HOME'],
@@ -190,6 +202,18 @@ def restart(env='vagrant', hosts='vagrant', vars=None):
 
 
 @task
+def restart_proxy(env='develop', hosts='develop-proxy', vars=None):
+    """サーバーを再起動する"""
+    _update_ansible_roles()
+    restart_cmd = _generate_bootstrap_command('restart_proxy', env, hosts, vars)
+    cmd_list = [
+        'cd %s' % os.environ['ANSIBLE_HOME'],
+        restart_cmd
+    ]
+    local(' && '.join(cmd_list))
+
+
+@task
 def deploy(env='vagrant', hosts='vagrant', vars=None):
     """デプロイ&再起動する"""
     _update_ansible_roles()
@@ -213,6 +237,19 @@ def buildout(env='vagrant', hosts='vagrant', vars=None):
     ]
     local(' && '.join(cmd_list))
     restart(env, hosts, vars)
+
+
+@task
+def buildout_proxy(env='develop', hosts='develop-proxy', vars=None):
+    """システム環境構築する"""
+    _update_ansible_roles()
+    buildout_cmd = _generate_bootstrap_command('buildout_proxy', env, hosts, vars)
+    cmd_list = [
+        'cd %s' % os.environ['ANSIBLE_HOME'],
+        buildout_cmd
+    ]
+    local(' && '.join(cmd_list))
+    restart_proxy(env, hosts, vars)
 
 
 @task
