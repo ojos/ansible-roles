@@ -40,7 +40,7 @@
     mode=0755
   become: yes
 
-- name: Clone repository.
+- name: Clone mecab repository.
   git: >
     repo={{ mecab_repository }}
     dest={{ mecab_work_directory }}/mecab
@@ -67,6 +67,23 @@
     - "./configure --prefix='{{ mecab_prefix }}' --with-charset=utf8"
     - make
     - make install
+
+- name: Clone mecab ipadic neologd repository.
+  git: >
+    repo={{ mecab_ipadic_neologd_repository }}
+    dest={{ mecab_work_directory }}/mecab_ipadic_neologd
+    depth=1
+    update=yes
+    accept_hostkey=yes
+    force=yes
+  when: mecab_ipadic_neologd_install
+
+- name: Configure, Make and Install mecab.
+  shell: >
+    {{ mecab_work_directory }}/mecab_ipadic_neologd/bin/install-mecab-ipadic-neologd -n
+  environment:
+    PATH: "{{ mecab_prefix }}/bin:{{ ansible_env.PATH }}"
+  when: mecab_ipadic_neologd_install
 
 - name: Remove work directory.
   file: >

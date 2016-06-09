@@ -1,0 +1,40 @@
+{
+  "variables": {
+    "project_name": "{{env `PROJECT_NAME`}}",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_region": "{{env `AWS_DEFAULT_REGION`}}",
+    "aws_source_ami": "{{env `PACKER_AWS_AMI`}}",
+    "aws_instance_type": "{{env `PACKER_AWS_INSTANCE_TYPE`}}",
+    "aws_subnet_id": "{{env `PACKER_AWS_SUBNET_ID`}}",
+    "aws_security_group": "{{env `PACKER_AWS_SECURITY_GROUP`}}",
+    "aws_username": "{{env `PACKER_AWS_USERNAME`}}",
+    "ansible_staging_directory": "{{env `PACKER_ANSIBLE_STAGING_DIRECTORY`}}",
+    "ansible_roles_source": "{{env `PACKER_ANSIBLE_ROLES_SOURCE`}}",
+    "ansible_roles_directory": "{{env `PACKER_ANSIBLE_ROLES_DIRECTORY`}}",
+    "ansible_playbook": "{{env `PACKER_PLAYBOOK`}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "associate_public_ip_address": true,
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `aws_region`}}",
+      "source_ami": "{{user `aws_source_ami`}}",
+      "instance_type": "{{user `aws_instance_type`}}",
+      "subnet_id": "{{user `aws_subnet_id`}}",
+      "security_group_id": "{{user `aws_security_group`}}",
+      "ssh_username": "{{user `aws_username`}}",
+      "ssh_timeout": "5m",
+      "ami_name": "{{user `project_name`}}_{{isotime | clean_ami_name}}",
+      "user_data_file": "./user_data.txt"
+    }
+  ],
+  "provisioners" : [{
+    "type" : "ansible",
+    "user": "{{user `aws_username`}}",
+    "sftp_command": "/usr/libexec/openssh/sftp-server",
+    "playbook_file": "{{user `ansible_playbook`}}"
+  }]
+}
