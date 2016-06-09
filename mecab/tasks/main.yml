@@ -78,7 +78,7 @@
     force=yes
   when: mecab_ipadic_neologd_install
 
-- name: Configure, Make and Install mecab.
+- name: Configure, Make and Install mecab ipadic neologd.
   shell: >
     {{ mecab_work_directory }}/mecab_ipadic_neologd/bin/install-mecab-ipadic-neologd -n
   environment:
