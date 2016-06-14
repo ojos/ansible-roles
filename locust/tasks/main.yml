@@ -1,0 +1,17 @@
+---
+- name: Install locust packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: "{{ locust_install_packages }}"
+  environment:
+    PATH: "{{ locust_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: locust_install_packages|length > 0
+
+- name: Copy scenario file.
+  copy: >
+    src=scenario.py
+    dest="{{ project_directory }}/scenario.py"
+    owner="{{ locust_user }}"
+    group="{{ locust_group }}"
+    mode=0755

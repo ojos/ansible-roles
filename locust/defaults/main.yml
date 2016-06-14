@@ -1,0 +1,7 @@
+---
+  locust_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
+  locust_install_packages:
+    - 'pyzmq'
+    - 'locustio'
+  locust_user: "{{ xbuild_python_user }}"
+  locust_group: "{{ xbuild_python_group }}"
