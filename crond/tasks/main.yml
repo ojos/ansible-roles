@@ -38,7 +38,7 @@
   with_items: "{{ crond_tasks }}"
   when: crond_tasks|length > 0
 
-- name: Replace crontan.
+- name: Replace crontab.
   shell: >
     /usr/bin/crontab {{ ansible_user_dir }}/crontab
   args:
