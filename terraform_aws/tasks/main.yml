@@ -35,7 +35,7 @@
     mode=0644
   when: item.0.environment in terraform_aws_environments
   with_subelements:
-    - terraform_aws_environment_templates
+    - "{{terraform_aws_environment_templates}}"
     - providers
 
 - name: Insert env in .envrc.
