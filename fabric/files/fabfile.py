@@ -143,7 +143,7 @@ def tf(command, env='vagrant', provider='aws'):
     public_key = '%s/%s.pem.pub' % (os.environ['KEY_HOME'], env)
     cmd_list = [
         'cd %s/%s/%s' % (os.environ['TF_HOME'], provider, env),
-        'terraform %s -var "public_key=%s"' % (command, public_key)
+        "terraform %s -var 'public_key=%s'" % (command, public_key)
     ]
     local(' && '.join(cmd_list))
 
