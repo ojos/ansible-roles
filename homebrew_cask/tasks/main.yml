@@ -5,12 +5,6 @@
     state=present
   when: ansible_os_family == 'Darwin'
 
-- name: Install/Upgrade Homebrew Cask
-  homebrew: >
-    name=brew-cask
-    state=latest
-  when: ansible_os_family == 'Darwin'
-
 - name: Tap external Homebrew Cask repositories
   homebrew_tap: >
     tap={{ item }}
