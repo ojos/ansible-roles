@@ -1,6 +1,6 @@
 ---
 - name: Install/Update packer.
-  homebrew_cask: >
+  homebrew: >
     name=packer
     state=present
   environment: 

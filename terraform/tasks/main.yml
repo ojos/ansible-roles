@@ -1,6 +1,6 @@
 ---
 - name: Install/Update terraform.
-  homebrew_cask: >
+  homebrew: >
     name=terraform
     state=present
   environment: 
