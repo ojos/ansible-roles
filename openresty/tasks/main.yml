@@ -35,13 +35,13 @@
   file: >
     path="{{ openresty_work_directory }}"
     state=directory
-    mode=0755
+    mode=0777
   become: yes
 
 - name: Extract openresty source.
   unarchive: >
     src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
-    dest="{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
+    dest="{{ openresty_work_directory }}"
     copy=no
   become: yes
 
