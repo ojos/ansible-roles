@@ -40,7 +40,7 @@
 
 - name: Download openresty source.
   get_url: >
-    src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
+    url="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_work_directory }}//openresty-{{ openresty_version }}.tar.gz"
   become: yes
 
