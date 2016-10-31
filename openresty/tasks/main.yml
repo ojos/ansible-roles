@@ -43,11 +43,21 @@
     src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_work_directory }}"
     copy=no
+  register: result
+  ignore_errors: True
   become: yes
-  environment: >
-    LANG=C
-    LC_ALL=C
-    LC_MESSAGES=C
+
+- name: Dwonload openresty source.
+  get_url: >
+    url="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
+    dest="{{ openresty_work_directory }}"
+  become: yes
+  when: result|failed
+
+- name: Extract openresty source.
+  command: tar zxvf {{ openresty_work_directory }}/openresty-{{ openresty_version }}.tar.gz
+  become: yes
+  when: result|failed
 
 - name: Configure, Make and Install openresty(RedHat).
   shell: "{{ item }}" 
