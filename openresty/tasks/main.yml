@@ -48,6 +48,7 @@
     LANG=C
     LC_ALL=C
     LC_MESSAGES=C
+    LC_CTYPE=C
   
 
 - name: Configure, Make and Install openresty(RedHat).
