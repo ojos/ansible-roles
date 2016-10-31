@@ -49,7 +49,7 @@
     src="{{ openresty_work_directory }}//openresty-{{ openresty_version }}.tar.gz"
     dest="{{ openresty_work_directory }}"
     copy=no
-  become: yes
+  # become: yes
 
 - name: Configure, Make and Install openresty(RedHat).
   shell: "{{ item }}" 
