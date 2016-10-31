@@ -55,7 +55,9 @@
   when: result|failed
 
 - name: Extract openresty source.
-  command: tar zxvf {{ openresty_work_directory }}/openresty-{{ openresty_version }}.tar.gz
+  shell: tar zxvf {{ openresty_work_directory }}/openresty-{{ openresty_version }}.tar.gz
+  args:
+    chdir: "{{ openresty_work_directory }}"
   become: yes
   when: result|failed
 
