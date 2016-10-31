@@ -38,17 +38,10 @@
     mode=0755
   become: yes
 
-- name: Download openresty source.
-  get_url: >
-    url="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
-    dest="{{ openresty_work_directory }}//openresty-{{ openresty_version }}.tar.gz"
-  become: yes
-
 - name: Extract openresty source.
   unarchive: >
-    src="{{ openresty_work_directory }}//openresty-{{ openresty_version }}.tar.gz"
-    dest="{{ openresty_work_directory }}"
-    creates=yes
+    src="http://openresty.org/download/openresty-{{ openresty_version }}.tar.gz"
+    dest="{{ openresty_work_directory }}/openresty-{{ openresty_version }}"
     copy=no
   become: yes
 
