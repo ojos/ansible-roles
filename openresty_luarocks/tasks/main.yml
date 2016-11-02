@@ -28,7 +28,23 @@
     src="http://luarocks.org/releases/luarocks-{{ openresty_luarocks_version }}.tar.gz"
     dest="{{ openresty_luarocks_work_directory }}"
     copy=no
+  register: result
+  ignore_errors: True
   become: yes
+
+- name: Dwonload openresty source.
+  get_url: >
+    url="http://luarocks.org/releases/luarocks-{{ openresty_luarocks_version }}.tar.gz"
+    dest="{{ openresty_luarocks_work_directory }}"
+  become: yes
+  when: result|failed
+
+- name: Extract openresty source.
+  shell: tar zxvf {{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}.tar.gz
+  args:
+    chdir: "{{ openresty_luarocks_work_directory }}"
+  become: yes
+  when: result|failed
 
 - name: Configure, Make and Install luarocks.
   shell: "{{ item }}" 
