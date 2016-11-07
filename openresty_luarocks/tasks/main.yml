@@ -70,7 +70,7 @@
 - name: Replace lua_package_path.
   replace: >
     dest="{{ openresty_luarocks_nginx_lua_conf_file }}"
-    replace="\1'{{ openresty_luarocks_nginx_directory }}/lua/?.lua;{{ luarocks_path_list.stdout_lines[0] }}';"
+    replace="\1'{{ openresty_luarocks_nginx_directory }}/lua/?.lua;{{ openresty_luarocks_nginx_directory }}/lualib/?.lua;{{ luarocks_path_list.stdout_lines[0] }}';"
     regexp="(^lua_package_path\s+)'.*';"
   become: yes
 - name: Replace lua_package_cpath.
