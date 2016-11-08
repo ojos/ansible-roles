@@ -1,0 +1,34 @@
+---
+- name: Install awslog(Amazon Linux).
+  yum: >
+    name=awslogs
+    state=latest
+  become: yes
+  when: ansible_distribution == 'Amazon'
+  
+- name: Create awscli.conf.
+  template: >
+    src=awscli.conf.tpl
+    dest="{{ awslogs_awscli_conf_file }}"
+    owner="root"
+    group="root"
+    mode=0600
+  become: yes
+  when: ansible_distribution == 'Amazon'
+
+- name: Copy awslogs.conf.
+  copy: >
+    src=awslogs.conf
+    dest="{{ awslogs_conf_file }}"
+    owner="root"
+    group="root"
+    mode=0644
+  become: yes
+  when: ansible_distribution == 'Amazon'
+
+- name: Register awslogs service.
+  service: >
+    name=awslogs
+    enabled="{{ awslogs_service_enabled }}"
+  become: yes
+  when: ansible_distribution == 'Amazon'

@@ -1,0 +1,7 @@
+---
+  awslogs_access_key_id: "{{ awsconfig_access_key_id }}"
+  awslogs_secret_access_key: "{{ awsconfig_secret_access_key }}"
+  awslogs_default_region: "{{ awsconfig_region }}"
+  awslogs_awscli_conf_file: /etc/awslogs/awscli.conf
+  awslogs_conf_file: /etc/awslogs/awslogs.conf
+  awslogs_service_enabled: yes
