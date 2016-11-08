@@ -283,14 +283,14 @@
   become: yes
   when: ansible_system == 'Linux'
 
-# - name: Insert settings in awslogs.conf.
-#   lineinfile: >
-#     dest=/etc/awslogs/awslogs.conf
-#     line="{{ openresty_awslogs_settings }}"
-#     insertafter=EOF
-#     state=present
-#     regexp={{ item.regexp }}
-#   when: openresty_envrc_directory != '' and openresty_environment_variables|length > 0
+- name: Insert settings in awslogs.conf.
+  lineinfile: >
+    dest=/etc/awslogs/awslogs.conf
+    line="{{ openresty_awslogs_settings }}"
+    insertafter=EOF
+    state=present
+    regexp="^\[{{ openresty_prefix }}/nginx/logs/access.log\]"
+  become: yes
 
 - name: Insert env in .envrc.
   lineinfile: >

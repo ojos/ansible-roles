@@ -17,3 +17,12 @@
     name=td-agent
     enabled="{{ td_agent_service_enabled }}"
   become: yes
+
+- name: Insert settings in awslogs.conf.
+  lineinfile: >
+    dest=/etc/awslogs/awslogs.conf
+    line="{{ td_agent_awslogs_settings }}"
+    insertafter=EOF
+    state=present
+    regexp="^\[/var/log/td-agent/td-agent.log\]"
+  become: yes

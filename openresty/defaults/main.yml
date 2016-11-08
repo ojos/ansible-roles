@@ -35,7 +35,7 @@
   openresty_lua_check_client_abort: "on"
   openresty_lua_code_cache: "on"
   openresty_nginx_repository: ''
-  openresty_awslogs_settings: |
+  openresty_awslogs_settings: |+
     [{{ openresty_prefix }}/nginx/logs/access.log]
     datetime_format = %d/%b/%Y:%H:%M:%S %z
     file = {{ openresty_prefix }}/nginx/logs/access.log
