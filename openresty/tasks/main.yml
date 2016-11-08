@@ -256,6 +256,16 @@
     group="{{ openresty_group }}"
   become: yes
 
+- name: Create openresty logrotate file.
+  template: >
+    src=logrotate.tpl
+    dest="{{ openresty_logrotate_file }}"
+    owner="{{ openresty_user }}"
+    group="{{ openresty_group }}"
+    mode=0755
+  become: yes
+  when: ansible_system == 'Linux'
+
 - name: Create openresty service file.
   template: >
     src=nginx.service.tpl
@@ -269,7 +279,7 @@
 - name: Register nginx service.
   service: >
     name=nginx
-    enabled=yes
+    enabled="{{ openresty_service_enabled }}"
   become: yes
   when: ansible_system == 'Linux'
 

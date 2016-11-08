@@ -8,6 +8,7 @@
     - pcre-devel
     - zlib-devel
     - readline-devel
+    - logrotate
   openresty_make_bin_file: /usr/bin/make
   openresty_prefix: "{{ project_directory }}/openresty"
   openresty_configure_options: >-
@@ -15,7 +16,9 @@
     --prefix={{ openresty_prefix }}
     --user={{ openresty_user }}
     --group={{ openresty_group }}
+  openresty_logrotate_file: /etc/logrotate.d/nginx
   openresty_service_file: /etc/rc.d/init.d/nginx
+  openresty_service_enabled: yes
   openresty_lualib_repository: https://github.com/ojos/lua-library.git
   openresty_worker_processes: auto
   openresty_worker_rlimit_nofile: 4096

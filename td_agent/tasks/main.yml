@@ -11,3 +11,9 @@
   with_items: "{{ td_agent_plugins }}"
   become: yes
   when: ansible_os_family == 'RedHat' and td_agent_plugins|length > 0
+
+- name: Register td-agent service.
+  service: >
+    name=td-agent
+    enabled="{{ td_agent_service_enabled }}"
+  become: yes
