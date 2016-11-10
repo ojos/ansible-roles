@@ -1,7 +1,15 @@
 ---
-  locust_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
+  locust_user: "{{ supervisord_user }}"
+  locust_group: "{{ supervisord_group }}"
+  locust_python_bin_directory: "{{ supervisord_python_bin_directory }}"
+  locust_directory: "{{ project_directory }}/locust"
+  locust_is_master: yes
+  locust_host: http://localhost:5000
+  locust_master_host: 127.0.0.1
+  locust_log_directory: "{{ project_directory }}/log/locust"
+  locust_log_file_name: main.log
+  locust_dependent_packages: 
+    - libevent-devel
   locust_install_packages:
-    - 'pyzmq'
-    - 'locustio'
-  locust_user: "{{ xbuild_python_user }}"
-  locust_group: "{{ xbuild_python_group }}"
+    - locustio
+    - pyzmq
