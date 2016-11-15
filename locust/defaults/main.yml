@@ -5,6 +5,7 @@
   locust_directory: "{{ project_directory }}/locust"
   locust_is_master: yes
   locust_host: http://localhost:5000
+  locust_file_name: locustfile.py
   locust_master_host: 127.0.0.1
   locust_log_directory: "{{ project_directory }}/log/locust"
   locust_log_file_name: main.log
