@@ -1,13 +1,23 @@
 ---
   os_limits_conf_file: /etc/security/limits.conf
   os_sysctl_file: /etc/sysctl.conf
-  os_conf_root_soft_nofile: 1024
-  os_conf_root_hard_nofile: 4096
-  os_conf_anonymous_soft_nofile: 1024
-  os_conf_anonymous_hard_nofile: 4096
+  # os_conf_root_soft_nofile: 1024
+  # os_conf_root_hard_nofile: 4096
+  # os_conf_anonymous_soft_nofile: 1024
+  # os_conf_anonymous_hard_nofile: 4096
+  # os_conf_net_ipv4_tcp_tw_recycle: 0
+  # os_conf_net_ipv4_tcp_tw_reuse: 0
+  # os_conf_net_ipv4_ip_local_port_range: 32768 60999
+  # os_conf_net_ipv4_tcp_keepalive_time: 7200
+  # os_conf_net_ipv4_tcp_keepalive_probes: 9
+  # os_conf_net_ipv4_tcp_keepalive_intvl: 75
+  os_conf_root_soft_nofile: 65536
+  os_conf_root_hard_nofile: 65536
+  os_conf_anonymous_soft_nofile: 65536
+  os_conf_anonymous_hard_nofile: 65536
   os_conf_net_ipv4_tcp_tw_recycle: 0
-  os_conf_net_ipv4_tcp_tw_reuse: 0
-  os_conf_net_ipv4_ip_local_port_range: 32768 60999
-  os_conf_net_ipv4_tcp_keepalive_time: 7200
-  os_conf_net_ipv4_tcp_keepalive_probes: 9
-  os_conf_net_ipv4_tcp_keepalive_intvl: 75
+  os_conf_net_ipv4_tcp_tw_reuse: 1
+  os_conf_net_ipv4_ip_local_port_range: 10240 65535
+  os_conf_net_ipv4_tcp_keepalive_time: 10
+  os_conf_net_ipv4_tcp_keepalive_probes: 2
+  os_conf_net_ipv4_tcp_keepalive_intvl: 3
