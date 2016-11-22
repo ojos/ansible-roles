@@ -1,0 +1,39 @@
+---
+- name: Insert of limits.conf.
+  lineinfile: >
+    dest="{{ os_limits_conf_file }}"
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items:
+    - regexp: '^root soft nofile.+'
+      value: 'root soft nofile {{ os_conf_root_soft_nofile }}'
+    - regexp: '^root hard nofile.+'
+      value: 'root hard nofile {{ os_conf_root_hard_nofile }}'
+    - regexp: '^\* soft nofile.+'
+      value: '* soft nofile {{ os_conf_anonymous_soft_nofile }}'
+    - regexp: '^\* hard nofile.+'
+      value: '* hard nofile {{ os_conf_anonymous_hard_nofile }}'
+  become: yes
+- name: Insert of sysctl.conf.
+  lineinfile: >
+    dest="{{ os_sysctl_file }}"
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items:
+    - regexp: '^net\.ipv4\.tcp_tw_recycle\s=.+'
+      value: 'net.ipv4.tcp_tw_recycle = {{ os_conf_net_ipv4_tcp_tw_recycle }}'
+    - regexp: '^net.ipv4.tcp_tw_reuse =.+'
+      value: 'net.ipv4.tcp_tw_reuse = {{ os_conf_net_ipv4_tcp_tw_reuse }}'
+    - regexp: '^net.ipv4.ip_local_port_range =.+'
+      value: 'net.ipv4.ip_local_port_range = {{ os_conf_net_ipv4_ip_local_port_range }}'
+    - regexp: '^net.ipv4.tcp_keepalive_time =.+'
+      value: 'net.ipv4.tcp_keepalive_time = {{ os_conf_net_ipv4_tcp_keepalive_time }}'
+    - regexp: '^net.ipv4.tcp_keepalive_probes =.+'
+      value: 'net.ipv4.tcp_keepalive_probes = {{ os_conf_net_ipv4_tcp_keepalive_probes }}'
+    - regexp: '^net.ipv4.tcp_keepalive_intvl =.+'
+      value: 'net.ipv4.tcp_keepalive_intvl = {{ os_conf_net_ipv4_tcp_keepalive_intvl }}'
+  become: yes
