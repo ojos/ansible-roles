@@ -237,7 +237,31 @@
     force=yes
     version={{ ffmpeg_branch_name }}
 
-- name: Configure, Make and Install ffmpeg.
+- name: Configure, Make and Install ffmpeg(RedHat).
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/ffmpeg"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+    PKG_CONFIG_PATH: "{{ ffmpeg_prefix }}/lib/pkgconfig"
+  with_items:
+    - >-
+      ./configure --prefix='{{ ffmpeg_prefix }}'
+      --extra-cflags='-I{{ ffmpeg_prefix }}/include'
+      --extra-ldflags='-L{{ ffmpeg_prefix }}/lib'
+      --enable-gpl
+      --enable-nonfree
+      --enable-libfdk_aac
+      --enable-libmp3lame
+      --enable-libopus
+      --enable-libvorbis
+      --enable-libvpx
+      --enable-libx264
+      --enable-openssl
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+- name: Configure, Make and Install ffmpeg(Darwin).
   shell: "{{ item }}"
   args:
     chdir: "{{ ffmpeg_work_directory }}/ffmpeg"
@@ -259,6 +283,7 @@
       --enable-libx264
     - make
     - make install
+  when: ansible_os_family == 'Darwin'
 
 - name: Remove work directory.
   file: >
