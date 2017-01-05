@@ -1,7 +1,7 @@
 ---
   xbuild_go_user: "{{ project_user }}"
   xbuild_go_group: "{{ project_group }}"
-  xbuild_go_version: 1.6
+  xbuild_go_version: 1.7
   xbuild_go_os: linux
   xbuild_go_arch: amd64
   xbuild_go_install_directory: "{{ project_directory }}/go"
