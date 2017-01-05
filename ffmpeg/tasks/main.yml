@@ -258,29 +258,29 @@
       --enable-libvpx
       --enable-libx264
     - make
-    # - make install
+    - make install
 
-# - name: Remove work directory.
-#   file: >
-#     path="{{ ffmpeg_work_directory }}"
-#     state=absent
-#   become: yes
+- name: Remove work directory.
+  file: >
+    path="{{ ffmpeg_work_directory }}"
+    state=absent
+  become: yes
 
-# - name: Change ffmpeg directory owner.
-#   file: >
-#     path="{{ ffmpeg_prefix }}"
-#     state=directory
-#     recurse=yes
-#     owner="{{ ffmpeg_user }}"
-#     group="{{ ffmpeg_group }}"
-#   become: yes
+- name: Change ffmpeg directory owner.
+  file: >
+    path="{{ ffmpeg_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ ffmpeg_user }}"
+    group="{{ ffmpeg_group }}"
+  become: yes
 
-# - name: Insert env in .envrc.
-#   lineinfile: >
-#     dest={{ ffmpeg_envrc_directory }}/.envrc
-#     line="{{ item.value }}"
-#     insertafter=EOF
-#     state=present
-#     regexp={{ item.regexp }}
-#   with_items: "{{ ffmpeg_environment_variables }}"
-#   when: ffmpeg_envrc_directory != '' and ffmpeg_environment_variables|length > 0
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ ffmpeg_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ ffmpeg_environment_variables }}"
+  when: ffmpeg_envrc_directory != '' and ffmpeg_environment_variables|length > 0
