@@ -272,6 +272,8 @@
     PKG_CONFIG_PATH: "{{ ffmpeg_prefix }}/lib/pkgconfig"
   with_items:
     - >-
+      CPPFLAGS="-I/usr/local/opt/openssl/include"
+      LDFLAGS="-L/usr/local/opt/openssl/lib"
       ./configure --prefix='{{ ffmpeg_prefix }}'
       --extra-cflags='-I{{ ffmpeg_prefix }}/include'
       --extra-ldflags='-L{{ ffmpeg_prefix }}/lib'
