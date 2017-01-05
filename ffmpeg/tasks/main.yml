@@ -243,9 +243,9 @@
     chdir: "{{ ffmpeg_work_directory }}/ffmpeg"
   environment:
     PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+    PKG_CONFIG_PATH: "{{ ffmpeg_prefix }}/lib/pkgconfig"
   with_items:
     - >-
-      PKG_CONFIG_PATH='{{ ffmpeg_prefix }}/lib/pkgconfig'
       ./configure --prefix='{{ ffmpeg_prefix }}'
       --extra-cflags='-I{{ ffmpeg_prefix }}/include'
       --extra-ldflags='-L{{ ffmpeg_prefix }}/lib'
