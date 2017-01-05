@@ -1,9 +1,9 @@
 ---
 - name: user list.
   shell: >
-    cut -d: -f1 /etc/passwd  
-  register: user_list  
-  changed_when: false  
+    cut -d: -f1 /etc/passwd
+  register: user_list
+  changed_when: false
   always_run: yes
   when: ansible_os_family != 'Darwin'
 - name: Create openresty user.
@@ -290,6 +290,7 @@
     state=present
     regexp="^\[{{ openresty_prefix }}/nginx/logs/access.log\]"
   become: yes
+  when: ansible_distribution == 'Amazon'
 
 - name: Insert env in .envrc.
   lineinfile: >
