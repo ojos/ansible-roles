@@ -267,8 +267,6 @@
     chdir: "{{ ffmpeg_work_directory }}/ffmpeg"
   environment:
     PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
-    CPPFLAGS: "-I/usr/local/opt/openssl/include"
-    LDFLAGS: "-L/usr/local/opt/openssl/lib"
     PKG_CONFIG_PATH: "{{ ffmpeg_prefix }}/lib/pkgconfig"
   with_items:
     - >-
