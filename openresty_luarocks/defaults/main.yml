@@ -1,5 +1,5 @@
 ---
-  openresty_luarocks_version: 2.3.0
+  openresty_luarocks_version: 2.4.1
   openresty_luarocks_work_directory: "{{ project_directory }}/work"
   openresty_luarocks_user: nginx
   openresty_luarocks_group: nginx
