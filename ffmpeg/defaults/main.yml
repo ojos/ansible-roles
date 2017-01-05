@@ -7,6 +7,8 @@
     - nasm
     - zlib-devel
     - openssl-devel
+  ffmpeg_configure_cppflags: -I/usr/local/opt/openssl/include
+  ffmpeg_configure_ldflags: -L/usr/local/opt/openssl/lib
   ffmpeg_make_bin_file: /usr/bin/make
   ffmpeg_prefix: "{{ project_directory }}/ffmpeg"
   ffmpeg_repository: https://github.com/FFmpeg/FFmpeg

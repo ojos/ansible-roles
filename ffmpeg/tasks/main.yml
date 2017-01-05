@@ -270,8 +270,8 @@
     PKG_CONFIG_PATH: "{{ ffmpeg_prefix }}/lib/pkgconfig"
   with_items:
     - >-
-      CPPFLAGS="-I/usr/local/opt/openssl/include"
-      LDFLAGS="-L/usr/local/opt/openssl/lib"
+      CPPFLAGS="{{ ffmpeg_configure_cppflags }}"
+      LDFLAGS="{{ ffmpeg_configure_ldflags }}"
       ./configure --prefix='{{ ffmpeg_prefix }}'
       --extra-cflags='-I{{ ffmpeg_prefix }}/include'
       --extra-ldflags='-L{{ ffmpeg_prefix }}/lib'
@@ -285,30 +285,30 @@
       --enable-libx264
       --enable-openssl
     - make
-    # - make install
+    - make install
   when: ansible_os_family == 'Darwin'
 
-# - name: Remove work directory.
-#   file: >
-#     path="{{ ffmpeg_work_directory }}"
-#     state=absent
-#   become: yes
+- name: Remove work directory.
+  file: >
+    path="{{ ffmpeg_work_directory }}"
+    state=absent
+  become: yes
 
-# - name: Change ffmpeg directory owner.
-#   file: >
-#     path="{{ ffmpeg_prefix }}"
-#     state=directory
-#     recurse=yes
-#     owner="{{ ffmpeg_user }}"
-#     group="{{ ffmpeg_group }}"
-#   become: yes
+- name: Change ffmpeg directory owner.
+  file: >
+    path="{{ ffmpeg_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ ffmpeg_user }}"
+    group="{{ ffmpeg_group }}"
+  become: yes
 
-# - name: Insert env in .envrc.
-#   lineinfile: >
-#     dest={{ ffmpeg_envrc_directory }}/.envrc
-#     line="{{ item.value }}"
-#     insertafter=EOF
-#     state=present
-#     regexp={{ item.regexp }}
-#   with_items: "{{ ffmpeg_environment_variables }}"
-#   when: ffmpeg_envrc_directory != '' and ffmpeg_environment_variables|length > 0
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ ffmpeg_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ ffmpeg_environment_variables }}"
+  when: ffmpeg_envrc_directory != '' and ffmpeg_environment_variables|length > 0
