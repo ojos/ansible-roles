@@ -1,9 +1,9 @@
 ---
 - name: user list.
   shell: >
-    cut -d: -f1 /etc/passwd  
-  register: user_list  
-  changed_when: false  
+    cut -d: -f1 /etc/passwd
+  register: user_list
+  changed_when: false
   always_run: yes
   when: ansible_os_family != 'Darwin'
 - name: Create imagemagick user.
@@ -45,6 +45,19 @@
     src="{{ imagemagick_source_url }}"
     dest="{{ imagemagick_work_directory }}"
     copy=no
+  register: result
+  ignore_errors: True
+
+- name: Dwonload imagemagick source.
+  get_url: >
+    url="{{ imagemagick_source_url }}"
+    dest="{{ imagemagick_work_directory }}"
+  when: result|failed
+- name: Extract imagemagick source.
+  shell: tar zxvf {{ imagemagick_work_directory }}/ImageMagick.tar.gz
+  args:
+    chdir: "{{ imagemagick_work_directory }}"
+  when: result|failed
 
 - name: imagemagick source Directory.
   shell: >
@@ -54,7 +67,7 @@
   register: imagemagick_dir
 
 - name: Configure, Make and Install imagemagick.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ imagemagick_dir.stdout }}"
   environment:
