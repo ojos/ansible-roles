@@ -1,7 +1,7 @@
 ---
   ffmpeg_user: "{{ project_user }}"
   ffmpeg_group: "{{ project_group }}"
-  ffmpeg_branch_name: release/3.0
+  ffmpeg_branch_name: release/3.2
   ffmpeg_work_directory: "{{ project_directory }}/work"
   ffmpeg_dependent_packages:
     - nasm
@@ -9,7 +9,7 @@
     - openssl-devel
   ffmpeg_make_bin_file: /usr/bin/make
   ffmpeg_prefix: "{{ project_directory }}/ffmpeg"
-  ffmpeg_repository: git://source.ffmpeg.org/ffmpeg
+  ffmpeg_repository: https://github.com/FFmpeg/FFmpeg
   ffmpeg_yasm_repository: git://github.com/yasm/yasm.git
   ffmpeg_libx264_repository: git://git.videolan.org/x264
   ffmpeg_libfdk_aac_repository: git://git.code.sf.net/p/opencore-amr/fdk-aac

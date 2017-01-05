@@ -1,9 +1,9 @@
 ---
 - name: user list.
   shell: >
-    cut -d: -f1 /etc/passwd  
-  register: user_list  
-  changed_when: false  
+    cut -d: -f1 /etc/passwd
+  register: user_list
+  changed_when: false
   always_run: yes
   when: ansible_os_family != 'Darwin'
 - name: Create ffmpeg user.
@@ -50,9 +50,9 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install yasm.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
-    chdir: "{{ ffmpeg_work_directory }}/yasm" 
+    chdir: "{{ ffmpeg_work_directory }}/yasm"
   with_items:
     - autoreconf -fiv
     - "./configure --prefix='{{ ffmpeg_prefix }}'"
@@ -70,7 +70,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libx264.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ ffmpeg_work_directory }}/libx264"
   environment:
@@ -91,7 +91,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libfdk_aac.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ ffmpeg_work_directory }}/libfdk_aac"
   environment:
@@ -119,7 +119,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libmp3lame.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ libmp3lame_dir.stdout }}"
   environment:
@@ -140,7 +140,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libopus.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ ffmpeg_work_directory }}/opus"
   environment:
@@ -168,7 +168,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libogg.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ libogg_dir.stdout }}"
   environment:
@@ -195,7 +195,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libvorbis.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ libvorbis_dir.stdout }}"
   environment:
@@ -216,7 +216,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libvpx.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ ffmpeg_work_directory }}/libvpx"
   environment:
@@ -238,7 +238,7 @@
     version={{ ffmpeg_branch_name }}
 
 - name: Configure, Make and Install ffmpeg.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ ffmpeg_work_directory }}/ffmpeg"
   environment:
