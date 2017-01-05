@@ -257,7 +257,7 @@
       --enable-libvorbis
       --enable-libvpx
       --enable-libx264
-      --enable-openssl
+      # --enable-openssl
     - make
     # - make install
 
