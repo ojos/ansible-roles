@@ -223,7 +223,6 @@ def deploy(env='vagrant', hosts='vagrant', vars=None):
         deploy_cmd
     ]
     local(' && '.join(cmd_list))
-    restart(env, hosts, vars)
 
 
 @task
@@ -236,7 +235,6 @@ def buildout(env='vagrant', hosts='vagrant', vars=None):
         buildout_cmd
     ]
     local(' && '.join(cmd_list))
-    restart(env, hosts, vars)
 
 
 @task
@@ -249,7 +247,6 @@ def buildout_proxy(env='develop', hosts='develop-proxy', vars=None):
         buildout_cmd
     ]
     local(' && '.join(cmd_list))
-    restart_proxy(env, hosts, vars)
 
 
 @task
