@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     aws.keypair_name = ENV["VAGRANT_KEYPAIR_NAME"]
     aws.security_groups = ENV["VAGRANT_SECURITY_GROUPS"]
     aws.subnet_id = ENV["VAGRANT_SUBNET_ID"]
-    
+
     override.ssh.username = ENV["VAGRANT_USERNAME"]
     override.ssh.private_key_path = ENV["VAGRANT_PRIVATE_KEY_PATH"]
     override.ssh.pty              = true

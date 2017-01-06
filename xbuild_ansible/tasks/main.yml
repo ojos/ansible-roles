@@ -35,8 +35,8 @@
   changed_when: no
   always_run: yes
 - name: Create buildout playbook.
-  copy: >
-    src=buildout.yml
+  template: >
+    src=buildout.tpl
     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}"
     mode=0644
   when: not buildout.stat.exists
@@ -49,8 +49,8 @@
   changed_when: no
   always_run: yes
 - name: Create deploy playbook.
-  copy: >
-    src=deploy.yml
+  template: >
+    src=deploy.tpl
     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_deploy_playbook_file_name }}"
     mode=0644
   when: not deploy_playbook.stat.exists

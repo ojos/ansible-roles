@@ -3,11 +3,11 @@
   become: no
   vars:
   tasks:
-    - name: Restart supervisord service.
-      service: >
-        name=supervisord
-        state=restarted
-      become: yes
+    # - name: Restart supervisord service.
+    #   service: >
+    #     name=supervisord
+    #     state=restarted
+    #   become: yes
     - name: Restart nginx service.
       service: >
         name=nginx

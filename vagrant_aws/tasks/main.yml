@@ -34,8 +34,8 @@
 - name: List of files in the terraform vagrant directory.
   shell: >
     ls {{ vagrant_aws_terraform_directory }}
-  register: terraform_vagrant_directory  
-  changed_when: false  
+  register: terraform_vagrant_directory
+  changed_when: false
   always_run: yes
 
 - name: Copy ec2.tf.
