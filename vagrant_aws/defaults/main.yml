@@ -22,7 +22,7 @@
       "Roles" => "{{ vagrant_aws_roles_tag }}",
       "Owner" => ENV["PROJECT_OWNER"]}
   vagrant_aws_envrc_directory: "{{ vagrant_envrc_directory }}"
-  vagrant_aws_environment_variables: 
+  vagrant_aws_environment_variables:
     - value: "# vagrant-aws"
       regexp: "^# vagrant-aws$"
     - value: export VAGRANT_CWD={{ vagrant_aws_vagrant_cwd }}

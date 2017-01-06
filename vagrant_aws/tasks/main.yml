@@ -45,6 +45,12 @@
     mode=0644
     force=yes
 
+- name: vpc_security_group.tf.
+  stat: >
+    path="{{ vagrant_aws_terraform_directory }}/vpc_security_group.tf"
+  register: vpc_security_group_tf
+  changed_when: no
+  always_run: yes
 - name: Replace vpc_id in vpc_security_group.tf.
   lineinfile: >
     dest={{ vagrant_aws_terraform_directory }}/vpc_security_group.tf
@@ -52,4 +58,6 @@
     insertafter=EOF
     state=present
     regexp='^\s+vpc_id\s=\s.+$'
+  when: vpc_security_group_tf.stat.exists
+
 
