@@ -6,7 +6,8 @@
   xbuild_go_arch: amd64
   xbuild_go_install_directory: "{{ project_directory }}/go"
   xbuild_go_app_name: "myapp"
-  xbuild_go_app_directory: "{{ project_directory }}/app/src/{{ xbuild_go_app_name }}"
+  xbuild_go_source_directory: "{{ project_directory }}/app/src/{{ xbuild_go_app_name }}"
+  xbuild_go_binary_directory: "{{ project_directory }}/app/bin"
   xbuild_go_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_go_remove_xbuild: yes
   xbuild_go_environment_variables:
