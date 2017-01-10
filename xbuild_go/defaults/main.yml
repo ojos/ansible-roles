@@ -5,7 +5,8 @@
   xbuild_go_os: linux
   xbuild_go_arch: amd64
   xbuild_go_install_directory: "{{ project_directory }}/go"
-  xbuild_go_gopath_directory: "{{ project_directory }}/gopath"
+  xbuild_go_gopath_directory_name: "gopath"
+  xbuild_go_gopath_directory: "{{ project_directory }}/{{ xbuild_go_gopath_directory_name }}"
   xbuild_go_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_go_remove_xbuild: yes
   xbuild_go_environment_variables:
@@ -13,8 +14,8 @@
       regexp: "^# go$"
     - value: "export GOROOT=$PROJECT_HOME/go"
       regexp: GOROOT=\$PROJECT_HOME/go
-    - value: "export GOPATH=$PROJECT_HOME/gopath"
-      regexp: GOPATH=\$PROJECT_HOME/gopath
+    - value: "export GOPATH=$PROJECT_HOME/{{ xbuild_go_gopath_directory_name }}"
+      regexp: GOPATH=\$PROJECT_HOME/{{ xbuild_go_gopath_directory_name }}
     - value: |
         export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 
