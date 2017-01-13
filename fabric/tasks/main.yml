@@ -5,6 +5,14 @@
     state=present
   environment:
     PATH: "{{ fabric_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: xbuild_python_version < 3
+- name: Install fabric3.
+  pip: >
+    name=fabric3
+    state=present
+  environment:
+    PATH: "{{ fabric_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: xbuild_python_version >= 3
 
 - name: Copy fabfile.py.
   copy: >
