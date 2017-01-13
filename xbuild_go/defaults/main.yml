@@ -10,6 +10,16 @@
   xbuild_go_binary_directory: "{{ project_directory }}/app/bin"
   xbuild_go_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_go_remove_xbuild: yes
+  xbuild_go_packages:
+    - golang.org/x/tools/cmd/gofmt
+    - golang.org/x/tools/cmd/goimports
+    - github.com/golang/lint/golint
+    - golang.org/x/tools/cmd/godoc
+    - golang.org/x/tools/cmd/gorename
+    - golang.org/x/tools/cmd/guru
+    - golang.org/x/tools/cmd/gocode
+    - golang.org/x/tools/cmd/godef
+    - golang.org/x/tools/cmd/gotags
   xbuild_go_environment_variables:
     - value: "# go"
       regexp: "^# go$"
@@ -17,6 +27,8 @@
       regexp: GOROOT=\$PROJECT_HOME/go
     - value: "export GOPATH=$PROJECT_HOME/app"
       regexp: GOPATH=\$PROJECT_HOME/app
+    - value: "export GOBIN=$GOPATH/bin"
+      regexp: GOBIN=\$GOPATH/bin
     - value: |
         export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 

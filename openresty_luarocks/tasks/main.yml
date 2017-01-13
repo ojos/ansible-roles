@@ -47,7 +47,7 @@
   when: result|failed
 
 - name: Configure, Make and Install luarocks.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ openresty_luarocks_work_directory }}/luarocks-{{ openresty_luarocks_version }}"
   with_items:

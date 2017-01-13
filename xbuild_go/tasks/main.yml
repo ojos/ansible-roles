@@ -39,6 +39,12 @@
     mode=0755
   become: yes
 
+- name: Install go packages.
+  shell: >
+    {{ xbuild_go_install_directory }}/bin/go install {{ item }}
+  with_items: "{{ xbuild_go_packages }}"
+  when: xbuild_go_packages|length > 0
+
 - name: Insert env in .envrc.
   lineinfile: >
     dest={{ xbuild_go_envrc_directory }}/.envrc
