@@ -39,10 +39,21 @@ def atom():
 
 
 @task
-def djng(command, args=''):
-    """Django(manage.py)のラッパー"""
-    cmd = 'python app/manage.py %s %s' % (command, args)
-    _exec(cmd)
+def test(options=''):
+    """コードをテストする"""
+    pass
+
+
+@task
+def fmt(options=''):
+    """コードをフォーマットする"""
+    pass
+
+
+@task
+def lint(options=''):
+    """コードを構文チェックする"""
+    pass
 
 
 def _ngx_start(deamon, pid):
@@ -159,12 +170,6 @@ def pck(builder="ansible"):
 
 
 @task
-def unittest(options=''):
-    """アプリケーションサーバーをテストする"""
-    pass
-
-
-@task
 def ssh(env='vagrant', host='vagrant'):
     cmd = 'ssh -F %(key_dir)s/ssh_config -i %(key_dir)s/%(env)s.pem %(host)s' % {
         'key_dir': os.environ['KEY_HOME'], 'env': env, 'host': host}
@@ -202,18 +207,6 @@ def restart(env='vagrant', hosts='vagrant', vars=None):
 
 
 @task
-def restart_proxy(env='develop', hosts='develop-proxy', vars=None):
-    """サーバーを再起動する"""
-    _update_ansible_roles()
-    restart_cmd = _generate_bootstrap_command('restart_proxy', env, hosts, vars)
-    cmd_list = [
-        'cd %s' % os.environ['ANSIBLE_HOME'],
-        restart_cmd
-    ]
-    local(' && '.join(cmd_list))
-
-
-@task
 def deploy(env='vagrant', hosts='vagrant', vars=None):
     """デプロイ&再起動する"""
     _update_ansible_roles()
@@ -233,6 +226,18 @@ def buildout(env='vagrant', hosts='vagrant', vars=None):
     cmd_list = [
         'cd %s' % os.environ['ANSIBLE_HOME'],
         buildout_cmd
+    ]
+    local(' && '.join(cmd_list))
+
+
+@task
+def restart_proxy(env='develop', hosts='develop-proxy', vars=None):
+    """サーバーを再起動する"""
+    _update_ansible_roles()
+    restart_cmd = _generate_bootstrap_command('restart_proxy', env, hosts, vars)
+    cmd_list = [
+        'cd %s' % os.environ['ANSIBLE_HOME'],
+        restart_cmd
     ]
     local(' && '.join(cmd_list))
 
