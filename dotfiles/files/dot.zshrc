@@ -20,6 +20,11 @@ export PATH=$HOME/opt/bin:$PATH
 # export HOMEBREW_GITHUB_API_TOKEN=HOMEBREW_GITHUB_API_TOKEN
 export HOMEBREW_CASK_OPTS=--appdir=/Applications
 
+# nvim
+export EDITOR='nvim'
+export VISUAL='nvim'
+alias vi='nvim'
+
 # python
 export PYTHONSTARTUP=$HOME/.pythonstartup
 

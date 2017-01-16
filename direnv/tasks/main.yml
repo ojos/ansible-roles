@@ -1,5 +1,5 @@
 ---
-- name: direnv binary. 
+- name: direnv binary.
   command: >
     which direnv
   register: direnv_bin
@@ -70,6 +70,13 @@
     state=present
     regexp="direnv hook zsh"
   when: login_shell.stdout == "zsh"
+
+- name: Create XDG config directory.
+  file: >
+    path="{{ project_directory }}/.config"
+    state=directory
+    mode=0755
+  become: yes
 
 - name: Create .envrc.
   template: >

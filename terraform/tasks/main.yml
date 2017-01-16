@@ -3,7 +3,7 @@
   homebrew: >
     name=terraform
     state=present
-  environment: 
+  environment:
     HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
 
 - name: Create terraform directory.

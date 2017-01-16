@@ -1,5 +1,6 @@
 ---
-  keygen_key_directory: "{{ project_directory }}/key"
+  keygen_key_directory_name: ".ssh"
+  keygen_key_directory: "{{ project_directory }}/{{ keygen_key_directory_name }}"
   keygen_user: "{{ project_user }}"
   keygen_group: "{{ project_group }}"
   keygen_bits: 2048
@@ -19,11 +20,10 @@
     # IdentityFile {{ keygen_key_directory }}/{{ item }}.pem
     IdentitiesOnly yes
     LogLevel FATAL
-
   keygen_environments: "{{ project_environments }}"
-  keygen_home_directory: "$PROJECT_HOME/key"
+  keygen_home_directory: "$PROJECT_HOME/{{ keygen_key_directory_name }}"
   keygen_envrc_directory: "{{ direnv_envrc_directory }}"
-  keygen_environment_variables: 
+  keygen_environment_variables:
     - value: "# key"
       regexp: "^# key$"
     - value: |

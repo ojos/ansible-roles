@@ -1,0 +1,35 @@
+---
+  neovim_user: "{{ project_user }}"
+  neovim_group: "{{ project_group }}"
+  neovim_work_directory: "{{ project_directory }}/work"
+  neovim_dependent_packages:
+    - libtool
+    - autoconf
+    - automake
+    - cmake
+    - gcc
+    - gcc-c++
+    - make
+    - pkgconfig
+    - unzip
+  neovim_repository: https://github.com/neovim/neovim.git
+  neovim_prefix_directory_name: neovim
+  neovim_prefix: "{{ project_directory }}/{{ neovim_prefix_directory_name }}"
+  neovim_bootstrap_url: http://vim-bootstrap.com/generate.vim
+  neovim_bootstrap_langs:
+    - python
+    - lua
+    - go
+    - html
+    - javascript
+  neovim_config_directory: "{{ project_directory }}/.config/nvim"
+  neovim_envrc_directory: "{{ direnv_envrc_directory }}"
+  neovim_environment_variables:
+    - value: "# neovim"
+      regexp: "^# neovim$"
+    - value: "export NEOVIM_HOME=$PROJECT_HOME/{{ neovim_prefix_directory_name }}"
+      regexp: "^export NEOVIM_HOME"
+    - value: |
+        export PATH=$NEOVIM_HOME/bin:$PATH
+
+      regexp: PATH=\$NEOVIM_HOME/bin\:\$PATH
