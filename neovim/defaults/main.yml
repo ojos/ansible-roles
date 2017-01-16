@@ -19,7 +19,6 @@
   neovim_bootstrap_langs:
     - python
     - lua
-    - go
     - html
     - javascript
   neovim_config_directory: "{{ project_directory }}/.config/nvim"
