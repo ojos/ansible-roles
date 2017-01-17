@@ -12,6 +12,7 @@
     - make
     - pkgconfig
     - unzip
+    - ctags
   neovim_repository: https://github.com/neovim/neovim.git
   neovim_prefix_directory_name: neovim
   neovim_prefix: "{{ project_directory }}/{{ neovim_prefix_directory_name }}"
