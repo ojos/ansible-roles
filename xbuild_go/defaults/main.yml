@@ -16,7 +16,6 @@
     - golang.org/x/tools/cmd/godoc
     - golang.org/x/tools/cmd/gorename
     - golang.org/x/tools/cmd/guru
-    - golang.org/x/tools/cmd/godef
     - golang.org/x/tools/cmd/gotags
   xbuild_go_environment_variables:
     - value: "# go"
