@@ -42,10 +42,10 @@
 - name: Install go packages.
   shell: >
     {{ xbuild_go_install_directory }}/bin/go install {{ item }}
-  with_items: "{{ xbuild_go_packages }}"
   environment:
     GOROOT: "{{ xbuild_go_install_directory }}"
     GOPATH: "{{ project_directory }}/app"
+  with_items: "{{ xbuild_go_packages }}"
   when: xbuild_go_packages|length > 0
   become: yes
 
