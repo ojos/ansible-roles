@@ -73,8 +73,11 @@
 
 - name: Create XDG config directory.
   file: >
-    path="{{ project_directory }}/.config"
+    path="{{ project_directory }}/.config/direnv"
     state=directory
+    recurse=yes
+    owner={{ ansible_user_uid }}
+    group={{ ansible_user_gid }}
     mode=0755
   become: yes
 
@@ -98,7 +101,7 @@
 
 - name: direnv allow.
   command: >
-    direnv allow
+    direnv allow ./
   args:
     chdir: "{{ direnv_envrc_directory }}"
   when: direnv_envrc_directory != ''
