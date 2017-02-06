@@ -12,11 +12,13 @@
   xbuild_go_remove_xbuild: yes
   xbuild_go_packages:
     - golang.org/x/tools/cmd/goimports
-    - github.com/golang/lint/golint
     - golang.org/x/tools/cmd/godoc
     - golang.org/x/tools/cmd/gorename
     - golang.org/x/tools/cmd/guru
-    - golang.org/x/tools/cmd/gotags
+    - github.com/golang/lint/golint
+    - github.com/nsf/gocode
+    - github.com/rogpeppe/godef
+    - github.com/jstemmer/gotags
   xbuild_go_environment_variables:
     - value: "# go"
       regexp: "^# go$"
