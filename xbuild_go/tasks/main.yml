@@ -41,7 +41,7 @@
 
 - name: Install go packages.
   shell: >
-    {{ xbuild_go_install_directory }}/bin/go install {{ item }}
+    {{ xbuild_go_install_directory }}/bin/go get {{ item }}
   environment:
     GOROOT: "{{ xbuild_go_install_directory }}"
     GOPATH: "{{ project_directory }}/app"
