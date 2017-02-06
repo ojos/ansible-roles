@@ -19,6 +19,7 @@
     - github.com/nsf/gocode
     - github.com/rogpeppe/godef
     - github.com/jstemmer/gotags
+    - github.com/derekparker/delve
   xbuild_go_environment_variables:
     - value: "# go"
       regexp: "^# go$"
