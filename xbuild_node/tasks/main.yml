@@ -23,8 +23,8 @@
 
 - name: Install node packages.
   npm: >
-    executable="{ xbuild_node_install_directory }}/bin/npm
-    name="{{ item }}"
+    name={{ item }}
+    executable="{ xbuild_node_install_directory }}/bin/npm"
     global=yes
   with_items: "{{ xbuild_node_packages }}"
   when: xbuild_node_packages|length > 0
