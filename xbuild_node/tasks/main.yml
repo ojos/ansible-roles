@@ -21,14 +21,14 @@
     group={{ xbuild_node_group }}
   become: yes
 
-- name: Install node packages.
-  shell: >
-    npm install {{ item }}
-  environment:
-    PATH: "{ xbuild_node_install_directory }}/bin:{{ ansible_env.PATH }}"
-  with_items: "{{ xbuild_node_packages }}"
-  when: xbuild_node_packages|length > 0
-  become: yes
+# - name: Install node packages.
+#   shell: >
+#     npm install {{ item }}
+#   environment:
+#     PATH: "{ xbuild_node_install_directory }}/bin:{{ ansible_env.PATH }}"
+#   with_items: "{{ xbuild_node_packages }}"
+#   when: xbuild_node_packages|length > 0
+#   become: yes
 
 - name: Insert env in .envrc.
   lineinfile: >
