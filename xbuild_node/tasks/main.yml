@@ -24,6 +24,7 @@
 - name: Install node packages.
   npm: >
     name={{ item }}
+    state=latest
     executable={{ xbuild_node_install_directory }}/bin/npm
     global=yes
   with_items: "{{ xbuild_node_packages }}"
