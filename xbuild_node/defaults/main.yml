@@ -12,6 +12,6 @@
     - value: "# node"
       regexp: "^# node$"
     - value: |
-        export PATH=$PROJECT_HOME/node/bin:$PATH
+        export PATH=$PROJECT_HOME/nodejs/bin:$PATH
 
-      regexp: PATH=\$PROJECT_HOME/node/bin\:\$PATH
+      regexp: PATH=\$PROJECT_HOME/nodejs/bin\:\$PATH
