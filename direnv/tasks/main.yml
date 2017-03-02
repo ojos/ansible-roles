@@ -5,7 +5,7 @@
   register: direnv_bin
   ignore_errors: yes
   changed_when: no
-  always_run: yes
+  check_mode: no
 - name: Install direnv(Darwin).
   homebrew: >
     name=direnv
@@ -25,7 +25,7 @@
     echo ${SHELL##*/}
   register: login_shell
   changed_when: no
-  always_run: yes
+  check_mode: no
 
 - name: .bashrc file.
   stat: >

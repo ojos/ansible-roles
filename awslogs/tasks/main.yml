@@ -5,7 +5,7 @@
     state=latest
   become: yes
   when: ansible_distribution == 'Amazon'
-  
+
 - name: Create awscli.conf.
   template: >
     src=awscli.conf.tpl

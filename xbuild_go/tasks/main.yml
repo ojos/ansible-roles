@@ -4,7 +4,7 @@
     path={{ xbuild_go_install_directory }}
   register: go_directory
   changed_when: no
-  always_run: yes
+  check_mode: no
 - name: Install go in xbuild.
   command: >
     {{ xbuild_install_directory }}/go-install {{ xbuild_go_version }}

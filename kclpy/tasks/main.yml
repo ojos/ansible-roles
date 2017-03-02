@@ -81,7 +81,7 @@
     which java 
   register: java_path  
   changed_when: false  
-  always_run: yes
+  check_mode: no
 
 - name: Create supervisord process conf file.
   template: >

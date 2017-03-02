@@ -65,13 +65,13 @@
     which java 
   register: java_path  
   changed_when: false  
-  always_run: yes
+  check_mode: no
 - name: Print start-up command.
   shell: >
     amazon_kclpy_helper.py --print_command --java {{ java_path.stdout }} --properties {{ kcl_python_conf_directory }}/{{ kcl_python_properties_file_name }}
   register: startup_command  
   changed_when: false  
-  always_run: yes
+  check_mode: no
   environment:
     PATH: "{{ kcl_python_bin_directory }}:{{ ansible_env.PATH }}"
 

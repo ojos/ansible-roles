@@ -4,7 +4,7 @@
     cut -d: -f1 /etc/passwd
   register: user_list
   changed_when: false
-  always_run: yes
+  check_mode: no
   when: ansible_os_family != 'Darwin'
 - name: Create ffmpeg user.
   user: >
