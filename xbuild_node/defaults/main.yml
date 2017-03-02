@@ -3,7 +3,7 @@
   xbuild_node_group: "{{ project_group }}"
   xbuild_node_version: v7.5.0
   xbuild_node_arch: linux-x64
-  xbuild_node_install_directory: "{{ project_directory }}/node"
+  xbuild_node_install_directory: "{{ project_directory }}/nodejs"
   xbuild_node_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_node_remove_xbuild: yes
   xbuild_node_packages:
