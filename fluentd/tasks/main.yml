@@ -36,7 +36,7 @@
 - name: Create supervisord process conf file.
   template: >
     src=supervisord.conf.tpl
-    dest={{ supervisord_include_conf_directory }}/fluentd.conf
+    dest={{ xbuild_supervisor_include_conf_directory }}/fluentd.conf
     owner="{{ fluentd_user }}"
     group="{{ fluentd_group }}"
     mode=0644

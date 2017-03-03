@@ -1,5 +1,5 @@
 upstream app_server {
-    server {{ gunicorn_bind }} fail_timeout=0;
+    server {{ xbuild_gunicorn_bind }} fail_timeout=0;
 }
 
 server {

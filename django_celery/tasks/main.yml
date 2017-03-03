@@ -29,7 +29,7 @@
 - name: Create supervisord process conf file.
   template: >
     src=django_celery.conf.tpl
-    dest={{ supervisord_include_conf_directory }}/django_celery.conf
+    dest={{ xbuild_supervisor_include_conf_directory }}/django_celery.conf
     owner="{{ django_celery_user }}"
     group="{{ django_celery_group }}"
     mode=0644

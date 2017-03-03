@@ -1,0 +1,75 @@
+---
+- name: Install supervisord packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: "{{ xbuild_supervisor_install_packages }}"
+  environment:
+    PATH: "{{ xbuild_supervisor_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: xbuild_supervisor_install_packages|length > 0
+
+- name: Create supervisord conf and sub directory.
+  file: >
+    path="{{ xbuild_supervisor_include_conf_directory }}"
+    state=directory
+    owner="{{ xbuild_supervisor_user }}"
+    group="{{ xbuild_supervisor_group }}"
+    mode=0755
+  become: yes
+- name: Create supervisord config file.
+  template: >
+    src=supervisord.conf.tpl
+    dest="{{ xbuild_supervisor_conf_directory }}/{{ xbuild_supervisor_conf_file_name }}"
+    owner="{{ xbuild_supervisor_user }}"
+    group="{{ xbuild_supervisor_group }}"
+    mode=0644
+
+- name: Create supervisord log directory.
+  file: >
+    path="{{ xbuild_supervisor_log_directory }}"
+    state=directory
+    owner="{{ xbuild_supervisor_user }}"
+    group="{{ xbuild_supervisor_group }}"
+    mode=0755
+  become: yes
+- name: Create supervisord pid directory.
+  file: >
+    path="{{ xbuild_supervisor_pid_directory }}"
+    state=directory
+    owner="{{ xbuild_supervisor_user }}"
+    group="{{ xbuild_supervisor_group }}"
+    mode=0755
+  become: yes
+- name: Create supervisord http server socket directory.
+  file: >
+    path="{{ xbuild_supervisor_unix_http_server_socket_directory }}"
+    state=directory
+    owner="{{ xbuild_supervisor_user }}"
+    group="{{ xbuild_supervisor_group }}"
+    mode=0755
+  become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ xbuild_supervisor_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ xbuild_supervisor_environment_variables }}"
+  when: xbuild_supervisor_envrc_directory != '' and xbuild_supervisor_environment_variables|length > 0
+
+- name: Create supervisord service file.
+  template: >
+    src=supervisord.service.tpl
+    dest="/etc/rc.d/init.d/supervisord"
+    mode=0755
+  become: yes
+  when: ansible_system == 'Linux'
+
+- name: Register supervisord service.
+  service: >
+    name=supervisord
+    enabled=yes
+  become: yes
+  when: ansible_system == 'Linux'

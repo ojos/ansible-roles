@@ -1,0 +1,36 @@
+---
+  xbuild_supervisor_python_install_directory: "{{ xbuild_python_install_directory }}"
+  xbuild_supervisor_python_bin_directory: "{{ xbuild_supervisor_python_install_directory }}/bin"
+  xbuild_supervisor_user: "{{ xbuild_python_user }}"
+  xbuild_supervisor_group: "{{ xbuild_python_group }}"
+  xbuild_supervisor_conf_directory: "{{ project_directory }}/etc/supervisord"
+  xbuild_supervisor_conf_file_name: supervisord.conf
+  xbuild_supervisor_include_conf_directory: "{{ xbuild_supervisor_conf_directory }}/conf.d"
+  xbuild_supervisor_log_directory: "{{ project_directory }}/log/supervisord"
+  xbuild_supervisor_log_file_name: main.log
+  xbuild_supervisor_log_file_maxbytes: 50MB
+  xbuild_supervisor_log_file_backups: 10
+  xbuild_supervisor_log_level: info
+  xbuild_supervisor_pid_directory: "{{ project_directory }}/run/supervisord"
+  xbuild_supervisor_pid_file_name: supervisord.pid
+  xbuild_supervisor_unix_http_server_socket_directory: "{{ project_directory }}/tmp/supervisord"
+  xbuild_supervisor_unix_http_server_socket_file_name: supervisor.sock
+  xbuild_supervisor_nodaemon: False
+  xbuild_supervisor_minfds: 1024
+  xbuild_supervisor_minprocs: 200
+  xbuild_supervisor_install_packages:
+    - supervisor
+  xbuild_supervisor_bin_file: "$PROJECT_HOME/python/bin/supervisord"
+  xbuild_supervisor_control_bin_file: "$PROJECT_HOME/python/bin/supervisorctl"
+  xbuild_supervisor_pid_file: "$PROJECT_HOME/run/supervisord/{{ xbuild_supervisor_pid_file_name }}"
+  xbuild_supervisor_conf_file: "$PROJECT_HOME/etc/supervisord/{{ xbuild_supervisor_conf_file_name }}"
+  xbuild_supervisor_envrc_directory: "{{ direnv_envrc_directory }}"
+  xbuild_supervisor_environment_variables:
+    - value: "# supervisord"
+      regexp: "^# supervisord$"
+    - value: "export SUPERVISORD_PID={{ xbuild_supervisor_pid_file }}"
+      regexp: "^export SUPERVISORD_PID"
+    - value: |
+        export SUPERVISORD_CONF={{ xbuild_supervisor_conf_file }}
+
+      regexp: "^export SUPERVISORD_CONF"

@@ -8,16 +8,16 @@
 #              operating systems.
 #
 # processname: supervisord
-# pidfile: {{ supervisord_pid_directory }}/{{ supervisord_pid_file_name }}
+# pidfile: {{ supervisor_pid_directory }}/{{ supervisor_pid_file_name }}
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
 DESC="Supervisord Daemon"
-DAEMON={{ supervisord_python_bin_directory }}/supervisord
-CTL={{ supervisord_python_bin_directory }}/supervisorctl
-PID={{ supervisord_pid_directory }}/{{ supervisord_pid_file_name }}
-CONF={{ supervisord_conf_directory }}/{{ supervisord_conf_file_name }}
+DAEMON={{ supervisor_bin_file }}
+CTL={{ supervisor_control_bin_file }}
+PID={{ supervisor_pid_directory }}/{{ supervisor_pid_file_name }}
+CONF={{ supervisor_conf_directory }}/{{ supervisor_conf_file_name }}
 
 start()
 {
