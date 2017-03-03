@@ -47,6 +47,7 @@
     owner="{{ supervisor_user }}"
     group="{{ supervisor_group }}"
     mode=0644
+  become: yes
 
 - name: Create supervisord log directory.
   file: >
