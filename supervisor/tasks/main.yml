@@ -24,7 +24,15 @@
     PATH: "{{ ansible_env.PATH }}"
   become: yes
 
-- name: Create supervisord conf and sub directory.
+- name: Create supervisord conf directory.
+  file: >
+    path="{{ supervisor_conf_directory }}"
+    state=directory
+    owner="{{ supervisor_user }}"
+    group="{{ supervisor_group }}"
+    mode=0755
+  become: yes
+- name: Create supervisord conf sub directory.
   file: >
     path="{{ supervisor_include_conf_directory }}"
     state=directory
