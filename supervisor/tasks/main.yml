@@ -8,12 +8,12 @@
   when: ansible_os_family != 'Darwin'
 - name: Create supervisord user.
   user: >
-    name="{{ supervisord_user }}"
+    name="{{ supervisor_user }}"
     shell=/bin/false
     system=yes
     home="{{ supervisor_conf_directory }}"
     createhome=no
-  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(supervisord_user) < 1
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(supervisor_user) < 1
   become: yes
 
 - name: Install supervisord packages.
