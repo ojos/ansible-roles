@@ -66,7 +66,7 @@
 - name: Copy sample file.
   copy: >
     src=app.py
-    dest="{{ japronto_app_dir }}/{{ japronto_app_file_name }}"
+    dest="{{ japronto_directory }}/{{ japronto_app }}/{{ japronto_app_file_name }}"
     owner="{{ japronto_user }}"
     group="{{ japronto_group }}"
     mode=0755
