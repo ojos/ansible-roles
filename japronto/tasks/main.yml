@@ -36,8 +36,7 @@
     name={{ item }}
     state=latest
   with_items: "{{ japronto_install_packages }}"
-  environment:
-    PATH: "{{ japronto_python_bin_directory }}:{{ ansible_env.PATH }}"
+  executable: "{{ japronto_python_bin_directory }}/pip"
   when: japronto_install_packages|length > 0
 
 - name: Clone app directory.
