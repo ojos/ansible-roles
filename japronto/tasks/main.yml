@@ -63,6 +63,13 @@
     mode=0755
   when: not japronto_app_dir.stat.exists
   become: yes
+
+- name: App File.
+  stat: >
+    path="{{ japronto_directory }}/{{ japronto_app }}/{{ japronto_app_file_name }}"
+  register: japronto_app_file
+  changed_when: no
+  check_mode: no
 - name: Copy sample file.
   copy: >
     src=app.py
@@ -70,7 +77,8 @@
     owner="{{ japronto_user }}"
     group="{{ japronto_group }}"
     mode=0755
-  when: not japronto_app_dir.stat.exists
+  when: not japronto_app_file.stat.exists
+  become: yes
 
 - name: Create supervisord process conf file.
   template: >
