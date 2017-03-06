@@ -1,6 +1,6 @@
 ---
-  japronto_user: "{{ gunicorn_user }}"
-  japronto_group: "{{ gunicorn_group }}"
+  japronto_user: "japronto"
+  japronto_group: "japronto"
   japronto_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   japronto_repository: ""
   japronto_directory: "{{ project_directory }}"
