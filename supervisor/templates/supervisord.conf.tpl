@@ -11,7 +11,7 @@ pidfile={{ supervisor_pid_directory }}/{{ supervisor_pid_file_name }}
 nodaemon={{ supervisor_nodaemon }}
 minfds={{ supervisor_minfds }}
 minprocs={{ supervisor_minprocs }}
-user={{ supervisor_user }}
+user=root
 
 [rpcinterface:supervisor]
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface

@@ -1,0 +1,47 @@
+---
+- name: Install gunicorn packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: "{{ gunicorn_install_packages }}"
+  environment:
+    PATH: "{{ gunicorn_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: gunicorn_install_packages|length > 0
+
+- name: Create gunicorn conf directory.
+  file: >
+    path="{{ gunicorn_conf_directory }}"
+    state=directory
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_group }}"
+    mode=0755
+  become: yes
+- name: Create gunicorn config file.
+  template: >
+    src=gunicorn.conf.tpl
+    dest="{{ gunicorn_conf_directory }}/{{ gunicorn_conf_file_name }}"
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_group }}"
+    mode=0644
+- name: Create gunicorn log directory.
+  file: >
+    path="{{ gunicorn_log_directory }}"
+    state=directory
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_group }}"
+    mode=0755
+  become: yes
+- name: Create gunicorn pid directory.
+  file: >
+    path="{{ gunicorn_pid_directory }}"
+    state=directory
+    owner="{{ gunicorn_user }}"
+    group="{{ gunicorn_group }}"
+    mode=0755
+  become: yes
+
+- name: Reload supervisord service.
+  service: >
+    name=supervisord
+    state=reloaded
+  when: ansible_system == 'Linux'

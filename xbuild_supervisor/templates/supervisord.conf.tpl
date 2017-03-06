@@ -11,7 +11,7 @@ pidfile={{ xbuild_supervisor_pid_directory }}/{{ xbuild_supervisor_pid_file_name
 nodaemon={{ xbuild_supervisor_nodaemon }}
 minfds={{ xbuild_supervisor_minfds }}
 minprocs={{ xbuild_supervisor_minprocs }}
-user={{ xbuild_supervisor_user }}
+user=root
 
 [rpcinterface:supervisor]
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface

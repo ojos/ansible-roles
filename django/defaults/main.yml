@@ -1,6 +1,6 @@
 ---
-  django_user: "{{ xbuild_gunicorn_user }}"
-  django_group: "{{ xbuild_gunicorn_group }}"
+  django_user: "{{ gunicorn_user }}"
+  django_group: "{{ gunicorn_group }}"
   django_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   django_repository: ""
   django_directory: "{{ project_directory }}"

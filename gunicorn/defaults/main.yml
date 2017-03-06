@@ -1,0 +1,49 @@
+---
+  gunicorn_python_bin_directory: "{{ xbuild_supervisor_python_install_directory }}/bin"
+  gunicorn_install_packages:
+    - 'gunicorn'
+    - 'meinheld'
+  gunicorn_user: "{{ xbuild_supervisor_user }}"
+  gunicorn_group: "{{ xbuild_supervisor_group }}"
+  gunicorn_conf_directory: "{{ project_directory }}/etc/gunicorn"
+  gunicorn_conf_file_name: gunicorn.conf.py
+  gunicorn_log_directory: "{{ project_directory }}/log/gunicorn"
+  gunicorn_pid_directory: "{{ project_directory }}/run/gunicorn"
+  gunicorn_pid_file: gunicorn.pid
+  gunicorn_bind: 0.0.0.0:8000
+  gunicorn_backlog: 2048
+  gunicorn_workers: "multiprocessing.cpu_count() * 2 + 1"
+  gunicorn_worker_class: "egg:meinheld#gunicorn_worker"
+  gunicorn_threads: 1
+  gunicorn_worker_connections: 1000
+  gunicorn_max_requests: 0
+  gunicorn_max_requests_jitter: 0
+  gunicorn_timeout: 30
+  gunicorn_graceful_timeout: 60
+  gunicorn_keepalive: 1
+  gunicorn_limit_request_line: 4094
+  gunicorn_limit_request_fields: 100
+  gunicorn_limit_request_field_size: 8190
+  gunicorn_debug: False
+  gunicorn_reload: False
+  gunicorn_spew: False
+  gunicorn_check_config: False
+  gunicorn_preload_app: False
+  gunicorn_daemon: False
+  gunicorn_raw_env: "[]"
+  gunicorn_worker_tmp_directory: None
+  gunicorn_umask: 0
+  gunicorn_tmp_upload_directory: None
+  gunicorn_secure_scheme_headers: "{'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}"
+  gunicorn_accesslog: access.log
+  gunicorn_access_log_format: '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
+  gunicorn_errorlog: error.log
+  gunicorn_loglevel: info
+  gunicorn_logger_class: gunicorn.glogging.Logger
+  gunicorn_logconfig: None
+  gunicorn_syslog_addr: udp://localhost:514
+  gunicorn_syslog: False
+  gunicorn_syslog_prefix: None
+  gunicorn_syslog_facility: user
+  gunicorn_enable_stdio_inheritance: False
+  gunicorn_proc_name: gunicorn

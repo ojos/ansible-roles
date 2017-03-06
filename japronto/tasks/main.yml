@@ -1,0 +1,83 @@
+---
+- name: user list.
+  shell: >
+    cut -d: -f1 /etc/passwd
+  register: user_list
+  changed_when: false
+  check_mode: no
+  when: ansible_os_family != 'Darwin'
+- name: Create japronto user.
+  user: >
+    name="{{ japronto_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ supervisor_conf_directory }}"
+    createhome=no
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(japronto_user) < 1
+  become: yes
+
+- name: Install/Upgrade dependent packages(RedHat).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ openresty_dependent_packages }}"
+  when: ansible_os_family == 'RedHat' and openresty_dependent_packages|length > 0
+  become: yes
+
+- name: Install/Upgrade dependent packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ openresty_dependent_packages }}"
+  when: ansible_os_family == 'Darwin' and openresty_dependent_packages|length > 0
+
+- name: Install japronto packages.
+  pip: >
+    name={{ item }}
+    state=latest
+  with_items: "{{ japronto_install_packages }}"
+  environment:
+    PATH: "{{ japronto_python_bin_directory }}:{{ ansible_env.PATH }}"
+  when: japronto_install_packages|length > 0
+
+- name: Clone app directory.
+  git: >
+    repo="{{ japronto_repository }}"
+    dest="{{ japronto_directory }}/{{ japronto_app }}"
+    update=yes
+    force=yes
+    accept_hostkey=yes
+  when: japronto_repository != ''
+
+- name: App Directory.
+  stat: >
+    path="{{ japronto_directory }}/{{ japronto_app }}"
+  register: japronto_app_dir
+  changed_when: no
+  check_mode: no
+- name: Create app directory.
+  file: >
+    path="{{ japronto_app_dir.stdout }}"
+    state=directory
+    owner="{{ japronto_user }}"
+    group="{{ japronto_group }}"
+    mode=0755
+  when: not japronto_app_dir.stat.exists
+  become: yes
+- name: Copy sample file.
+  copy: >
+    src=app.py
+    dest="{{ japronto_app_dir }}/{{ japronto_app_file_name }}"
+    owner="{{ japronto_user }}"
+    group="{{ japronto_group }}"
+    mode=0755
+  when: not japronto_app_dir.stat.exists
+
+- name: Create supervisord process conf file.
+  template: >
+    src=supervisord.conf.tpl
+    dest={{ supervisor_include_conf_directory }}/japronto.conf
+    owner="{{ japronto_user }}"
+    group="{{ japronto_group }}"
+    mode=0644
+  become: yes
