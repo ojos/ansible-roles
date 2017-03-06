@@ -35,8 +35,8 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ japronto_python_bin_directory }}/pip
   with_items: "{{ japronto_install_packages }}"
-  executable: "{{ japronto_python_bin_directory }}/pip"
   when: japronto_install_packages|length > 0
 
 - name: Clone app directory.
