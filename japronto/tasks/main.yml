@@ -54,15 +54,15 @@
   register: japronto_app_dir
   changed_when: no
   check_mode: no
-# - name: Create app directory.
-#   file: >
-#     path="{{ japronto_directory }}/{{ japronto_app }}"
-#     state=directory
-#     owner="{{ japronto_user }}"
-#     group="{{ japronto_group }}"
-#     mode=0755
-#   when: not japronto_app_dir.stat.exists
-#   become: yes
+- name: Create app directory.
+  file: >
+    path="{{ japronto_directory }}/{{ japronto_app }}"
+    state=directory
+    owner="{{ japronto_user }}"
+    group="{{ japronto_group }}"
+    mode=0755
+  when: not japronto_app_dir.stat.exists
+  become: yes
 - name: Copy sample file.
   copy: >
     src=app.py
