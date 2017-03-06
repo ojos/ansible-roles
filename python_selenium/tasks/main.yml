@@ -2,12 +2,10 @@
   pip: >
     name=selenium
     state=latest
-  environment:
-    PATH: "{{ python_selenium_bin_directory }}:{{ ansible_env.PATH }}"
+    executable={{ python_selenium_bin_directory }}/pip
 
 - name: Install xvfbwrapper.
   pip: >
     name=xvfbwrapper
     state=latest
-  environment:
-    PATH: "{{ python_selenium_bin_directory }}:{{ ansible_env.PATH }}"
+    executable={{ python_selenium_bin_directory }}/pip

@@ -12,16 +12,15 @@
     state={{ item.state | default('present') }}
   with_items: "{{ kcl_python_dependent_packages }}"
   when: ansible_os_family == 'Darwin' and kcl_python_dependent_packages|length > 0
-  environment: 
+  environment:
     HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
 
 - name: Install Kcl/Py packages.
   pip: >
     name={{ item }}
     state=latest
+    executable={{ kcl_python_bin_directory }}/pip
   with_items: "{{ kcl_python_install_packages }}"
-  environment:
-    PATH: "{{ kcl_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: kcl_python_install_packages|length > 0
 
 - name: Create Kcl/Py log directory.
@@ -62,15 +61,15 @@
 
 - name: java binary.
   shell: >
-    which java 
-  register: java_path  
-  changed_when: false  
+    which java
+  register: java_path
+  changed_when: false
   check_mode: no
 - name: Print start-up command.
   shell: >
     amazon_kclpy_helper.py --print_command --java {{ java_path.stdout }} --properties {{ kcl_python_conf_directory }}/{{ kcl_python_properties_file_name }}
-  register: startup_command  
-  changed_when: false  
+  register: startup_command
+  changed_when: false
   check_mode: no
   environment:
     PATH: "{{ kcl_python_bin_directory }}:{{ ansible_env.PATH }}"

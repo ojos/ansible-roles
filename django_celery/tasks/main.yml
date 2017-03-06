@@ -3,9 +3,8 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ django_celery_python_bin_directory }}/pip
   with_items: "{{ django_celery_install_packages }}"
-  environment:
-    PATH: "{{ django_celery_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: django_celery_install_packages|length > 0
 
 - name: Create celery log directory.

@@ -3,9 +3,8 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ celery_python_bin_directory }}/pip
   with_items: "{{ celery_install_packages }}"
-  environment:
-    PATH: "{{ celery_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: celery_install_packages|length > 0
 
 - name: Create celery conf directory.

@@ -3,9 +3,8 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ gunicorn_python_bin_directory }}/pip
   with_items: "{{ gunicorn_install_packages }}"
-  environment:
-    PATH: "{{ gunicorn_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: gunicorn_install_packages|length > 0
 
 - name: Create gunicorn conf directory.

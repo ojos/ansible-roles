@@ -3,9 +3,8 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ xbuild_supervisor_python_bin_directory }}/pip
   with_items: "{{ xbuild_supervisor_install_packages }}"
-  environment:
-    PATH: "{{ xbuild_supervisor_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: xbuild_supervisor_install_packages|length > 0
 
 - name: Create supervisord conf and sub directory.

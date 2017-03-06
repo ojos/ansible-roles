@@ -3,8 +3,7 @@
   pip: >
     name=invoke
     state=present
-  environment:
-    PATH: "{{ invoke_python_bin_directory }}:{{ ansible_env.PATH }}"
+    executable={{ invoke_python_bin_directory }}/pip
 
 - name: Copy tasks.py.
   copy: >

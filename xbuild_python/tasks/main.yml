@@ -31,10 +31,9 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ xbuild_python_install_directory }}/bin/pip
   with_items: "{{ xbuild_python_packages }}"
   when: xbuild_python_packages|length > 0
-  environment:
-    PATH: "{{ xbuild_python_install_directory }}/bin:{{ ansible_env.PATH }}"
   become: yes
 
 - name: Change python directory owner.

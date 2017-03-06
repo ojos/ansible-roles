@@ -11,9 +11,8 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ locust_python_bin_directory }}/pip
   with_items: "{{ locust_install_packages }}"
-  environment:
-    PATH: "{{ locust_python_bin_directory }}:{{ ansible_env.PATH }}"
   when: locust_install_packages|length > 0
 
 - name: Create locust directory.

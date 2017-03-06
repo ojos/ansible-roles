@@ -56,7 +56,7 @@
   check_mode: no
 - name: Create app directory.
   file: >
-    path="{{ japronto_app_dir.stdout }}"
+    path="{{ japronto_directory }}/{{ japronto_app }}"
     state=directory
     owner="{{ japronto_user }}"
     group="{{ japronto_group }}"

@@ -3,5 +3,6 @@
   pip: >
     name=mecab-python3
     state=latest
+    executable={{ mecab_python_bin_directory }}/pip
   environment:
-    PATH: "{{ mecab_python_bin_directory }}:{{ mecab_bin_directory }}:{{ ansible_env.PATH }}"
+    PATH: "{{ mecab_bin_directory }}:{{ ansible_env.PATH }}"
