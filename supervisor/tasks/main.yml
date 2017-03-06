@@ -20,6 +20,8 @@
   pip: >
     name=supervisor
     state=latest
+  environment:
+    PATH: "{{ ansible_env.PATH }}"
   become: yes
 
 - name: Create supervisord conf directory.
