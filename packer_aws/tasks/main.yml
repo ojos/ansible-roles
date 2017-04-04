@@ -4,7 +4,7 @@
     path="{{ packer_aws_ansible_local_file }}"
   register: ansible_local_file
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Copy ansible json.
   copy: >
     src=ansible_local.json
@@ -20,7 +20,7 @@
     path="{{ packer_aws_ansible_file }}"
   register: ansible_file
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Copy ansible json.
   copy: >
     src=ansible.json
@@ -36,7 +36,7 @@
     path="{{ packer_aws_user_data_file }}"
   register: user_data_file
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Copy user data file.
   copy: >
     src=user_data.txt

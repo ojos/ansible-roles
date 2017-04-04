@@ -23,7 +23,7 @@
     path={{ keygen_key_directory }}/ssh_config
   register: ssh_config
   changed_when: no
-  check_mode: no
+  always_run: yes
   when: keygen_environments|length > 0
 - name: Touch ssh_config.
   file: >

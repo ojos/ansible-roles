@@ -17,7 +17,7 @@
     ls /etc/yum.repos.d
   register: repo_list
   changed_when: false
-  check_mode: no
+  always_run: yes
 - name: Install Remi repository.
   yum: >
     name="{{ yum_repos_remi_rpm_url }}"

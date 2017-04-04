@@ -36,7 +36,7 @@
     ls {{ vagrant_aws_terraform_directory }}
   register: terraform_vagrant_directory
   changed_when: false
-  check_mode: no
+  always_run: yes
 
 - name: Copy ec2.tf.
   copy: >
@@ -50,7 +50,7 @@
     path="{{ vagrant_aws_terraform_directory }}/vpc_security_group.tf"
   register: vpc_security_group_tf
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Replace vpc_id in vpc_security_group.tf.
   lineinfile: >
     dest={{ vagrant_aws_terraform_directory }}/vpc_security_group.tf

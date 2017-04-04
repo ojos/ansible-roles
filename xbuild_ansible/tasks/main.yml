@@ -33,7 +33,7 @@
     path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}"
   register: buildout
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Create buildout playbook.
   template: >
     src=buildout.tpl
@@ -47,7 +47,7 @@
     path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_deploy_playbook_file_name }}"
   register: deploy_playbook
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Create deploy playbook.
   template: >
     src=deploy.tpl
@@ -61,7 +61,7 @@
     path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_restart_playbook_file_name }}"
   register: restart_playbook
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Create restart playbook.
   copy: >
     src=restart.yml

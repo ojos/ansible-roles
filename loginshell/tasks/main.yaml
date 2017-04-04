@@ -4,7 +4,7 @@
     echo $SHELL
   register: res
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Change login shell to {{ loginshell_bin_file }}.
   command: >
     chsh -s {{ loginshell_bin_file }}

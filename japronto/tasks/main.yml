@@ -4,7 +4,7 @@
     cut -d: -f1 /etc/passwd
   register: user_list
   changed_when: false
-  check_mode: no
+  always_run: yes
   when: ansible_os_family != 'Darwin'
 - name: Create japronto user.
   user: >
@@ -53,7 +53,7 @@
     path="{{ japronto_directory }}/{{ japronto_app }}"
   register: japronto_app_dir
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Create app directory.
   file: >
     path="{{ japronto_directory }}/{{ japronto_app }}"
@@ -69,7 +69,7 @@
     path="{{ japronto_directory }}/{{ japronto_app }}/{{ japronto_app_file_name }}"
   register: japronto_app_file
   changed_when: no
-  check_mode: no
+  always_run: yes
 - name: Copy sample file.
   copy: >
     src=app.py
