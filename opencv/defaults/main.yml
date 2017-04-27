@@ -5,7 +5,6 @@
   opencv_work_directory: "{{ project_directory }}/work"
   opencv_dependent_packages:
     - cmake
-  opencv_cmake_bin_file: /usr/bin/cmake
   opencv_prefix: "{{ project_directory }}/opencv"
   opencv_source_url: "https://github.com/opencv/opencv/archive/{{ opencv_version }}.tar.gz"
   opencv_environment_variables:

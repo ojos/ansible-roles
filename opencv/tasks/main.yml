@@ -48,280 +48,37 @@
     mode=0755
   become: yes
 
+- name: Cmake, Make and Install.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ opencv_work_directory }}/opencv-{{ opencv_version }}"
+  with_items:
+    - "cmake -DCMAKE_INSTALL_PREFIX={{ opencv_prefix }} -DCMAKE_BUILD_TYPE=RELEASE -DWITH_TBB=ON"
+    - make
+    - make install
+  become: yes
 
+- name: Remove work directory.
+  file: >
+    path="{{ opencv_work_directory }}"
+    state=absent
+  become: yes
 
+- name: Change opencv directory owner.
+  file: >
+    path="{{ opencv_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ opencv_user }}"
+    group="{{ opencv_group }}"
+  become: yes
 
-
-
-# - name: Clone yasm repository.
-#   git: >
-#     repo={{ opencv_yasm_repository }}
-#     dest={{ opencv_work_directory }}/yasm
-#     update=yes
-#     accept_hostkey=yes
-#     force=yes
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install yasm.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ opencv_work_directory }}/yasm"
-#   with_items:
-#     - autoreconf -fiv
-#     - "./configure --prefix='{{ opencv_prefix }}'"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Clone libx264 repository.
-#   git: >
-#     repo={{ opencv_libx264_repository }}
-#     dest={{ opencv_work_directory }}/libx264
-#     update=yes
-#     accept_hostkey=yes
-#     force=yes
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install libx264.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ opencv_work_directory }}/libx264"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#   with_items:
-#     - "./configure --prefix='{{ opencv_prefix }}' --enable-static"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Clone libfdk_aac repository.
-#   git: >
-#     repo={{ opencv_libfdk_aac_repository }}
-#     dest={{ opencv_work_directory }}/libfdk_aac
-#     update=yes
-#     accept_hostkey=yes
-#     force=yes
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install libfdk_aac.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ opencv_work_directory }}/libfdk_aac"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#   with_items:
-#     - autoreconf -fiv
-#     - "./configure --prefix='{{ opencv_prefix }}' --disable-shared"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Extract libmp3lame source.
-#   unarchive: >
-#     src="{{ opencv_libmp3lame_source_url }}"
-#     dest="{{ opencv_work_directory }}"
-#     copy=no
-#   when: ansible_os_family == 'RedHat'
-
-# - name: libmp3lame source Directory.
-#   shell: >
-#     echo $(cd $(find . -maxdepth 1 -type d | grep ./lame) && pwd)
-#   args:
-#     chdir: "{{ opencv_work_directory }}"
-#   register: libmp3lame_dir
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install libmp3lame.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ libmp3lame_dir.stdout }}"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#   with_items:
-#     - "./configure --prefix='{{ opencv_prefix }}' --disable-shared --enable-nasm"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Clone libopus repository.
-#   git: >
-#     repo={{ opencv_libopus_repository }}
-#     dest={{ opencv_work_directory }}/opus
-#     update=yes
-#     accept_hostkey=yes
-#     force=yes
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install libopus.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ opencv_work_directory }}/opus"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#   with_items:
-#     - autoreconf -fiv
-#     - "./configure --prefix='{{ opencv_prefix }}' --disable-shared"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Extract libogg source.
-#   unarchive: >
-#     src="{{ opencv_libogg_source_url }}"
-#     dest="{{ opencv_work_directory }}"
-#     copy=no
-#   when: ansible_os_family == 'RedHat'
-
-# - name: libogg source Directory.
-#   shell: >
-#     echo $(cd $(find . -maxdepth 1 -type d | grep ./libogg) && pwd)
-#   args:
-#     chdir: "{{ opencv_work_directory }}"
-#   register: libogg_dir
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install libogg.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ libogg_dir.stdout }}"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#   with_items:
-#     - "./configure --prefix='{{ opencv_prefix }}' --disable-shared"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Extract libvorbis source.
-#   unarchive: >
-#     src="{{ opencv_libvorbis_source_url }}"
-#     dest="{{ opencv_work_directory }}"
-#     copy=no
-#   when: ansible_os_family == 'RedHat'
-
-# - name: libvorbis source Directory.
-#   shell: >
-#     echo $(cd $(find . -maxdepth 1 -type d | grep ./libvorbis) && pwd)
-#   args:
-#     chdir: "{{ opencv_work_directory }}"
-#   register: libvorbis_dir
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install libvorbis.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ libvorbis_dir.stdout }}"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#   with_items:
-#     - "./configure --prefix='{{ opencv_prefix }}' --with-ogg='{{ opencv_prefix }}' --disable-shared"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Clone libvpx repository.
-#   git: >
-#     repo={{ opencv_libvpx_repository }}
-#     dest={{ opencv_work_directory }}/libvpx
-#     update=yes
-#     accept_hostkey=yes
-#     force=yes
-#   when: ansible_os_family == 'RedHat'
-
-# - name: Configure, Make and Install libvpx.
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ opencv_work_directory }}/libvpx"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#   with_items:
-#     - "./configure --prefix='{{ opencv_prefix }}' --disable-examples"
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-
-
-# - name: Clone opencv repository.
-#   git: >
-#     repo={{ opencv_repository }}
-#     dest={{ opencv_work_directory }}/opencv
-#     update=yes
-#     accept_hostkey=yes
-#     force=yes
-#     version={{ opencv_branch_name }}
-
-# - name: Configure, Make and Install opencv(RedHat).
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ opencv_work_directory }}/opencv"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#     PKG_CONFIG_PATH: "{{ opencv_prefix }}/lib/pkgconfig"
-#   with_items:
-#     - >-
-#       ./configure --prefix='{{ opencv_prefix }}'
-#       --extra-cflags='-I{{ opencv_prefix }}/include'
-#       --extra-ldflags='-L{{ opencv_prefix }}/lib'
-#       --enable-gpl
-#       --enable-nonfree
-#       --enable-libfdk_aac
-#       --enable-libmp3lame
-#       --enable-libopus
-#       --enable-libvorbis
-#       --enable-libvpx
-#       --enable-libx264
-#       --enable-openssl
-#     - make
-#     - make install
-#   when: ansible_os_family == 'RedHat'
-# - name: Configure, Make and Install opencv(Darwin).
-#   shell: "{{ item }}"
-#   args:
-#     chdir: "{{ opencv_work_directory }}/opencv"
-#   environment:
-#     PATH: "{{ opencv_prefix }}/bin:{{ ansible_env.PATH }}"
-#     PKG_CONFIG_PATH: "{{ opencv_prefix }}/lib/pkgconfig"
-#   with_items:
-#     - >-
-#       CPPFLAGS="{{ opencv_configure_cppflags }}"
-#       LDFLAGS="{{ opencv_configure_ldflags }}"
-#       ./configure --prefix='{{ opencv_prefix }}'
-#       --extra-cflags='-I{{ opencv_prefix }}/include'
-#       --extra-ldflags='-L{{ opencv_prefix }}/lib'
-#       --enable-gpl
-#       --enable-nonfree
-#       --enable-libfdk_aac
-#       --enable-libmp3lame
-#       --enable-libopus
-#       --enable-libvorbis
-#       --enable-libvpx
-#       --enable-libx264
-#       --enable-openssl
-#     - make
-#     - make install
-#   when: ansible_os_family == 'Darwin'
-
-# - name: Remove work directory.
-#   file: >
-#     path="{{ opencv_work_directory }}"
-#     state=absent
-#   become: yes
-
-# - name: Change opencv directory owner.
-#   file: >
-#     path="{{ opencv_prefix }}"
-#     state=directory
-#     recurse=yes
-#     owner="{{ opencv_user }}"
-#     group="{{ opencv_group }}"
-#   become: yes
-
-# - name: Insert env in .envrc.
-#   lineinfile: >
-#     dest={{ opencv_envrc_directory }}/.envrc
-#     line="{{ item.value }}"
-#     insertafter=EOF
-#     state=present
-#     regexp={{ item.regexp }}
-#   with_items: "{{ opencv_environment_variables }}"
-#   when: opencv_envrc_directory != '' and opencv_environment_variables|length > 0
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ opencv_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ opencv_environment_variables }}"
+  when: opencv_envrc_directory != '' and opencv_environment_variables|length > 0
