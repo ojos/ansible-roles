@@ -258,6 +258,7 @@
       --enable-libvpx
       --enable-libx264
       --enable-openssl
+      --enable-shared
     - make
     - make install
   when: ansible_os_family == 'RedHat'
