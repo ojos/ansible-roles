@@ -1,0 +1,314 @@
+---
+- name: user list.
+  shell: >
+    cut -d: -f1 /etc/passwd
+  register: user_list
+  changed_when: false
+  always_run: yes
+  when: ansible_os_family != 'Darwin'
+- name: Create ffmpeg user.
+  user: >
+    name="{{ ffmpeg_user }}"
+    shell=/bin/false
+    system=yes
+    home="{{ ffmpeg_prefix }}"
+    createhome=no
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(ffmpeg_user) < 1 
+  become: yes
+
+- name: Install/Upgrade dependent packages(RedHat).
+  yum: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+  with_items: "{{ ffmpeg_dependent_packages }}"
+  when: ansible_os_family == 'RedHat' and ffmpeg_dependent_packages|length > 0
+  become: yes
+- name: Install dependent packages(Darwin).
+  homebrew: >
+    name={{ item.name | default(item) }}
+    state={{ item.state | default('latest') }}
+    install_options={{ item.install_option | default('') }}
+  with_items: "{{ ffmpeg_dependent_packages }}"
+  when: ansible_os_family == 'Darwin' and ffmpeg_dependent_packages|length > 0
+
+- name: Create work directory.
+  file: >
+    path="{{ ffmpeg_work_directory }}"
+    state=directory
+    owner="{{ ffmpeg_user }}"
+    group="{{ ffmpeg_group }}"
+    mode=0755
+  become: yes
+
+- name: Clone yasm repository.
+  git: >
+    repo={{ ffmpeg_yasm_repository }}
+    dest={{ ffmpeg_work_directory }}/yasm
+    update=yes
+    accept_hostkey=yes
+    force=yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install yasm.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/yasm"
+  with_items:
+    - autoreconf -fiv
+    - "./configure --prefix='{{ ffmpeg_prefix }}'"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+- name: Clone libx264 repository.
+  git: >
+    repo={{ ffmpeg_libx264_repository }}
+    dest={{ ffmpeg_work_directory }}/libx264
+    update=yes
+    accept_hostkey=yes
+    force=yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install libx264.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/libx264"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - "./configure --prefix='{{ ffmpeg_prefix }}' --enable-static"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+- name: Clone libfdk_aac repository.
+  git: >
+    repo={{ ffmpeg_libfdk_aac_repository }}
+    dest={{ ffmpeg_work_directory }}/libfdk_aac
+    update=yes
+    accept_hostkey=yes
+    force=yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install libfdk_aac.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/libfdk_aac"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - autoreconf -fiv
+    - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+- name: Extract libmp3lame source.
+  unarchive: >
+    src="{{ ffmpeg_libmp3lame_source_url }}"
+    dest="{{ ffmpeg_work_directory }}"
+    copy=no
+  when: ansible_os_family == 'RedHat'
+
+- name: libmp3lame source Directory.
+  shell: >
+    echo $(cd $(find . -maxdepth 1 -type d | grep ./lame) && pwd)
+  args:
+    chdir: "{{ ffmpeg_work_directory }}"
+  register: libmp3lame_dir
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install libmp3lame.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ libmp3lame_dir.stdout }}"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared --enable-nasm"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+- name: Clone libopus repository.
+  git: >
+    repo={{ ffmpeg_libopus_repository }}
+    dest={{ ffmpeg_work_directory }}/opus
+    update=yes
+    accept_hostkey=yes
+    force=yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install libopus.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/opus"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - autoreconf -fiv
+    - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+- name: Extract libogg source.
+  unarchive: >
+    src="{{ ffmpeg_libogg_source_url }}"
+    dest="{{ ffmpeg_work_directory }}"
+    copy=no
+  when: ansible_os_family == 'RedHat'
+
+- name: libogg source Directory.
+  shell: >
+    echo $(cd $(find . -maxdepth 1 -type d | grep ./libogg) && pwd)
+  args:
+    chdir: "{{ ffmpeg_work_directory }}"
+  register: libogg_dir
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install libogg.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ libogg_dir.stdout }}"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+- name: Extract libvorbis source.
+  unarchive: >
+    src="{{ ffmpeg_libvorbis_source_url }}"
+    dest="{{ ffmpeg_work_directory }}"
+    copy=no
+  when: ansible_os_family == 'RedHat'
+
+- name: libvorbis source Directory.
+  shell: >
+    echo $(cd $(find . -maxdepth 1 -type d | grep ./libvorbis) && pwd)
+  args:
+    chdir: "{{ ffmpeg_work_directory }}"
+  register: libvorbis_dir
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install libvorbis.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ libvorbis_dir.stdout }}"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - "./configure --prefix='{{ ffmpeg_prefix }}' --with-ogg='{{ ffmpeg_prefix }}' --disable-shared"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+- name: Clone libvpx repository.
+  git: >
+    repo={{ ffmpeg_libvpx_repository }}
+    dest={{ ffmpeg_work_directory }}/libvpx
+    update=yes
+    accept_hostkey=yes
+    force=yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Configure, Make and Install libvpx.
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/libvpx"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+  with_items:
+    - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-examples"
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+
+
+- name: Clone ffmpeg repository.
+  git: >
+    repo={{ ffmpeg_repository }}
+    dest={{ ffmpeg_work_directory }}/ffmpeg
+    update=yes
+    accept_hostkey=yes
+    force=yes
+    version={{ ffmpeg_branch_name }}
+
+- name: Configure, Make and Install ffmpeg(RedHat).
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/ffmpeg"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+    PKG_CONFIG_PATH: "{{ ffmpeg_prefix }}/lib/pkgconfig"
+  with_items:
+    - >-
+      ./configure --prefix='{{ ffmpeg_prefix }}'
+      --extra-cflags='-I{{ ffmpeg_prefix }}/include'
+      --extra-ldflags='-L{{ ffmpeg_prefix }}/lib'
+      --enable-gpl
+      --enable-nonfree
+      --enable-libfdk_aac
+      --enable-libmp3lame
+      --enable-libopus
+      --enable-libvorbis
+      --enable-libvpx
+      --enable-libx264
+      --enable-openssl
+    - make
+    - make install
+  when: ansible_os_family == 'RedHat'
+- name: Configure, Make and Install ffmpeg(Darwin).
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ ffmpeg_work_directory }}/ffmpeg"
+  environment:
+    PATH: "{{ ffmpeg_prefix }}/bin:{{ ansible_env.PATH }}"
+    PKG_CONFIG_PATH: "{{ ffmpeg_prefix }}/lib/pkgconfig"
+  with_items:
+    - >-
+      CPPFLAGS="{{ ffmpeg_configure_cppflags }}"
+      LDFLAGS="{{ ffmpeg_configure_ldflags }}"
+      ./configure --prefix='{{ ffmpeg_prefix }}'
+      --extra-cflags='-I{{ ffmpeg_prefix }}/include'
+      --extra-ldflags='-L{{ ffmpeg_prefix }}/lib'
+      --enable-gpl
+      --enable-nonfree
+      --enable-libfdk_aac
+      --enable-libmp3lame
+      --enable-libopus
+      --enable-libvorbis
+      --enable-libvpx
+      --enable-libx264
+      --enable-openssl
+    - make
+    - make install
+  when: ansible_os_family == 'Darwin'
+
+- name: Remove work directory.
+  file: >
+    path="{{ ffmpeg_work_directory }}"
+    state=absent
+  become: yes
+
+- name: Change ffmpeg directory owner.
+  file: >
+    path="{{ ffmpeg_prefix }}"
+    state=directory
+    recurse=yes
+    owner="{{ ffmpeg_user }}"
+    group="{{ ffmpeg_group }}"
+  become: yes
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ ffmpeg_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ ffmpeg_environment_variables }}"
+  when: ffmpeg_envrc_directory != '' and ffmpeg_environment_variables|length > 0

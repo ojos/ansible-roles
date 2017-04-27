@@ -1,7 +1,7 @@
 ---
   mecab_user: "{{ project_user }}"
   mecab_group: "{{ project_group }}"
-  mecab_dependent_packages: 
+  mecab_dependent_packages:
     - automake
   mecab_prefix: "{{ project_directory }}/mecab"
   mecab_work_directory: "{{ project_directory }}/work"

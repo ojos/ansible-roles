@@ -13,7 +13,7 @@
     system=yes
     home="{{ mecab_prefix }}"
     createhome=no
-  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(mecab_user) < 1 
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(mecab_user) < 1
   become: yes
 
 - name: Install/Upgrade dependent packages(RedHat).
@@ -49,7 +49,7 @@
     force=yes
 
 - name: Configure, Make and Install mecab.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ mecab_work_directory }}/mecab/mecab"
   with_items:
@@ -58,7 +58,7 @@
     - make install
 
 - name: Configure, Make and Install mecab-ipadic.
-  shell: "{{ item }}" 
+  shell: "{{ item }}"
   args:
     chdir: "{{ mecab_work_directory }}/mecab/mecab-ipadic"
   environment:
@@ -80,10 +80,18 @@
 
 - name: Configure, Make and Install mecab ipadic neologd.
   shell: >
-    {{ mecab_work_directory }}/mecab_ipadic_neologd/bin/install-mecab-ipadic-neologd -n
+    {{ mecab_work_directory }}/mecab_ipadic_neologd/bin/install-mecab-ipadic-neologd -a -n -y
   environment:
     PATH: "{{ mecab_prefix }}/bin:{{ ansible_env.PATH }}"
   when: mecab_ipadic_neologd_install
+
+- name: Replace dicdir path of mecabrc.
+  replace: >
+    dest={{ mecab_prefix }}/etc/mecabrc
+    regexp='dic/ipadic'
+    replace="dic/mecab-ipadic-neologd"
+  when: mecab_ipadic_neologd_install
+
 
 - name: Remove work directory.
   file: >
