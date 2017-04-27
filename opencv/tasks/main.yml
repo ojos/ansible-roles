@@ -42,8 +42,8 @@
 
 - name: Extract Source code.
   unarchive: >
-    src={{ chrome_driver_url }}
-    dest={{ chrome_driver_bin_directory }}
+    src={{ opencv_source_url }}
+    dest={{ opencv_work_directory }}
     copy=no
     mode=0755
   become: yes
