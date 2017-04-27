@@ -29,7 +29,7 @@
     path="{{ django_directory }}/{{ django_project }}"
   register: django_project_dir
   changed_when: no
-  always_run: yes
+  check_mode: no
 - name: Create project directory(custom template).
   command: >
     django-admin startproject --template={{ django_project_template_repository }} {{ django_project }}
@@ -74,7 +74,7 @@
     path="{{ django_directory }}/{{ django_project }}/{{ django_app }}"
   register: django_app_dir
   changed_when: no
-  always_run: yes
+  check_mode: no
 - name: Create app directory(custom template).
   command: >
     python manage.py startapp --template={{ django_app_template_repository }} {{ django_app }}

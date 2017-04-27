@@ -4,7 +4,7 @@
     cut -d: -f1 /etc/passwd
   register: user_list
   changed_when: false
-  always_run: yes
+  check_mode: no
   when: ansible_os_family != 'Darwin'
 - name: Create nginx user.
   user: >
@@ -139,7 +139,7 @@
     path="{{ nginx_home_dir.stdout }}/conf/conf.d"
   register: nginx_sub_conf_dir
   changed_when: no
-  always_run: yes
+  check_mode: no
 - name: Create nginx configure sub directory.
   file: >
     path="{{ nginx_home_dir.stdout }}/conf/conf.d"
@@ -214,7 +214,7 @@
     path="{{ nginx_home_dir.stdout }}/lua"
   register: nginx_lua_dir
   changed_when: no
-  always_run: yes
+  check_mode: no
 - name: Create lua directory.
   file: >
     path="{{ nginx_home_dir.stdout }}/lua"
@@ -237,7 +237,7 @@
     grep nameserver /etc/resolv.conf | awk '{print $2}'
   register: resolver
   changed_when: false  
-  always_run: yes
+  check_mode: no
   when: ansible_distribution == 'Amazon'
 - name: Replace nginx http server resolver.
   replace: >

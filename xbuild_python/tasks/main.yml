@@ -19,7 +19,7 @@
     path={{ xbuild_python_install_directory }}
   register: python_directory
   changed_when: no
-  always_run: yes
+  check_mode: no
 - name: Install python in xbuild.
   command: >
     {{ xbuild_install_directory }}/python-install {{ xbuild_python_version }}

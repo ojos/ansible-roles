@@ -13,7 +13,7 @@
     path={{ ansible_user_dir }}/.zshrc
   register: zshrc
   changed_when: no
-  always_run: yes
+  check_mode: no
 
 - name: Copy bootstrap.
   template: >
