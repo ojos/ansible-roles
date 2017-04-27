@@ -7,6 +7,7 @@
     - cmake
   opencv_prefix: "{{ project_directory }}/opencv"
   opencv_source_url: "https://github.com/opencv/opencv/archive/{{ opencv_version }}.tar.gz"
+  opencv_envrc_directory: "{{ direnv_envrc_directory }}"
   opencv_environment_variables:
     - value: "# opencv"
       regexp: "^# opencv$"
