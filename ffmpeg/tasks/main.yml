@@ -258,6 +258,7 @@
       --enable-libvpx
       --enable-libx264
       --enable-openssl
+      --enable-avresample
     - make
     - make install
   when: ansible_os_family == 'RedHat'
@@ -284,6 +285,7 @@
       --enable-libvpx
       --enable-libx264
       --enable-openssl
+      --enable-avresample
     - make
     - make install
   when: ansible_os_family == 'Darwin'
