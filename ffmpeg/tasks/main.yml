@@ -286,15 +286,16 @@
       --enable-libx264
       --enable-openssl
       --enable-avresample
+      --enable-shared
     - make
     - make install
   when: ansible_os_family == 'Darwin'
 
-# - name: Remove work directory.
-#   file: >
-#     path="{{ ffmpeg_work_directory }}"
-#     state=absent
-#   become: yes
+- name: Remove work directory.
+  file: >
+    path="{{ ffmpeg_work_directory }}"
+    state=absent
+  become: yes
 
 - name: Change ffmpeg directory owner.
   file: >
