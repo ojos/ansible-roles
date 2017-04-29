@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - { role: devtools }
-  - { role: direnv }
+  - { role: xbuild_python }
+  - { role: ffmpeg }

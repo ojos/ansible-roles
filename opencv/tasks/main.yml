@@ -13,7 +13,7 @@
     system=yes
     home="{{ opencv_prefix }}"
     createhome=no
-  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(opencv_user) < 1 
+  when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(opencv_user) < 1
   become: yes
 
 - name: Install/Upgrade dependent packages(RedHat).
@@ -48,12 +48,33 @@
     mode=0755
   become: yes
 
+- name: Extract Contrib Source code.
+  unarchive: >
+    src={{ opencv_contrib_source_url }}
+    dest={{ opencv_work_directory }}
+    copy=no
+    mode=0755
+  become: yes
+
 - name: Cmake, Make and Install.
   shell: "{{ item }}"
   args:
     chdir: "{{ opencv_work_directory }}/opencv-{{ opencv_version }}"
   with_items:
-    - "cmake -DCMAKE_INSTALL_PREFIX={{ opencv_prefix }} -DCMAKE_BUILD_TYPE=RELEASE -DWITH_TBB=ON"
+    - >-
+      LD_LIBRARY_PATH={{ opencv_ffmpeg_prefix }}/lib/
+      PKG_CONFIG_PATH=$PKG_CONFIG_PATH:{{ opencv_ffmpeg_prefix }}/lib/pkgconfig
+      PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR:{{ opencv_ffmpeg_prefix }}/lib
+      cmake
+      -DCMAKE_INSTALL_PREFIX={{ opencv_prefix }}
+      -DCMAKE_BUILD_TYPE=RELEASE
+      -DOPENCV_EXTRA_EXE_LINKER_FLAGS="-Wl,-rpath,{{ opencv_ffmpeg_prefix }}/lib"
+      -DBUILD_TESTS=OFF
+      -DBUILD_EXAMPLES=ON
+      -DPYTHON_DEFAULT_EXECUTABLE={{ opencv_python_install_directory }}/bin/python
+      -DOPENCV_EXTRA_MODULES_PATH={{ opencv_work_directory }}/opencv_contrib-{{ opencv_version }}/modules
+      -DBUILD_opencv_legacy=OFF
+      {{ opencv_work_directory }}/opencv-{{ opencv_version }}
     - make
     - make install
   become: yes
