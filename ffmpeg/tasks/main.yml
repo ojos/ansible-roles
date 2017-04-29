@@ -290,11 +290,11 @@
     - make install
   when: ansible_os_family == 'Darwin'
 
-- name: Remove work directory.
-  file: >
-    path="{{ ffmpeg_work_directory }}"
-    state=absent
-  become: yes
+# - name: Remove work directory.
+#   file: >
+#     path="{{ ffmpeg_work_directory }}"
+#     state=absent
+#   become: yes
 
 - name: Change ffmpeg directory owner.
   file: >
