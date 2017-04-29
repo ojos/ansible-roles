@@ -11,7 +11,12 @@
   opencv_source_url: "https://github.com/opencv/opencv/archive/{{ opencv_version }}.tar.gz"
   opencv_contrib_source_url: "https://github.com/opencv/opencv_contrib/archive/{{ opencv_version }}.tar.gz"
   opencv_ffmpeg_prefix: "{{ ffmpeg_prefix }}"
-  opencv_python_install_directory: "{{ xbuild_python_install_directory }}"
+  opencv_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
+  opencv_python_install_packages:
+    - numpy
+    - Pillow
+    - numba
+    - opencv-python
   opencv_envrc_directory: "{{ direnv_envrc_directory }}"
   opencv_environment_variables:
     - value: "# opencv"

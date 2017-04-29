@@ -71,7 +71,7 @@
       -DOPENCV_EXTRA_EXE_LINKER_FLAGS="-Wl,-rpath,{{ opencv_ffmpeg_prefix }}/lib"
       -DBUILD_TESTS=OFF
       -DBUILD_EXAMPLES=ON
-      -DPYTHON_DEFAULT_EXECUTABLE={{ opencv_python_install_directory }}/bin/python
+      -DPYTHON_DEFAULT_EXECUTABLE={{ opencv_python_bin_directory }}/python
       -DOPENCV_EXTRA_MODULES_PATH={{ opencv_work_directory }}/opencv_contrib-{{ opencv_version }}/modules
       -DBUILD_opencv_legacy=OFF
       {{ opencv_work_directory }}/opencv-{{ opencv_version }}
@@ -93,6 +93,14 @@
     owner="{{ opencv_user }}"
     group="{{ opencv_group }}"
   become: yes
+
+- name: Install python packages.
+  pip: >
+    name={{ item }}
+    state=latest
+    executable={{ opencv_python_bin_directory }}/pip
+  with_items: "{{ opencv_python_install_packages }}"
+  when: opencv_python_install_packages|length > 0
 
 - name: Insert env in .envrc.
   lineinfile: >
