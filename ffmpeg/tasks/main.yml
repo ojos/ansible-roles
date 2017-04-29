@@ -259,6 +259,9 @@
       --enable-libx264
       --enable-openssl
       --enable-avresample
+      --enable-static
+      --disable-shared
+      --disable-debug
     - make
     - make install
   when: ansible_os_family == 'RedHat'
@@ -286,7 +289,9 @@
       --enable-libx264
       --enable-openssl
       --enable-avresample
-      --enable-shared
+      --enable-static
+      --disable-shared
+      --disable-debug
     - make
     - make install
   when: ansible_os_family == 'Darwin'
