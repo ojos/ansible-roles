@@ -1,11 +1,11 @@
 ---
-- name: direnv binary.
-  command: >
-    which direnv
-  register: direnv_bin
-  ignore_errors: yes
-  changed_when: no
-  check_mode: no
+# - name: direnv binary.
+#   command: >
+#     which direnv
+#   register: direnv_bin
+#   ignore_errors: yes
+#   changed_when: no
+#   check_mode: no
 # - name: Install direnv(Darwin).
 #   homebrew: >
 #     name=direnv
