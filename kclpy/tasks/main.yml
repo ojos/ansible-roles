@@ -12,7 +12,7 @@
     state={{ item.state | default('present') }}
   with_items: "{{ kclpy_dependent_packages }}"
   when: ansible_os_family == 'Darwin' and kclpy_dependent_packages|length > 0
-  environment: 
+  environment:
     HOMEBREW_CASK_OPTS: "{{ homebrew_cask_options }}"
 
 - name: Install kclpy packages.
@@ -78,9 +78,9 @@
 
 - name: java binary.
   shell: >
-    which java 
-  register: java_path  
-  changed_when: false  
+    which java
+  register: java_path
+  changed_when: false
   check_mode: no
 
 - name: Create supervisord process conf file.

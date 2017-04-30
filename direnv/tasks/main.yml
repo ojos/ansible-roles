@@ -1,24 +1,24 @@
 ---
-- name: direnv binary.
-  command: >
-    which direnv
-  register: direnv_bin
-  ignore_errors: yes
-  changed_when: no
-  check_mode: no
-- name: Install direnv(Darwin).
-  homebrew: >
-    name=direnv
-    state=latest
-  when: ansible_os_family == 'Darwin' and direnv_bin.rc == 1
+# - name: direnv binary.
+#   command: >
+#     which direnv
+#   register: direnv_bin
+#   ignore_errors: yes
+#   changed_when: no
+#   check_mode: no
+# - name: Install direnv(Darwin).
+#   homebrew: >
+#     name=direnv
+#     state=latest
+#   when: ansible_os_family == 'Darwin' and direnv_bin.rc == 1
 
-- name: Download direnv.
-  get_url: >
-    url="{{ direnv_download_url }}/v{{ direnv_version }}/direnv.{{ direnv_os }}-{{ direnv_arch }}"
-    dest="{{ direnv_install_directory }}/direnv"
-    mode=0775
-  when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
-  become: yes
+# - name: Download direnv.
+#   get_url: >
+#     url="{{ direnv_download_url }}/v{{ direnv_version }}/direnv.{{ direnv_os }}-{{ direnv_arch }}"
+#     dest="{{ direnv_install_directory }}/direnv"
+#     mode=0775
+#   when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
+#   become: yes
 
 - name: login shell.
   shell: >
