@@ -1,107 +1,107 @@
 ---
-# - name: direnv binary.
-#   command: >
-#     which direnv
-#   register: direnv_bin
-#   ignore_errors: yes
-#   changed_when: no
-#   check_mode: no
-# - name: Install direnv(Darwin).
-#   homebrew: >
-#     name=direnv
-#     state=latest
-#   when: ansible_os_family == 'Darwin' and direnv_bin.rc == 1
+- name: direnv binary.
+  command: >
+    which direnv
+  register: direnv_bin
+  ignore_errors: yes
+  changed_when: no
+  check_mode: no
+- name: Install direnv(Darwin).
+  homebrew: >
+    name=direnv
+    state=latest
+  when: ansible_os_family == 'Darwin' and direnv_bin.rc == 1
 
-# - name: Download direnv.
-#   get_url: >
-#     url="{{ direnv_download_url }}/v{{ direnv_version }}/direnv.{{ direnv_os }}-{{ direnv_arch }}"
-#     dest="{{ direnv_install_directory }}/direnv"
-#     mode=0775
-#   when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
-#   become: yes
+- name: Download direnv.
+  get_url: >
+    url="{{ direnv_download_url }}/v{{ direnv_version }}/direnv.{{ direnv_os }}-{{ direnv_arch }}"
+    dest="{{ direnv_install_directory }}/direnv"
+    mode=0775
+  when: ansible_os_family != 'Darwin' and direnv_bin.rc == 1
+  become: yes
 
-# - name: login shell.
-#   shell: >
-#     echo ${SHELL##*/}
-#   register: login_shell
-#   changed_when: no
-#   check_mode: no
+- name: login shell.
+  shell: >
+    echo ${SHELL##*/}
+  register: login_shell
+  changed_when: no
+  check_mode: no
 
-# - name: .bashrc file.
-#   stat: >
-#     path={{ ansible_user_dir }}/.bashrc
-#   register: bash_file
-#   when: login_shell.stdout == "bash"
-# - name: Create .bashrc file.
-#   file: >
-#     state=touch
-#     path={{ ansible_user_dir }}/.bashrc
-#     owner={{ ansible_user_uid }}
-#     group={{ ansible_user_gid }}
-#     mode=0644
-#   when: login_shell.stdout == "bash" and not bash_file.stat.exists
-# - name: Insert direnv in .bashrc.
-#   lineinfile: >
-#     dest={{ ansible_user_dir }}/.bashrc
-#     line='eval "$(direnv hook bash)"'
-#     insertafter=EOF
-#     state=present
-#     regexp="direnv hook bash"
-#   when: login_shell.stdout == "bash"
+- name: .bashrc file.
+  stat: >
+    path={{ ansible_user_dir }}/.bashrc
+  register: bash_file
+  when: login_shell.stdout == "bash"
+- name: Create .bashrc file.
+  file: >
+    state=touch
+    path={{ ansible_user_dir }}/.bashrc
+    owner={{ ansible_user_uid }}
+    group={{ ansible_user_gid }}
+    mode=0644
+  when: login_shell.stdout == "bash" and not bash_file.stat.exists
+- name: Insert direnv in .bashrc.
+  lineinfile: >
+    dest={{ ansible_user_dir }}/.bashrc
+    line='eval "$(direnv hook bash)"'
+    insertafter=EOF
+    state=present
+    regexp="direnv hook bash"
+  when: login_shell.stdout == "bash"
 
-# - name: .zshrc file.
-#   stat: >
-#     path={{ ansible_user_dir }}/.zshrc
-#   register: zsh_file
-#   when: login_shell.stdout == "zsh"
-# - name: Create .zshrc file.
-#   file: >
-#     state=touch
-#     path={{ ansible_user_dir }}/.zshrc
-#     owner={{ ansible_user_uid }}
-#     group={{ ansible_user_gid }}
-#     mode=0644
-#   when: login_shell.stdout == "zshrc" and not zsh_file.stat.exists
-# - name: Insert direnv in .zshrc.
-#   lineinfile: >
-#     dest={{ ansible_user_dir }}/.zshrc
-#     line='eval "$(direnv hook zsh)"'
-#     insertafter=EOF
-#     state=present
-#     regexp="direnv hook zsh"
-#   when: login_shell.stdout == "zsh"
+- name: .zshrc file.
+  stat: >
+    path={{ ansible_user_dir }}/.zshrc
+  register: zsh_file
+  when: login_shell.stdout == "zsh"
+- name: Create .zshrc file.
+  file: >
+    state=touch
+    path={{ ansible_user_dir }}/.zshrc
+    owner={{ ansible_user_uid }}
+    group={{ ansible_user_gid }}
+    mode=0644
+  when: login_shell.stdout == "zshrc" and not zsh_file.stat.exists
+- name: Insert direnv in .zshrc.
+  lineinfile: >
+    dest={{ ansible_user_dir }}/.zshrc
+    line='eval "$(direnv hook zsh)"'
+    insertafter=EOF
+    state=present
+    regexp="direnv hook zsh"
+  when: login_shell.stdout == "zsh"
 
-# - name: Create XDG config directory.
-#   file: >
-#     path="{{ project_directory }}/.config/direnv"
-#     state=directory
-#     recurse=yes
-#     owner={{ ansible_user_uid }}
-#     group={{ ansible_user_gid }}
-#     mode=0755
-#   become: yes
+- name: Create XDG config directory.
+  file: >
+    path="{{ project_directory }}/.config/direnv"
+    state=directory
+    recurse=yes
+    owner={{ ansible_user_uid }}
+    group={{ ansible_user_gid }}
+    mode=0755
+  become: yes
 
-# - name: Create .envrc.
-#   template: >
-#     src=.envrc.tpl
-#     dest="{{ direnv_envrc_directory }}/.envrc"
-#     mode=0644
-#     force=no
-#   when: direnv_envrc_directory != ''
+- name: Create .envrc.
+  template: >
+    src=.envrc.tpl
+    dest="{{ direnv_envrc_directory }}/.envrc"
+    mode=0644
+    force=no
+  when: direnv_envrc_directory != ''
 
-# - name: Insert env in .envrc.
-#   lineinfile: >
-#     dest={{ direnv_envrc_directory }}/.envrc
-#     line="{{ item.value }}"
-#     insertafter=EOF
-#     state=present
-#     regexp={{ item.regexp }}
-#   with_items: "{{ direnv_environment_variables }}"
-#   when: direnv_envrc_directory != '' and direnv_environment_variables|length > 0
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ direnv_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ direnv_environment_variables }}"
+  when: direnv_envrc_directory != '' and direnv_environment_variables|length > 0
 
-# - name: direnv allow.
-#   command: >
-#     direnv allow ./
-#   args:
-#     chdir: "{{ direnv_envrc_directory }}"
-#   when: direnv_envrc_directory != ''
+- name: direnv allow.
+  command: >
+    direnv allow ./
+  args:
+    chdir: "{{ direnv_envrc_directory }}"
+  when: direnv_envrc_directory != ''
