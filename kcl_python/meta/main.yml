@@ -2,5 +2,5 @@
 dependencies:
   - { role: homebrew_cask }
   - { role: awsconfig }
-  - { role: xbuild_supervisor }
+  - { role: supervisor }
 
