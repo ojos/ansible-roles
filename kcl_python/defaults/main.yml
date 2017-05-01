@@ -9,7 +9,7 @@
   kcl_python_log_file_name: "main.log"
   kcl_python_stream_name: sample
   kcl_python_application_name: PythonKCLSample
-  kcl_python_credentials_provider: EnvironmentVariableCredentialsProvider 
+  kcl_python_credentials_provider: EnvironmentVariableCredentialsProvider
   kcl_python_processing_language: python/2.7
   kcl_python_initial_position_in_stream: TRIM_HORIZON
   kcl_python_region_name: "{{ awsconfig_region }}"

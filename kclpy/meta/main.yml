@@ -1,5 +1,0 @@
----
-dependencies:
-  - { role: homebrew_cask }
-  - { role: awsconfig }
-  - { role: supervisord }
