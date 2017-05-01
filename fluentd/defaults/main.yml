@@ -1,6 +1,6 @@
 ---
-  fluentd_user: "{{ xbuild_supervisor_user }}"
-  fluentd_group: "{{ xbuild_supervisor_group }}"
+  fluentd_user: "{{ supervisor_user }}"
+  fluentd_group: "{{ supervisor_group }}"
   fluentd_ruby_bin_directory: "{{ xbuild_ruby_install_directory }}/bin"
   fluentd_conf_directory: "{{ project_directory }}/etc/fluentd"
   fluentd_conf_file_name: "fluentd.conf"
