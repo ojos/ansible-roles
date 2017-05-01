@@ -39,7 +39,7 @@ failoverTimeMillis = {{ kcl_python_failover_time_millis }}
 
 # A worker id that uniquely identifies this worker among all workers using the same applicationName
 # If this isn't provided a MultiLangDaemon instance will assign a unique workerId to itself.
-#workerId = 
+#workerId =
 
 # Shard sync interval in milliseconds - e.g. wait for this long between shard sync tasks.
 shardSyncIntervalMillis = {{ kcl_python_shard_sync_interval_millis }}
