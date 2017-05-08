@@ -2,10 +2,12 @@
   fluentd_user: "{{ supervisor_user }}"
   fluentd_group: "{{ supervisor_group }}"
   fluentd_ruby_bin_directory: "{{ xbuild_ruby_install_directory }}/bin"
-  fluentd_conf_directory: "{{ project_directory }}/etc/fluentd"
+  fluentd_conf_directory: "/etc/fluentd"
   fluentd_conf_file_name: "fluentd.conf"
-  fluentd_log_directory: "{{ project_directory }}/log/fluentd"
-  fluentd_log_file_name: "main.log"
+  fluentd_log_directory: "{{ supervisor_log_directory }}"
+  fluentd_log_file_name: "fluentd.log"
+  fluentd_log_file_maxbytes: "{{ supervisor_log_file_maxbytes }}"
+  fluentd_log_file_backups: "{{ supervisor_log_file_backups }}"
   fluentd_install_packages:
     - 'fluentd'
   fluentd_install_plugins: []
