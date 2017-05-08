@@ -16,14 +16,7 @@
     group="{{ fluentd_group }}"
     mode=0755
   become: yes
-- name: Create fluentd log directory.
-  file: >
-    path="{{ fluentd_log_directory }}"
-    state=directory
-    owner="{{ fluentd_user }}"
-    group="{{ fluentd_group }}"
-    mode=0755
-  become: yes
+
 - name: Create fluentd config file.
   template: >
     src=fluentd.conf.tpl
