@@ -24,6 +24,15 @@
   when: kcl_python_install_packages|length > 0
 
 
+- name: Create Kcl/Py conf directory.
+  file: >
+    path="{{ kcl_python_conf_directory }}"
+    state=directory
+    owner="{{ kcl_python_user }}"
+    group="{{ kcl_python_group }}"
+    mode=0755
+  become: yes
+
 - name: Copy executable file.
   copy: >
     src=kcl_app.py
@@ -49,10 +58,11 @@
   changed_when: false
   check_mode: no
 
+
 - name: Create supervisord process conf file.
   template: >
     src=supervisord.conf.tpl
-    dest={{ kcl_python_conf_directory }}/kclpy.conf
+    dest={{ supervisor_include_conf_directory }}/kclpy.conf
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_user }}"
     mode=0644
