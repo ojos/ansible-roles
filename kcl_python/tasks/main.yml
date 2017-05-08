@@ -19,26 +19,10 @@
   pip: >
     name={{ item }}
     state=latest
+    executable={{ supervisor_executable_pip }}
   with_items: "{{ kcl_python_install_packages }}"
   when: kcl_python_install_packages|length > 0
 
-- name: Create Kcl/Py log directory.
-  file: >
-    path="{{ kcl_python_log_directory }}"
-    state=directory
-    owner="{{ kcl_python_user }}"
-    group="{{ kcl_python_group }}"
-    mode=0755
-  become: yes
-
-- name: Create Kcl/Py conf directory.
-  file: >
-    path="{{ kcl_python_conf_directory }}"
-    state=directory
-    owner="{{ kcl_python_user }}"
-    group="{{ kcl_python_group }}"
-    mode=0755
-  become: yes
 
 - name: Copy executable file.
   copy: >
@@ -64,18 +48,11 @@
   register: java_path
   changed_when: false
   check_mode: no
-- name: Print start-up command.
-  shell: >
-    amazon_kclpy_helper.py --print_command --java {{ java_path.stdout }} --properties {{ kcl_python_conf_directory }}/{{ kcl_python_properties_file_name }}
-  register: startup_command
-  changed_when: false
-  check_mode: no
-
 
 - name: Create supervisord process conf file.
   template: >
     src=supervisord.conf.tpl
-    dest={{ supervisor_include_conf_directory }}/kclpy.conf
+    dest={{ kcl_python_conf_directory }}/kclpy.conf
     owner="{{ kcl_python_user }}"
     group="{{ kcl_python_user }}"
     mode=0644

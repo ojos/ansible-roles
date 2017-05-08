@@ -1,6 +1,7 @@
 ---
   supervisor_user: "supervisord"
   supervisor_group: "supervisord"
+  supervisor_executable_pip: "pip2"
   supervisor_conf_directory: "/etc/supervisord"
   supervisor_conf_file_name: supervisord.conf
   supervisor_include_conf_directory: "{{ supervisor_conf_directory }}/conf.d"
@@ -16,5 +17,6 @@
   supervisor_nodaemon: False
   supervisor_minfds: 1024
   supervisor_minprocs: 200
-  supervisor_bin_file: "/usr/local/bin/supervisord"
-  supervisor_control_bin_file: "/usr/local/bin/supervisorctl"
+  supervisor_bin_directory: "/usr/local/bin"
+  supervisor_bin_file: "{{ supervisor_bin_directory }}/supervisord"
+  supervisor_control_bin_file: "{{ supervisor_bin_directory }}/supervisorctl"
