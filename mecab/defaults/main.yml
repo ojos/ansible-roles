@@ -1,6 +1,6 @@
 ---
-  mecab_user: "{{ project_user }}"
-  mecab_group: "{{ project_group }}"
+  mecab_user: "mecab"
+  mecab_group: "mecab"
   mecab_dependent_packages:
     - automake
   mecab_prefix: "{{ project_directory }}/mecab"

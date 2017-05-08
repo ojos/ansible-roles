@@ -1,5 +1,5 @@
 [program:fluentd]
-command={{ fluentd_ruby_bin_directory }}/fluentd -c {{ fluentd_conf_directory }}/{{ fluentd_conf_file_name }}
+command={{ fluentd_ruby_bin_directory }}/fluentd --use-v1-config -c {{ fluentd_conf_directory }}/{{ fluentd_conf_file_name }}
 directory={{ project_directory }}
 user={{ fluentd_user }}
 autostart=true
