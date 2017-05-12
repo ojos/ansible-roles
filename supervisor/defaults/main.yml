@@ -20,3 +20,4 @@
   supervisor_bin_directory: "/usr/local/bin"
   supervisor_bin_file: "{{ supervisor_bin_directory }}/supervisord"
   supervisor_control_bin_file: "{{ supervisor_bin_directory }}/supervisorctl"
+  supervisor_service_enabled: yes

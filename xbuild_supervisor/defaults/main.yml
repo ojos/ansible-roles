@@ -22,6 +22,7 @@
     - supervisor
   xbuild_supervisor_bin_file: "$PROJECT_HOME/python/bin/supervisord"
   xbuild_supervisor_control_bin_file: "$PROJECT_HOME/python/bin/supervisorctl"
+  xbuild_supervisor_service_enabled: yes
   xbuild_supervisor_pid_file: "$PROJECT_HOME/run/supervisord/{{ xbuild_supervisor_pid_file_name }}"
   xbuild_supervisor_conf_file: "$PROJECT_HOME/etc/supervisord/{{ xbuild_supervisor_conf_file_name }}"
   xbuild_supervisor_envrc_directory: "{{ direnv_envrc_directory }}"

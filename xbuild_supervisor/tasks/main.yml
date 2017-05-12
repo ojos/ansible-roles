@@ -69,6 +69,6 @@
 - name: Register supervisord service.
   service: >
     name=supervisord
-    enabled=yes
+    enabled="{{ xbuild_supervisor_service_enabled }}"
   become: yes
   when: ansible_system == 'Linux'

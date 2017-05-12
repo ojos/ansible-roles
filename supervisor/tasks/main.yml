@@ -84,6 +84,6 @@
 - name: Register supervisord service.
   service: >
     name=supervisord
-    enabled=yes
+    enabled="{{ supervisor_service_enabled }}"
   become: yes
   when: ansible_system == 'Linux'
