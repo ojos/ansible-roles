@@ -57,6 +57,7 @@
     - "./configure --prefix='{{ mecab_prefix }}' --enable-utf8-only"
     - make
     - make install
+  become: yes
 
 - name: Configure, Make and Install mecab-ipadic.
   shell: "{{ item }}"
@@ -68,6 +69,7 @@
     - "./configure --prefix='{{ mecab_prefix }}' --with-charset=utf8"
     - make
     - make install
+  become: yes
 
 - name: Clone mecab ipadic neologd repository.
   git: >
@@ -77,6 +79,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  become: yes
   when: mecab_ipadic_neologd_install
 
 - name: Configure, Make and Install mecab ipadic neologd.
@@ -84,6 +87,7 @@
     {{ mecab_work_directory }}/mecab_ipadic_neologd/bin/install-mecab-ipadic-neologd -a -n -y
   environment:
     PATH: "{{ mecab_prefix }}/bin:{{ ansible_env.PATH }}"
+  become: yes
   when: mecab_ipadic_neologd_install
 
 - name: Replace dicdir path of mecabrc.
@@ -91,6 +95,7 @@
     dest={{ mecab_prefix }}/etc/mecabrc
     regexp='dic/ipadic'
     replace="dic/mecab-ipadic-neologd"
+  become: yes
   when: mecab_ipadic_neologd_install
 
 
