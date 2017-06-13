@@ -47,6 +47,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  become: yes
 
 - name: Configure, Make and Install mecab.
   shell: "{{ item }}"
