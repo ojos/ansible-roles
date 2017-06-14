@@ -13,6 +13,7 @@
     system=yes
     home="{{ kcl_python_conf_directory }}"
     createhome=no
+  become: yes
   when: ansible_os_family != 'Darwin' and user_list.stdout_lines.count(kcl_python_user) < 1
 
 - name: Install dependent packages(RedHat).
