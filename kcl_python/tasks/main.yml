@@ -6,7 +6,7 @@
   changed_when: false
   check_mode: no
   when: ansible_os_family != 'Darwin'
-- name: Create ffmpeg user.
+- name: Create kcl_python user.
   user: >
     name="{{ kcl_python_user }}"
     shell=/bin/false
