@@ -1,6 +1,6 @@
 ---
-  ffmpeg_user: "{{ project_user }}"
-  ffmpeg_group: "{{ project_group }}"
+  ffmpeg_user: "ffmpeg"
+  ffmpeg_group: "ffmpeg"
   ffmpeg_branch_name: release/3.3
   ffmpeg_work_directory: "{{ project_directory }}/work"
   ffmpeg_dependent_packages:
