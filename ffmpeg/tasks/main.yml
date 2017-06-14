@@ -47,6 +47,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install yasm.
@@ -58,6 +59,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}'"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Clone libx264 repository.
@@ -67,6 +69,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libx264.
@@ -79,6 +82,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --enable-static"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Clone libfdk_aac repository.
@@ -88,6 +92,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libfdk_aac.
@@ -101,6 +106,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Extract libmp3lame source.
@@ -108,6 +114,7 @@
     src="{{ ffmpeg_libmp3lame_source_url }}"
     dest="{{ ffmpeg_work_directory }}"
     copy=no
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: libmp3lame source Directory.
@@ -116,6 +123,7 @@
   args:
     chdir: "{{ ffmpeg_work_directory }}"
   register: libmp3lame_dir
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libmp3lame.
@@ -128,6 +136,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared --enable-nasm"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Clone libopus repository.
@@ -137,6 +146,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libopus.
@@ -150,6 +160,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Extract libogg source.
@@ -157,6 +168,7 @@
     src="{{ ffmpeg_libogg_source_url }}"
     dest="{{ ffmpeg_work_directory }}"
     copy=no
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: libogg source Directory.
@@ -177,6 +189,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Extract libvorbis source.
@@ -184,6 +197,7 @@
     src="{{ ffmpeg_libvorbis_source_url }}"
     dest="{{ ffmpeg_work_directory }}"
     copy=no
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: libvorbis source Directory.
@@ -192,6 +206,7 @@
   args:
     chdir: "{{ ffmpeg_work_directory }}"
   register: libvorbis_dir
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libvorbis.
@@ -204,6 +219,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --with-ogg='{{ ffmpeg_prefix }}' --disable-shared"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Clone libvpx repository.
@@ -213,6 +229,7 @@
     update=yes
     accept_hostkey=yes
     force=yes
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 - name: Configure, Make and Install libvpx.
@@ -225,6 +242,7 @@
     - "./configure --prefix='{{ ffmpeg_prefix }}' --disable-examples"
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 
 
@@ -236,6 +254,7 @@
     accept_hostkey=yes
     force=yes
     version={{ ffmpeg_branch_name }}
+  become: yes
 
 - name: Configure, Make and Install ffmpeg(RedHat).
   shell: "{{ item }}"
@@ -264,6 +283,7 @@
       --disable-debug
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'RedHat'
 - name: Configure, Make and Install ffmpeg(Darwin).
   shell: "{{ item }}"
@@ -294,6 +314,7 @@
       --disable-debug
     - make
     - make install
+  become: yes
   when: ansible_os_family == 'Darwin'
 
 - name: Remove work directory.
