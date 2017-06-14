@@ -1,6 +1,6 @@
 ---
-  kcl_python_user: "kcl_python"
-  kcl_python_group: "kcl_python"
+  kcl_python_user: "kclpy"
+  kcl_python_group: "kclpy"
   kcl_python_executable_pip: "{{ supervisor_executable_pip }}"
   kcl_python_conf_directory: "/etc/kclpy"
   kcl_python_executable_bin: python2.7
