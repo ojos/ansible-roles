@@ -21,6 +21,7 @@
     state=latest
     executable={{ supervisor_executable_pip }}
   with_items: "{{ kcl_python_install_packages }}"
+  become: yes
   when: kcl_python_install_packages|length > 0
 
 
