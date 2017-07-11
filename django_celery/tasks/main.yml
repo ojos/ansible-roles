@@ -25,11 +25,11 @@
     mode=0755
   become: yes
 
-- name: Create supervisord process conf file.
-  template: >
-    src=django_celery.conf.tpl
-    dest={{ xbuild_supervisor_include_conf_directory }}/django_celery.conf
-    owner="{{ django_celery_user }}"
-    group="{{ django_celery_group }}"
-    mode=0644
-  become: yes
+# - name: Create supervisord process conf file.
+#   template: >
+#     src=django_celery.conf.tpl
+#     dest={{ xbuild_supervisor_include_conf_directory }}/django_celery.conf
+#     owner="{{ django_celery_user }}"
+#     group="{{ django_celery_group }}"
+#     mode=0644
+#   become: yes
