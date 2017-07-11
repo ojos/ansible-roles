@@ -4,7 +4,7 @@
     - 'gunicorn'
     - 'meinheld'
   gunicorn_user: "{{ xbuild_python_user }}"
-  gunicorn_group: "{{ xbuild_python_user }}"
+  gunicorn_group: "{{ xbuild_python_group }}"
   gunicorn_conf_directory: "{{ project_directory }}/etc/gunicorn"
   gunicorn_conf_file_name: gunicorn.conf.py
   gunicorn_log_directory: "{{ project_directory }}/log/gunicorn"
