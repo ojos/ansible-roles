@@ -1,8 +1,8 @@
 ---
-  proxy_gunicorn_user: "{{ ansible_user_uid }}"
-  proxy_gunicorn_group: "{{ ansible_user_gid }}"
+  proxy_gunicorn_user: "{{ openresty_user }}"
+  proxy_gunicorn_group: "{{ openresty_group }}"
   proxy_gunicorn_bind: "{{ gunicorn_bind }}"
-  proxy_gunicorn_static_dir: '/usr/local/nginx/html'
-  proxy_gunicorn_nginx_home_directory: '/var/www/nginx'
+  proxy_gunicorn_nginx_directory: "{{ openresty_prefix }}/nginx"
+  proxy_gunicorn_static_file_directory: "{{ proxy_gunicorn_nginx_directory }}/html"
   proxy_gunicorn_nginx_client_max_body_size: '4G'
   proxy_gunicorn_redirect_https_host: 'example.jp'

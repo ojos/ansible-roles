@@ -14,7 +14,7 @@ server {
     }
 
     # path for static files
-    root {{ proxy_gunicorn_static_dir }};
+    root {{ proxy_gunicorn_static_file_directory }};
 
     location / {
         try_files $uri @proxy_to_app;
