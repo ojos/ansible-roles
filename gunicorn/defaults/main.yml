@@ -1,10 +1,10 @@
 ---
-  gunicorn_python_bin_directory: "{{ xbuild_supervisor_python_install_directory }}/bin"
+  gunicorn_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   gunicorn_install_packages:
     - 'gunicorn'
     - 'meinheld'
-  gunicorn_user: "{{ xbuild_supervisor_user }}"
-  gunicorn_group: "{{ xbuild_supervisor_group }}"
+  gunicorn_user: "{{ xbuild_python_user }}"
+  gunicorn_group: "{{ xbuild_python_user }}"
   gunicorn_conf_directory: "{{ project_directory }}/etc/gunicorn"
   gunicorn_conf_file_name: gunicorn.conf.py
   gunicorn_log_directory: "{{ project_directory }}/log/gunicorn"
