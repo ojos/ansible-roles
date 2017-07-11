@@ -1,3 +1,5 @@
 ---
 dependencies:
+  - { role: openresty }
+  - { role: openresty_luarocks }
   - { role: gunicorn }
