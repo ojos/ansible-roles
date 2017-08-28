@@ -8,10 +8,10 @@
   when: ansible_os_family == 'RedHat' and devtools_repositories|length > 0
 - name: Raise amzn-main priority(Amazon Linux).
   ini_file: >
-      dest=/etc/yum.repos.d/amzn-main.rep
+      dest=/etc/yum.repos.d/amzn-main.repo
       section=amzn-main
       option=priority
-      value=99
+      value={{ devtools_amzn_main_priority }}
   when: ansible_distribution == 'Amazon'
   become: yes
 - name: Update Yum(RedHat).
