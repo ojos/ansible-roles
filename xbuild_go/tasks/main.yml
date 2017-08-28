@@ -44,7 +44,7 @@
     {{ xbuild_go_install_directory }}/bin/go get {{ item }}
   environment:
     GOROOT: "{{ xbuild_go_install_directory }}"
-    GOPATH: "{{ project_directory }}/app"
+    GOPATH: "{{ xbuild_go_app_directory }}"
   with_items: "{{ xbuild_go_packages }}"
   when: xbuild_go_packages|length > 0
 
