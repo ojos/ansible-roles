@@ -87,6 +87,6 @@
 - name: Register redis service.
   service: >
     name=redis
-    state=started
-    enabled=yes
+    state=stopped
+    enabled=no
   become: true
