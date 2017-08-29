@@ -73,7 +73,7 @@
   environment:
     PATH: "{{ imagemagick_prefix }}/bin:{{ ansible_env.PATH }}"
   with_items:
-    - "./configure --prefix='{{ imagemagick_prefix }}'"
+    - "./configure --prefix='{{ imagemagick_prefix }}' --enable-shared"
     - make
     - make install
 
