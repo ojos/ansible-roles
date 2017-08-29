@@ -25,6 +25,7 @@
     src="{{ redis_src_dir }}/redis-{{ redis_version }}.tar.gz"
     dest="{{ redis_src_dir }}"
     copy="no"
+  become: true
 - name: Make redis.
   shell: >
     /usr/bin/make
