@@ -2,6 +2,8 @@
 - name: Create project directory.
   file: >
     path="{{ project_directory }}"
+    owner={{ project_user }}
+    group={{ project_group }}
     state=directory
     mode=0755
   become: yes
@@ -46,11 +48,11 @@
     state=absent
   when: project_repository != '' and project_repository_disconnect
 
-- name: Change project directory owner.
-  file: >
-    path="{{ project_directory }}"
-    state=directory
-    recurse=yes
-    owner={{ project_user }}
-    group={{ project_group }}
-  become: yes
+# - name: Change project directory owner.
+#   file: >
+#     path="{{ project_directory }}"
+#     state=directory
+#     recurse=yes
+#     owner={{ project_user }}
+#     group={{ project_group }}
+#   become: yes
