@@ -292,3 +292,13 @@ def launch(env='vagrant', provider='aws'):
                  {'pattern': r'(export\sVAGRANT_SECURITY_GROUPS)=.+\n', 'repl': r'\1=%s\n' % sg_id}])
 
     local('direnv allow')
+
+
+@task
+def delete_log():
+    local('find %s -name "*.log" -delete' % os.environ['PROJECT_HOME'])
+
+
+@task
+def delete_DS_Store():
+    local('find %s -name ".DS_Store" -delete' % os.environ['PROJECT_HOME'])
