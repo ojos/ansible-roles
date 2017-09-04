@@ -42,11 +42,17 @@
     state=absent
   when: project_remote_private_key != '' and remote_private_key.stat.exists
 
+- name: .git directory.
+  stat: >
+    path="{{ project_remote_private_key }}"
+  register: dot_git_directory
+  changed_when: no
+  check_mode: no
 - name: Remove .git.
   file: >
     path={{ project_directory }}/.git
     state=absent
-  when: project_repository != '' and project_repository_disconnect
+  when: project_directory.stat.exists and project_repository != '' and project_repository_disconnect
 
 # - name: Change project directory owner.
 #   file: >
