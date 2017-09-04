@@ -2,14 +2,16 @@
   git_ssh_user: "{{ project_user }}"
   git_ssh_group: "{{ project_group }}"
   git_ssh_identity_file : '~/.ssh/id_rsa'
-  git_ssh_directory: "{{ project_directory }}/.ssh"
-  git_ssh_file: "{{ git_ssh_directory }}/git_ssh.sh"
+  git_ssh_directory_name: ".ssh"
+  git_ssh_directory: "{{ project_directory }}/{{ git_ssh_directory_name }}"
+  git_ssh_file_name: "git_ssh.sh"
+  git_ssh_home_directory: "$PROJECT_HOME/{{ git_ssh_directory_name }}"
   git_ssh_envrc_directory: "{{ direnv_envrc_directory }}"
   git_ssh_environment_variables:
     - value: "# git"
       regexp: "^# git$"
     - value: |
-        export GIT_SSH={{ git_ssh_file }}
+        export GIT_SSH={{ git_ssh_home_directory }}/{{ git_ssh_file_name }}
 
       regexp: "^export GIT_SSH"
 

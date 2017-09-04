@@ -12,7 +12,7 @@
 - name: Create git_ssh file.
   template: >
     src=git_ssh.tpl
-    dest="{{ git_ssh_file }}"
+    dest="{{ git_ssh_directory }}/{{ git_ssh_file_name }}"
     owner="{{ git_ssh_user }}"
     group="{{ git_ssh_group }}"
     mode=0755
