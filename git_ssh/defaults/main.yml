@@ -2,8 +2,8 @@
   git_ssh_user: "{{ project_user }}"
   git_ssh_group: "{{ project_group }}"
   git_ssh_identity_file : '~/.ssh/id_rsa'
-  git_ssh_directory: " {{ project_directory }}/key "
-  git_ssh_file: ' {{ git_ssh_directory }}/git_ssh.sh'
+  git_ssh_directory: "{{ project_directory }}/.ssh"
+  git_ssh_file: "{{ git_ssh_directory }}/git_ssh.sh"
   git_ssh_envrc_directory: "{{ direnv_envrc_directory }}"
   git_ssh_environment_variables:
     - value: "# git"
