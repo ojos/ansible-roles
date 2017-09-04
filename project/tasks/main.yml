@@ -1,20 +1,50 @@
 ---
-- name: Clone project directory.
-  git: >
-    repo="{{ project_repository }}"
-    dest="{{ project_directory }}"
-    update=yes
-    track_submodules=yes
-    accept_hostkey=yes
-  become: yes
-  when: project_repository != ''
 - name: Create project directory.
   file: >
     path="{{ project_directory }}"
     state=directory
     mode=0755
   become: yes
-  when: project_repository == ''
+
+- name: Copy private key for git.
+  copy: >
+    src="{{ deploy_local_private_key }}"
+    dest="{{ deploy_remote_private_key }}"
+  when: deploy_local_private_key != '' and deploy_remote_private_key != ''
+
+- name: Remote private key file.
+  stat: >
+    path="{{ deploy_remote_private_key }}"
+  register: remote_private_key
+  changed_when: no
+  check_mode: no
+- name: Change to readonly.
+  file: >
+    path="{{ deploy_remote_private_key }}"
+    mode=0400
+  when: remote_private_key.stat.exists
+
+- name: Clone repository.
+  git: >
+    repo="{{ project_repository }}"
+    dest="{{ project_directory }}"
+    track_submodules=true
+    version="{{ project_repository_version }}"
+    accept_hostkey=true
+    force="{{ project_repository_force }}"
+  when: project_repository != ''
+
+- name: Remove private key.
+  file: >
+    path={{ deploy_remote_private_key }}
+    state=absent
+  when: deploy_remote_private_key != '' and remote_private_key.stat.exists
+
+- name: Remove .git.
+  file: >
+    path={{ project_directory }}/.git
+    state=absent
+  when: project_repository != '' and project_repository_disconnect
 
 - name: Change project directory owner.
   file: >

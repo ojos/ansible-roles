@@ -1,0 +1,28 @@
+---
+- name: Create git_ssh directory.
+  file: >
+    path="{{ git_ssh_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ git_ssh_user }}
+    group={{ git_ssh_group }}
+    mode=0755
+  become: yes
+
+- name: Create git_ssh file.
+  template: >
+    src=git_ssh.tpl
+    dest="{{ git_ssh_file }}"
+    owner="{{ git_ssh_user }}"
+    group="{{ git_ssh_group }}"
+    mode=0755
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ git_ssh_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ git_ssh_environment_variables }}"
+  when: git_ssh_envrc_directory != '' and git_ssh_environment_variables|length > 0

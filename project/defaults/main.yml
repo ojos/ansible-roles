@@ -1,9 +1,14 @@
 ---
-  project_repository: ""
+  project_local_private_key: ''
+  project_remote_private_key: ''
+  project_repository: 'https://github.com/ojos/project-skel.git'
+  project_repository_version: 'HEAD'
+  project_repository_force: no
+  project_repository_disconnect: yes
   project_directory: /var/www
-  project_owner: admin
   project_user: "{{ ansible_user_uid }}"
   project_group: "{{ ansible_user_gid }}"
+  project_owner: admin
   project_environments:
     - vagrant
     - develop

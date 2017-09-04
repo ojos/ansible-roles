@@ -42,6 +42,21 @@
   when: not ansible_cfg.stat.exists
   become: yes
 
+- name: Inventory file.
+  stat: >
+    path="{{ xbuild_ansible_directory }}/hosts"
+  register: ansible_hosts
+  changed_when: no
+  check_mode: no
+- name: Create buildout playbook.
+  copy: >
+    src=hosts
+    dest="{{ xbuild_ansible_directory }}/hosts"
+    mode=0644
+  when: not ansible_hosts.stat.exists
+  become: yes
+
+
 - name: Buildout playbook.
   stat: >
     path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}"
