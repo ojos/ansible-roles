@@ -6,4 +6,4 @@
     - timezone
     - devtools
     - project
-- include: {{ xbuild_ansible_directory }}/deploy.yml
+- include: "{{ lookup('env', 'ANSIBLE_HOME') }}/deploy.yml"

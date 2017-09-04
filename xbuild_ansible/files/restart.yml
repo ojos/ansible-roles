@@ -8,8 +8,8 @@
     #     name=supervisord
     #     state=restarted
     #   become: yes
-    - name: Restart nginx service.
-      service: >
-        name=nginx
-        state=restarted
-      become: yes
+    # - name: Restart nginx service.
+    #   service: >
+    #     name=nginx
+    #     state=restarted
+    #   become: yes

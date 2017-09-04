@@ -3,29 +3,16 @@
   xbuild_ansible_user: "{{ xbuild_python_user }}"
   xbuild_ansible_group: "{{ xbuild_python_group }}"
   xbuild_ansible_roles_repository: "https://github.com/ojos/ansible-roles.git"
-  xbuild_ansible_buildout_script_url: "https://raw.github.com/ojos/buildout/master/bootstrap"
-  xbuild_ansible_buildout_script: "{{ xbuild_ansible_directory }}/bootstrap"
+  xbuild_ansible_configure_file_name: "ansible.cfg"
   xbuild_ansible_buildout_playbook_file_name: "buildout.yml"
   xbuild_ansible_deploy_playbook_file_name: "deploy.yml"
   xbuild_ansible_restart_playbook_file_name: "restart.yml"
   xbuild_ansible_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
   xbuild_ansible_home_directory: "$ORCHESTRATION_HOME/ansible"
-  xbuild_ansible_forks: 64
-  xbuild_ansible_roles_path: "$ANSIBLE_HOME/roles"
-  xbuild_ansible_ssh_args: '"-F $KEY_HOME/ssh_config"'
   xbuild_ansible_envrc_directory: "{{ direnv_envrc_directory }}"
-  xbuild_ansible_environment_variables: 
+  xbuild_ansible_environment_variables:
     - value: "# ansible"
       regexp: "^# ansible$"
     - value: export ANSIBLE_HOME={{ xbuild_ansible_home_directory }}
-      regexp: "^export ANSIBLE_HOME"
-    - value: export ANSIBLE_FORKS={{ xbuild_ansible_forks }}
-      regexp: "^export ANSIBLE_FORKS"
-    - value: export ANSIBLE_RETRY_FILES_ENABLED=no
-      regexp: "^export ANSIBLE_RETRY_FILES_ENABLED"
-    - value: export ANSIBLE_ROLES_PATH={{ xbuild_ansible_roles_path }}
-      regexp: "^export ANSIBLE_ROLES_PATH"
-    - value: |
-        export ANSIBLE_SSH_ARGS={{ xbuild_ansible_ssh_args }}
 
-      regexp: "^export ANSIBLE_SSH_ARGS"
+      regexp: "^export ANSIBLE_HOME"

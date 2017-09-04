@@ -28,6 +28,20 @@
   when: xbuild_ansible_roles_repository != ''
   become: yes
 
+- name: Ansible Configure file.
+  stat: >
+    path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}"
+  register: ansible_cfg
+  changed_when: no
+  check_mode: no
+- name: Create buildout playbook.
+  copy: >
+    src=ansible.cfg
+    dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_configure_file_name }}"
+    mode=0644
+  when: not ansible_cfg.stat.exists
+  become: yes
+
 - name: Buildout playbook.
   stat: >
     path="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_buildout_playbook_file_name }}"
@@ -49,8 +63,8 @@
   changed_when: no
   check_mode: no
 - name: Create deploy playbook.
-  template: >
-    src=deploy.tpl
+  copy: >
+    src=deploy.yml
     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_deploy_playbook_file_name }}"
     mode=0644
   when: not deploy_playbook.stat.exists
@@ -68,14 +82,6 @@
     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_restart_playbook_file_name }}"
     mode=0644
   when: not restart_playbook.stat.exists
-  become: yes
-
-- name: Download buildout script.
-  get_url: >
-    url="{{ xbuild_ansible_buildout_script_url }}"
-    dest="{{ xbuild_ansible_buildout_script }}"
-    mode=755
-    force=yes
   become: yes
 
 - name: Change ansible directory owner.
