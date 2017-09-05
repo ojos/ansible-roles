@@ -63,8 +63,8 @@
   check_mode: no
 - name: Remove .git.
   command: git init
-  args:
-    chdir: {{ project_directory }}
+  args: >
+    chdir="{{ project_directory }}""
   when: not dot_git_directory.stat.exists
 
 # - name: Change project directory owner.
