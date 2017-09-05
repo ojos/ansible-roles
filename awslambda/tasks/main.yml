@@ -18,7 +18,7 @@
 - set_fact: >
     awslambda_role_arn="{{ iam_role_response.iam_role.arn }}"
 
-- name: Copy awslogs.conf.
+- name: Copy deploy_lambda.py.
   copy: >
     src=deploy_lambda.py
     dest="{{ awslambda_ansible_directory }}/deploy_lambda.py"
