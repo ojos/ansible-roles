@@ -20,8 +20,8 @@
 
 - name: Copy deploy_lambda.py.
   copy: >
-    src=deploy_lambda.py
-    dest="{{ awslambda_ansible_directory }}/deploy_lambda.py"
+    src=deploy_lambda.yml
+    dest="{{ awslambda_ansible_directory }}/deploy_lambda.yml"
     owner="{{ awslambda_user }}"
     group="{{ awslambda_group }}"
     mode=0644
