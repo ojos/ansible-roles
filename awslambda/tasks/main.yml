@@ -8,6 +8,15 @@
     mode=0755
   become: yes
 
+- name: Touch .gitkeep.
+  file: >
+    path="{{ awslambda_func_directory }}/.gitkeep"
+    state=touch
+    owner="{{ awslambda_user }}"
+    group="{{ awslambda_group }}"
+    mode=0644
+  become: yes
+
 - name: Create awslambda IAM role.
   iam_role: >
     name="{{ awslambda_iam_role_name }}"
