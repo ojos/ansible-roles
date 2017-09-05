@@ -1,0 +1,68 @@
+---
+- hosts: localhost
+  connection: local
+  become: no
+  vars:
+    lambda_function_name: lambda_func
+    lambda_func_directory: "{{ lookup('env', 'AWS_LAMBDA_HOME') }}/{{ lambda_function_name }}"
+    lambda_packages_directory_name: lib
+    lambda_zip_file_name: lambda.zip
+    lambda_handler: lambda_function.lambda_handler
+    lambda_runtime: python3.6
+    lambda_timeout: 10
+    lambda_role_arn: "{{ lookup('env','AWS_LAMBDA_ROLE_ARN') }}"
+    lambda_schedule_expression: cron(0 19 * * ? *)
+    lambda_dependent_packages: []
+  tasks:
+    - name: Reset directory.
+      file: >
+        path="{{ lambda_func_directory }}/{{ item }}"
+        state=absent
+      with_items:
+        - "{{ lambda_packages_directory_name }}"
+        - "{{ lambda_zip_file_name }}"
+    - name: Install dependent packages.
+      pip: >
+        name={{ item }}
+        state=latest
+        extra_args="-t {{ lambda_func_directory }}/{{ lambda_packages_directory_name }}"
+        executable="{{ lookup('env', 'PYTHON_HOME') }}/pip"
+      with_items: "{{ lambda_dependent_packages }}"
+      when: lambda_dependent_packages|length > 0
+    - name: Create lambda.zip
+      archive: >
+        path="{{ lambda_func_directory }}"
+        dest="{{ lambda_func_directory }}/{{ lambda_zip_file_name }}"
+        format=zip
+    - name: Create lambda function.
+      lambda: >
+        name="{{ lambda_function_name }}"
+        zip_file="{{ lambda_func_directory }}/{{ lambda_zip_file_name }}"
+        handler="{{ lambda_function_name }}/{{ lambda_handler }}"
+        runtime="{{ lambda_runtime }}"
+        role="{{ lambda_role_arn }}"
+        timeout="{{ lambda_timeout }}"
+      register: lambda_response
+    - set_fact: >
+        lambda_arn="{{ lambda_response.configuration.function_arn | regex_replace('\\:\\d+$','') }}"
+    - name: Create cloudwatch event.
+      cloudwatchevent_rule:
+        name: "{{ lambda_function_name }}"
+        schedule_expression: "{{ lambda_schedule_expression }}"
+        description: "{{ lambda_function_name }} cron"
+        role_arn: "{{ lambda_role_arn }}"
+        targets:
+          - id: "{{ lambda_function_name }}"
+            arn: "{{ lambda_arn }}"
+      register: event_response
+    - name: Add permission lambda.
+      command: >-
+        aws lambda add-permission
+        --function-name {{ lambda_function_name }}
+        --statement-id 'cron'
+        --action "lambda:InvokeFunction"
+        --principal events.amazonaws.com
+        --source-arn {{ event_response.rule.arn }}
+      register: permission_response
+      changed_when: "'provided already exists' not in permission_response.stderr"
+      failed_when: "permission_response.rc != 0 and 'provided already exists' not in permission_response.stderr"

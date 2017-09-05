@@ -8,7 +8,7 @@
   awsenv_default_vpc_id: AWS_DEFAULT_VPC_ID
   awsenv_default_username: ec2-user
   awsenv_default_instance_type: t2.micro
-  awsenv_default_ec2_ami: ami-9f0c67f8
+  awsenv_default_ec2_ami: ami-4af5022c
   awsenv_envrc_directory: "{{ direnv_envrc_directory }}"
   awsenv_environment_variables:
     - value: "# aws"

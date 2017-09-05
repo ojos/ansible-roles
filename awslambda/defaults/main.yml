@@ -1,0 +1,31 @@
+---
+  awslambda_func_directory_name: lambda-func
+  awslambda_func_directory: "{{ project_directory }}/{{ awslambda_func_directory_name }}"
+  awslambda_ansible_directory: "{{ xbuild_ansible_directory }}"
+  awslambda_user: "{{ xbuild_ansible_user }}"
+  awslambda_group: "{{ xbuild_ansible_group }}"
+  awslambda_iam_role_name: "{{ awslambda_func_directory_name }}"
+  awslambda_role_policy:
+    Version: '2012-10-17'
+    Statement:
+      - Action: sts:AssumeRole
+        Effect: Allow
+        Principal:
+          Service: lambda.amazonaws.com
+      - Action: sts:AssumeRole
+        Effect: Allow
+        Principal:
+          Service: events.amazonaws.com
+  awslambda_managed_policy:
+    - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+    - arn:aws:iam::aws:policy/CloudWatchFullAccess
+  awslambda_envrc_directory: "{{ xbuild_ansible_envrc_directory }}"
+  awslambda_environment_variables:
+    - value: "# aws-lambda"
+      regexp: "^# aws-lambda$"
+    - value: export AWS_LAMBDA_HOME=$PROJECT_HOME/{{ awslambda_func_directory_name }}
+      regexp: "^export AWS_LAMBDA_HOME"
+    - value:  |
+        export AWS_LAMBDA_ROLE_ARN={{ awslambda_role_arn }}
+
+      regexp: "^export AWS_LAMBDA_ROLE_ARN"

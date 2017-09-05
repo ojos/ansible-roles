@@ -1,0 +1,37 @@
+---
+- name: Create awslambda directory.
+  file: >
+    path="{{ awslambda_func_directory }}"
+    state=directory
+    owner="{{ awslambda_user }}"
+    group="{{ awslambda_group }}"
+    mode=0755
+  become: yes
+
+- name: Create awslambda IAM role.
+  iam_role: >
+    name="{{ awslambda_iam_role_name }}"
+    assume_role_policy_document="{{ awslambda_role_policy }}"
+    state=present
+    managed_policy="{{ awslambda_managed_policy }}"
+  register: iam_role_response
+- set_fact: >
+    awslambda_role_arn="{{ iam_role_response.iam_role.arn }}"
+
+- name: Copy awslogs.conf.
+  copy: >
+    src=deploy_lambda.py
+    dest="{{ awslambda_ansible_directory }}/deploy_lambda.py"
+    owner="{{ awslambda_user }}"
+    group="{{ awslambda_group }}"
+    mode=0644
+
+- name: Insert env in .envrc.
+  lineinfile: >
+    dest={{ awslambda_envrc_directory }}/.envrc
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items: "{{ awslambda_environment_variables }}"
+  when: awslambda_envrc_directory != '' and awslambda_environment_variables|length > 0

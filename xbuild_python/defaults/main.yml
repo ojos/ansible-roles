@@ -28,7 +28,9 @@
   xbuild_python_environment_variables:
     - value: "# python"
       regexp: "^# python$"
+    - value: export PYTHON_HOME=$PROJECT_HOME/python
+      regexp: "^export PYTHON_HOME"
     - value: |
-        export PATH=$PROJECT_HOME/python/bin:$PATH
+        export PATH=$PYTHON_HOME/bin:$PATH
 
-      regexp: PATH=\$PROJECT_HOME/python/bin\:\$PATH
+      regexp: PATH=\$PYTHON_HOME/bin\:\$PATH
