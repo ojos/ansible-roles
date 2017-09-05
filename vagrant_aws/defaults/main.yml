@@ -20,7 +20,8 @@
       "Environment" => "vagrant",
       "Project" => ENV["PROJECT_NAME"],
       "Roles" => "{{ vagrant_aws_roles_tag }}",
-      "Owner" => ENV["PROJECT_OWNER"]}
+      "Owner" => ENV["PROJECT_OWNER"],
+      "SSM" => 'off'}
   vagrant_aws_envrc_directory: "{{ vagrant_envrc_directory }}"
   vagrant_aws_environment_variables:
     - value: "# vagrant-aws"
@@ -45,4 +46,3 @@
         export VAGRANT_PRIVATE_KEY_PATH={{ vagrant_aws_private_key_path }}
 
       regexp: "^export VAGRANT_PRIVATE_KEY_PATH"
-
