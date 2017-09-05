@@ -56,7 +56,7 @@
   when: dot_git_directory.stat.exists and project_repository != '' and project_repository_disconnect
 
 - name: git init.
-  command: "git init {{ project_repository }}"
+  command: "git init {{ project_directory }}"
   when: project_repository != '' and project_repository_disconnect
 
 # - name: Change project directory owner.
