@@ -34,7 +34,7 @@
     version="{{ project_repository_version }}"
     accept_hostkey=true
     force="{{ project_repository_force }}"
-  ignore_errors: yes
+  # ignore_errors: yes
   when: project_repository != ''
 
 - name: Remove private key.
