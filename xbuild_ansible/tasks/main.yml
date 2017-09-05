@@ -10,23 +10,28 @@
     mode=0755
   become: yes
 
-- name: Create default roles directory.
-  file: >
-    path="{{ xbuild_ansible_directory }}/roles"
-    state=directory
-    mode=0755
-  become: yes
+# - name: Create default roles directory.
+#   file: >
+#     path="{{ xbuild_ansible_directory }}/roles"
+#     state=directory
+#     mode=0755
+#   become: yes
 
-- name: Clone Default roles repository.
-  git: >
-    repo="{{ xbuild_ansible_roles_repository }}"
-    dest="{{ xbuild_ansible_directory }}/roles"
-    update=yes
-    force=yes
-    track_submodules=yes
-    accept_hostkey=yes
+- name: Add roles repository as submodule.
+  command: "git submodule add {{ xbuild_ansible_roles_repository }} {{ xbuild_ansible_directory }}/roles"
   when: xbuild_ansible_roles_repository != ''
   become: yes
+
+# - name: Clone Default roles repository.
+#   git: >
+#     repo="{{ xbuild_ansible_roles_repository }}"
+#     dest="{{ xbuild_ansible_directory }}/roles"
+#     update=yes
+#     force=yes
+#     track_submodules=yes
+#     accept_hostkey=yes
+#   when: xbuild_ansible_roles_repository != ''
+#   become: yes
 
 - name: Ansible Configure file.
   stat: >
@@ -55,7 +60,6 @@
     mode=0644
   when: not ansible_hosts.stat.exists
   become: yes
-
 
 - name: Buildout playbook.
   stat: >
