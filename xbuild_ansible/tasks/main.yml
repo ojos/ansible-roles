@@ -19,6 +19,22 @@
 #     mode=0755
 #   become: yes
 
+- name: Role directory.
+  stat: >
+    path="{{ xbuild_ansible_directory }}/roles"
+  register: role_directory
+  changed_when: no
+  check_mode: no
+- name: Deinit roles repository as submodule.
+  command: "git submodule deinit --force {{ xbuild_ansible_directory }}/roles"
+  args: >
+    chdir="{{ xbuild_ansible_directory }}"
+  when: role_directory.stat.exists
+- name: Remove role directory.
+  file: >
+    path={{ xbuild_ansible_directory }}/role
+    state=absent
+  when: role_directory.stat.exists
 - name: Add roles repository as submodule.
   command: "git submodule add --force {{ xbuild_ansible_roles_repository }} {{ xbuild_ansible_directory }}/roles"
   args: >
