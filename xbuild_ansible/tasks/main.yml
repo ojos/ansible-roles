@@ -21,6 +21,8 @@
 
 - name: Add roles repository as submodule.
   command: "git submodule add --force {{ xbuild_ansible_roles_repository }} {{ xbuild_ansible_directory }}/roles"
+  args: >
+    chdir="{{ xbuild_ansible_directory }}"
   when: xbuild_ansible_roles_repository != ''
   become: yes
 
