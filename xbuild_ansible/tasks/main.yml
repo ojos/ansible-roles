@@ -12,7 +12,6 @@
     mode=0755
   become: yes
 
-
 - name: Role directory.
   stat: >
     path="{{ xbuild_ansible_directory }}/roles"
@@ -31,31 +30,11 @@
   when: role_directory.stat.exists
   become: yes
 
-# - name: Create default roles directory.
-#   file: >
-#     path="{{ xbuild_ansible_directory }}/roles"
-#     state=directory
-#     owner="{{ xbuild_ansible_user }}"
-#     group="{{ xbuild_ansible_group }}"
-#     mode=0755
-#   become: yes
 - name: Add roles repository as submodule.
   command: "git submodule add --force {{ xbuild_ansible_roles_repository }} roles"
   args:
     chdir: "{{ xbuild_ansible_directory }}"
   when: xbuild_ansible_roles_repository != ''
-  # become: yes
-
-# - name: Clone Default roles repository.
-#   git: >
-#     repo="{{ xbuild_ansible_roles_repository }}"
-#     dest="{{ xbuild_ansible_directory }}/roles"
-#     update=yes
-#     force=yes
-#     track_submodules=yes
-#     accept_hostkey=yes
-#   when: xbuild_ansible_roles_repository != ''
-#   become: yes
 
 - name: Ansible Configure file.
   stat: >
@@ -144,6 +123,18 @@
     recurse=yes
     owner={{ xbuild_ansible_user }}
     group={{ xbuild_ansible_group }}
+  become: yes
+
+- name: Insert in .gitignore.
+  lineinfile: >
+    dest={{ project_directory }}/.gitignore
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items:
+    - value: "/orchestration/ansible/roles/"
+      regexp: "^/orchestration/ansible/roles/$"
   become: yes
 
 - name: Insert env in .envrc.
