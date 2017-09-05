@@ -12,12 +12,6 @@
     mode=0755
   become: yes
 
-# - name: Create default roles directory.
-#   file: >
-#     path="{{ xbuild_ansible_directory }}/roles"
-#     state=directory
-#     mode=0755
-#   become: yes
 
 - name: Role directory.
   stat: >
@@ -35,6 +29,16 @@
     path={{ xbuild_ansible_directory }}/role
     state=absent
   when: role_directory.stat.exists
+  become: yes
+
+- name: Create default roles directory.
+  file: >
+    path="{{ xbuild_ansible_directory }}/roles"
+    state=directory
+    owner="{{ xbuild_ansible_user }}"
+    group="{{ xbuild_ansible_group }}"
+    mode=0755
+  become: yes
 - name: Add roles repository as submodule.
   command: "git submodule add --force {{ xbuild_ansible_roles_repository }} {{ xbuild_ansible_directory }}/roles"
   args: >
