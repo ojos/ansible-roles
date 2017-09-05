@@ -61,8 +61,8 @@
   register: dot_git_directory
   changed_when: no
   check_mode: no
-- name: Remove .git.
-  command: git init
+- name: git init.
+  command: "git init {{ project_repository }}"
   args: >
     chdir="{{ project_directory }}""
   when: not dot_git_directory.stat.exists
