@@ -1,4 +1,12 @@
 ---
+- name: Install dependent packages.
+  pip: >
+    name={{ item }}
+    state=latest
+    executable="{{ awslambda_python_bin_directory }}/pip"
+  with_items: "{{ awslambda_dependent_packages }}"
+  when: awslambda_dependent_packages|length > 0
+
 - name: Create awslambda directory.
   file: >
     path="{{ awslambda_func_directory }}"

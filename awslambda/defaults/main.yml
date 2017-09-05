@@ -19,6 +19,10 @@
   awslambda_managed_policy:
     - arn:aws:iam::aws:policy/AWSLambdaFullAccess
     - arn:aws:iam::aws:policy/CloudWatchFullAccess
+  awslambda_python_bin_directory: "{{ xbuild_ansible_python_bin_directory }}"
+  awslambda_dependent_packages:
+    - boto
+    - boto3
   awslambda_envrc_directory: "{{ xbuild_ansible_envrc_directory }}"
   awslambda_environment_variables:
     - value: "# aws-lambda"
