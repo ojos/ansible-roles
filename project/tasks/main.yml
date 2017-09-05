@@ -34,7 +34,7 @@
     version="{{ project_repository_version }}"
     accept_hostkey=true
     force="{{ project_repository_force }}"
-  # ignore_errors: yes
+  ignore_errors: yes
   when: project_repository != ''
 
 - name: Remove private key.
@@ -54,6 +54,18 @@
     path={{ project_directory }}/.git
     state=absent
   when: dot_git_directory.stat.exists and project_repository != '' and project_repository_disconnect
+
+- name: .git directory.
+  stat: >
+    path="{{ project_directory }}/.git"
+  register: dot_git_directory
+  changed_when: no
+  check_mode: no
+- name: Remove .git.
+  command: git init
+  args:
+    chdir: {{ project_directory }}
+  when: not dot_git_directory.stat.exists
 
 # - name: Change project directory owner.
 #   file: >
