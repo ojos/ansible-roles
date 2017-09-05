@@ -55,17 +55,9 @@
     state=absent
   when: dot_git_directory.stat.exists and project_repository != '' and project_repository_disconnect
 
-- name: .git directory.
-  stat: >
-    path="{{ project_directory }}/.git"
-  register: dot_git_directory
-  changed_when: no
-  check_mode: no
 - name: git init.
   command: "git init {{ project_repository }}"
-  args: >
-    chdir="{{ project_directory }}""
-  when: not dot_git_directory.stat.exists
+  when: project_repository != '' and project_repository_disconnect
 
 # - name: Change project directory owner.
 #   file: >
