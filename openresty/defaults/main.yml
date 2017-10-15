@@ -1,7 +1,7 @@
 ---
   openresty_user: nginx
   openresty_group: nginx
-  openresty_version: 1.11.2.2
+  openresty_version: 1.11.2.5
   openresty_work_directory: "{{ project_directory }}/work"
   openresty_dependent_packages:
     - openssl-devel
