@@ -108,19 +108,19 @@
     group={{ xbuild_ansible_group }}
   become: yes
 
-- set_fact: >
-    roles_directory="{{ xbuild_ansible_directory | regex_replace(project_directory, '') }}"
-- name: Insert in .gitignore.
-  lineinfile: >
-    dest={{ project_directory }}/.gitignore
-    line="{{ item.value }}"
-    insertafter=EOF
-    state=present
-    regexp={{ item.regexp }}
-  with_items:
-    - value: "{{ roles_directory }}/roles/"
-      regexp: "^{{ roles_directory }}/roles/$"
-  become: yes
+# - set_fact: >
+#     roles_directory="{{ xbuild_ansible_directory | regex_replace(project_directory, '') }}"
+# - name: Insert in .gitignore.
+#   lineinfile: >
+#     dest={{ project_directory }}/.gitignore
+#     line="{{ item.value }}"
+#     insertafter=EOF
+#     state=present
+#     regexp={{ item.regexp }}
+#   with_items:
+#     - value: "{{ roles_directory }}/roles/"
+#       regexp: "^{{ roles_directory }}/roles/$"
+#   become: yes
 
 - name: Insert env in .envrc.
   lineinfile: >
