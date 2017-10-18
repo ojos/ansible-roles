@@ -45,9 +45,9 @@
   ignore_errors: yes
   when: project_repository != ''
 
-- name: Remove key directory.
+- name: Remove private key.
   file: >
-    path={{ project_key_directory }}
+    path={{ project_private_key }}
     state=absent
   when: project_local_private_key != ''
 
