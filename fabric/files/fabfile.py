@@ -56,63 +56,25 @@ def lint(options=''):
     pass
 
 
-def _ngx_start(deamon, pid):
-    if pid:
-        local('sudo %s -s reopen' % deamon)
-    else:
-        local('sudo %s' % deamon)
-
-
-def _ngx_stop(deamon, pid):
-    if pid:
-        local('sudo %s -s stop' % deamon)
-
-
-def _ngx_reload(deamon, pid):
-    if pid:
-        local('sudo %s -s reload' % deamon)
-    else:
-        local('sudo %s' % deamon)
-
-
-@task
-def ngx(command):
-    """Nginxのラッパー"""
-    if _is_local():
-        deamon = '%s/sbin/nginx' % os.environ['NGINX_HOME']
-        pid = os.path.exists(os.environ['NGINX_PID'])
-
-        if command == 'start':
-            _ngx_start(deamon, pid)
-        elif command == 'stop':
-            _ngx_stop(deamon, pid)
-        elif command == 'reload':
-            _ngx_reload(deamon, pid)
-        elif command == 'restart':
-            _ngx_stop(deamon, pid)
-            _ngx_start(deamon, pid)
-    else:
-        sudo('service nginx %s' % command)
-
-
 def _sv_start(deamon, ctl, conf, pid):
     if os.path.exists(pid):
-        local('%s -c %s reload' % (ctl, conf))
+        local('sudo -E %s -c %s reload' % (ctl, conf))
     else:
-        local('%s --configuration %s --pidfile %s' % (deamon, conf, pid))
+        local('sudo -E %s --configuration %s --pidfile %s' % (deamon, conf, pid))
 
 
 def _sv_stop(pid):
     if os.path.exists(pid):
         with open(pid, "r") as fh:
-            local('kill %s' % (fh.read().rstrip("\n")))
+            local('sudo -E kill %s' % (fh.read().rstrip("\n")))
 
 
 def _sv_reload(deamon, ctl, conf, pid):
+    print(pid)
     if os.path.exists(pid):
-        local('%s -c %s reload' % (ctl, conf))
+        local('sudo -E %s -c %s reload' % (ctl, conf))
     else:
-        local('%s --configuration %s --pidfile %s' % (deamon, conf, pid))
+        local('sudo -E %s --configuration %s --pidfile %s' % (deamon, conf, pid))
 
 
 @task
@@ -128,11 +90,8 @@ def sv(command):
             _sv_start(deamon, ctl, conf, pid)
         elif command == 'stop':
             _sv_stop(pid)
-        elif command == 'reload':
+        elif command == 'reload' or command == 'restart':
             _sv_reload(deamon, ctl, conf, pid)
-        elif command == 'restart':
-            _sv_stop(pid)
-            _sv_start(deamon, ctl, conf, pid)
     else:
         sudo('service supervisord %s' % command)
 
@@ -141,9 +100,9 @@ def sv(command):
 def tda(command):
     if _is_local():
         if command == 'start':
-            local('sudo launchctl load /Library/LaunchDaemons/td-agent.plist')
+            local('sudo -E launchctl load /Library/LaunchDaemons/td-agent.plist')
         elif command == 'stop':
-            local('sudo launchctl unload /Library/LaunchDaemons/td-agent.plist')
+            local('sudo -E launchctl unload /Library/LaunchDaemons/td-agent.plist')
     else:
         sudo('service td-agent %s' % command)
 
