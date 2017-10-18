@@ -26,8 +26,8 @@
   changed_when: no
   check_mode: no
 - name: Create buildout playbook.
-  copy: >
-    src=ansible.cfg
+  template: >
+    src=ansible.tpl
     dest="{{ xbuild_ansible_directory }}/{{ xbuild_ansible_configure_file_name }}"
     owner="{{ xbuild_ansible_user }}"
     group="{{ xbuild_ansible_group }}"

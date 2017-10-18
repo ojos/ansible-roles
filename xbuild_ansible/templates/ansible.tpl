@@ -5,4 +5,4 @@ forks = 64
 retry_files_enabled = False
 
 [ssh_connection]
-ssh_args = -F $KEY_HOME/ssh_config
+ssh_args = -F {{ keygen_key_directory }}/ssh_config
