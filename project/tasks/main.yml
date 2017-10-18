@@ -8,23 +8,29 @@
     mode=0755
   become: yes
 
+- name: Create key directory.
+  file: >
+    path="{{ project_key_directory }}"
+    state=directory
+    recurse=yes
+    owner={{ project_user }}
+    group={{ project_group }}
+    mode=0755
+  when: project_local_private_key != ''
 - name: Copy private key for git.
   copy: >
     src="{{ project_local_private_key }}"
-    dest="{{ project_remote_private_key }}"
-  when: project_local_private_key != '' and project_remote_private_key != ''
-
-- name: Remote private key file.
-  stat: >
-    path="{{ project_remote_private_key }}"
-  register: remote_private_key
-  changed_when: no
-  check_mode: no
-- name: Change to readonly.
-  file: >
-    path="{{ project_remote_private_key }}"
+    dest="{{ project_private_key }}"
     mode=0400
-  when: remote_private_key.stat.exists
+  when: project_local_private_key != ''
+- name: Create git_ssh file.
+  template: >
+    src=git_ssh.tpl
+    dest="{{ project_git_ssh_file }}"
+    owner="{{ project_user }}"
+    group="{{ project_group }}"
+    mode=0755
+  when: project_local_private_key != ''
 
 - name: Clone repository.
   git: >
@@ -33,31 +39,24 @@
     track_submodules=true
     version="{{ project_repository_version }}"
     accept_hostkey=true
-    force="{{ project_repository_force }}"
+    force=true
   ignore_errors: yes
   when: project_repository != ''
 
-- name: Remove private key.
+- name: Remove key directory.
   file: >
-    path={{ project_remote_private_key }}
+    path={{ project_key_directory }}
     state=absent
-  when: project_remote_private_key != '' and remote_private_key.stat.exists
+  when: project_local_private_key != ''
 
-- name: .git directory.
-  stat: >
-    path="{{ project_directory }}/.git"
-  register: dot_git_directory
-  changed_when: no
-  check_mode: no
 - name: Remove .git.
   file: >
     path={{ project_directory }}/.git
     state=absent
-  when: dot_git_directory.stat.exists and project_repository != '' and project_repository_disconnect
-
+  when: project_repository == 'https://github.com/ojos/project-skel.git'
 - name: git init.
   command: "git init {{ project_directory }}"
-  when: project_repository != '' and project_repository_disconnect
+  when: project_repository == 'https://github.com/ojos/project-skel.git'
 
 # - name: Change project directory owner.
 #   file: >
