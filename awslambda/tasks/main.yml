@@ -3,7 +3,6 @@
   pip: >
     name={{ item }}
     state=latest
-    executable="{{ awslambda_python_bin_directory }}/pip"
   with_items: "{{ awslambda_dependent_packages }}"
   when: awslambda_dependent_packages|length > 0
 
@@ -31,9 +30,9 @@
     assume_role_policy_document="{{ awslambda_role_policy }}"
     state=present
     managed_policy="{{ awslambda_managed_policy }}"
+    aws_access_key="{{ awslambda_access_key_id }}"
+    aws_secret_key="{{ awslambda_secret_access_key }}"
   register: iam_role_response
-  environment:
-    PATH: "{{ awslambda_python_bin_directory }}:{{ ansible_env.PATH }}"
 - set_fact: >
     awslambda_role_arn="{{ iam_role_response.iam_role.arn }}"
 

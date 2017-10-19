@@ -4,6 +4,8 @@
   awslambda_ansible_directory: "{{ xbuild_ansible_directory }}"
   awslambda_user: "{{ xbuild_ansible_user }}"
   awslambda_group: "{{ xbuild_ansible_group }}"
+  awslambda_access_key_id: "{{ awsenv_access_key_id }}"
+  awslambda_secret_access_key: "{{ awsenv_secret_access_key }}"
   awslambda_iam_role_name: "{{ awslambda_func_directory_name }}"
   awslambda_role_policy:
     Version: '2012-10-17'
