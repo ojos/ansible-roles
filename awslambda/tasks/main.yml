@@ -32,6 +32,8 @@
     state=present
     managed_policy="{{ awslambda_managed_policy }}"
   register: iam_role_response
+  environment:
+    PATH: "{{ awslambda_python_bin_directory }}:{{ ansible_env.PATH }}"
 - set_fact: >
     awslambda_role_arn="{{ iam_role_response.iam_role.arn }}"
 
