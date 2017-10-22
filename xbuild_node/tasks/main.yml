@@ -33,6 +33,7 @@
 - name: Install from package.json.
   npm: >
     path={{ xbuild_node_package_json_file }}
+    executable={{ xbuild_node_install_directory }}/bin/npm
   when: xbuild_node_package_json_file != ''
 
 - name: Insert env in .envrc.
