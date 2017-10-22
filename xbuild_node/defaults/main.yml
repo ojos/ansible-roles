@@ -6,8 +6,8 @@
   xbuild_node_install_directory: "{{ project_directory }}/nodejs"
   xbuild_node_envrc_directory: "{{ direnv_envrc_directory }}"
   xbuild_node_remove_xbuild: yes
-  xbuild_node_packages:
-    - coffee-script
+  xbuild_node_global_packages: []
+  xbuild_node_package_json_file: ''
   xbuild_node_environment_variables:
     - value: "# node"
       regexp: "^# node$"

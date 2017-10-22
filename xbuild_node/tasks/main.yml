@@ -21,14 +21,19 @@
     group={{ xbuild_node_group }}
   become: yes
 
-# - name: Install node packages.
-#   npm: >
-#     name={{ item }}
-#     state=latest
-#     executable={{ xbuild_node_install_directory }}/bin/npm
-#     global=yes
-#   with_items: "{{ xbuild_node_packages }}"
-#   when: xbuild_node_packages|length > 0
+- name: Install node packages globally.
+  npm: >
+    name={{ item }}
+    state=latest
+    executable={{ xbuild_node_install_directory }}/bin/npm
+    global=yes
+  with_items: "{{ xbuild_node_global_packages }}"
+  when: xbuild_node_global_packages|length > 0
+
+- name: Install from package.json.
+  npm: >
+    path={{ xbuild_node_package_json_file }}
+  when: xbuild_node_package_json_file != ''
 
 - name: Insert env in .envrc.
   lineinfile: >
