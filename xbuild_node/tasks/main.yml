@@ -32,9 +32,11 @@
 
 - name: Install from package.json.
   npm: >
-    path={{ xbuild_node_package_json_file }}
+    path={{ xbuild_node_package_json_directory }}
     executable={{ xbuild_node_install_directory }}/bin/npm
-  when: xbuild_node_package_json_file != ''
+  environment:
+    PATH: "{{ xbuild_node_install_directory }}/bin:{{ ansible_env.PATH }}"
+  when: xbuild_node_package_json_directory != ''
 
 - name: Insert env in .envrc.
   lineinfile: >
