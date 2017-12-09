@@ -8,14 +8,34 @@
     regexp={{ item.regexp }}
   with_items:
     - regexp: '^root soft nofile.+'
-      value: 'root soft nofile {{ os_conf_root_soft_nofile }}'
+      value: 'root soft nofile {{ os_conf_ulimit }}'
     - regexp: '^root hard nofile.+'
-      value: 'root hard nofile {{ os_conf_root_hard_nofile }}'
+      value: 'root hard nofile {{ os_conf_ulimit }}'
     - regexp: '^\* soft nofile.+'
-      value: '* soft nofile {{ os_conf_anonymous_soft_nofile }}'
+      value: '* soft nofile {{ os_conf_ulimit }}'
     - regexp: '^\* hard nofile.+'
-      value: '* hard nofile {{ os_conf_anonymous_hard_nofile }}'
+      value: '* hard nofile {{ os_conf_ulimit }}'
   become: yes
+
+- name: sysconf init file(CentOS 6.x).
+  stat: >
+    path="{{ os_sysconf_init_file }}"
+  register: sysconf_init
+  changed_when: no
+  check_mode: no
+- name: Insert of initscript.
+  lineinfile: >
+    dest="{{ os_sysconf_init_file }}"
+    line="{{ item.value }}"
+    insertafter=EOF
+    state=present
+    regexp={{ item.regexp }}
+  with_items:
+    - regexp: '^ulimit -n .+'
+      value: 'ulimit -n {{ os_conf_ulimit }}'
+  when: sysconf_init.stat.exists
+  become: yes
+
 - name: Insert of sysctl.conf.
   lineinfile: >
     dest="{{ os_sysctl_file }}"
