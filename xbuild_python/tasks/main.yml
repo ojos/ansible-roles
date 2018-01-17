@@ -29,7 +29,8 @@
 
 - name: Install python packages.
   pip: >
-    name={{ item }}
+    name={{ item.name | default(item) }}
+    version={{ item.version | default(omit) }}
     state=latest
     executable={{ xbuild_python_install_directory }}/bin/pip
   with_items: "{{ xbuild_python_packages }}"
