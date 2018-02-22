@@ -4,7 +4,7 @@
   git_ssh_identity_file : '~/.ssh/id_rsa'
   git_ssh_directory_name: ".ssh"
   git_ssh_directory: "{{ project_directory }}/{{ git_ssh_directory_name }}"
-  git_ssh_file_name: "git_ssh.sh"
+  git_ssh_file_name: "git-ssh.sh"
   git_ssh_home_directory: "$PROJECT_HOME/{{ git_ssh_directory_name }}"
   git_ssh_envrc_directory: "{{ direnv_envrc_directory }}"
   git_ssh_environment_variables:
