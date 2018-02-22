@@ -25,12 +25,15 @@
     - ipython
     - pip
   xbuild_python_envrc_directory: "{{ direnv_envrc_directory }}"
+  xbuild_python_path: $PYTHONPATH
   xbuild_python_environment_variables:
     - value: "# python"
       regexp: "^# python$"
     - value: export PYTHON_HOME=$PROJECT_HOME/python
       regexp: "^export PYTHON_HOME"
-    - value: |
-        export PATH=$PYTHON_HOME/bin:$PATH
-
+    - value: export PATH=$PYTHON_HOME/bin:$PATH
       regexp: PATH=\$PYTHON_HOME/bin\:\$PATH
+    - value: |
+        export PYTHONPATH={{ xbuild_python_path }}
+
+      regexp: "^export PYTHONPATH"
