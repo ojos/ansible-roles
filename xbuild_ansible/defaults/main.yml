@@ -15,6 +15,7 @@
       regexp: "^# ansible$"
     - value: export ANSIBLE_HOME={{ xbuild_ansible_home_directory }}
       regexp: "^export ANSIBLE_HOME"
-    - value: export ANSIBLE_CONFIG=$ANSIBLE_HOME/ansible.cfg
+    - value: |
+        export ANSIBLE_CONFIG=$ANSIBLE_HOME/ansible.cfg
 
       regexp: "^export ANSIBLE_CONFIG"
