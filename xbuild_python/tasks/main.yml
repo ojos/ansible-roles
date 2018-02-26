@@ -24,6 +24,8 @@
   command: >
     {{ xbuild_install_directory }}/python-install {{ xbuild_python_version }}
     {{ xbuild_python_install_directory }}
+  environment:
+    PYTHON_CONFIGURE_OPTS: "{{ django_python_bin_directory }}"
   when: not python_directory.stat.exists
   become: yes
 
