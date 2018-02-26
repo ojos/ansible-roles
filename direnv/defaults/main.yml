@@ -5,7 +5,8 @@
   direnv_arch: amd64
   direnv_install_directory: /usr/local/bin
   direnv_envrc_directory: "{{ project_directory }}"
+  direnv_project_directory: '$PWD'
+  direnv_project_name: '${PWD##*/}'
   direnv_project_owner: "{{ project_owner }}"
-  direnv_project_directory: "$PWD"
   direnv_environment_variables: []
 
