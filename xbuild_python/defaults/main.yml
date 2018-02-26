@@ -20,7 +20,8 @@
     - systemtap-sdt-devel
   xbuild_python_version: 2.7.12
   xbuild_python_install_directory: "{{ project_directory }}/python"
-  xbuild_python_configure_opts: ''
+  xbuild_python_configure_opts: '--enable-shared'
+  xbuild_python_cflags: '-fPIC'
   xbuild_python_remove_xbuild: yes
   xbuild_python_packages:
     - ipython
