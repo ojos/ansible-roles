@@ -1,10 +1,11 @@
 ---
   direnv_download_url: https://github.com/direnv/direnv/releases/download
-  direnv_version: 2.12.2
+  direnv_version: 2.15.2
   direnv_os: linux
   direnv_arch: amd64
   direnv_install_directory: /usr/local/bin
   direnv_envrc_directory: "{{ project_directory }}"
   direnv_project_owner: "{{ project_owner }}"
+  direnv_project_directory: "$PWD"
   direnv_environment_variables: []
 
