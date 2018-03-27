@@ -6,15 +6,7 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items:
-    - regexp: '^root soft nofile.+'
-      value: 'root soft nofile {{ os_conf_ulimit }}'
-    - regexp: '^root hard nofile.+'
-      value: 'root hard nofile {{ os_conf_ulimit }}'
-    - regexp: '^\* soft nofile.+'
-      value: '* soft nofile {{ os_conf_ulimit }}'
-    - regexp: '^\* hard nofile.+'
-      value: '* hard nofile {{ os_conf_ulimit }}'
+  with_items: "{{ os_conf_limits_conf_variables }}"
   become: yes
 
 - name: sysconf init file(CentOS 6.x).
@@ -30,9 +22,7 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items:
-    - regexp: '^ulimit -n .+'
-      value: 'ulimit -n {{ os_conf_ulimit }}'
+  with_items: "{{ os_conf_sysconfig_init_variables }}"
   when: sysconf_init.stat.exists
   become: yes
 
@@ -43,17 +33,5 @@
     insertafter=EOF
     state=present
     regexp={{ item.regexp }}
-  with_items:
-    - regexp: '^net\.ipv4\.tcp_tw_recycle\s=.+'
-      value: 'net.ipv4.tcp_tw_recycle = {{ os_conf_net_ipv4_tcp_tw_recycle }}'
-    - regexp: '^net.ipv4.tcp_tw_reuse =.+'
-      value: 'net.ipv4.tcp_tw_reuse = {{ os_conf_net_ipv4_tcp_tw_reuse }}'
-    - regexp: '^net.ipv4.ip_local_port_range =.+'
-      value: 'net.ipv4.ip_local_port_range = {{ os_conf_net_ipv4_ip_local_port_range }}'
-    - regexp: '^net.ipv4.tcp_keepalive_time =.+'
-      value: 'net.ipv4.tcp_keepalive_time = {{ os_conf_net_ipv4_tcp_keepalive_time }}'
-    - regexp: '^net.ipv4.tcp_keepalive_probes =.+'
-      value: 'net.ipv4.tcp_keepalive_probes = {{ os_conf_net_ipv4_tcp_keepalive_probes }}'
-    - regexp: '^net.ipv4.tcp_keepalive_intvl =.+'
-      value: 'net.ipv4.tcp_keepalive_intvl = {{ os_conf_net_ipv4_tcp_keepalive_intvl }}'
+  with_items: "{{ os_conf_sysctl_conf_variables }}"
   become: yes
