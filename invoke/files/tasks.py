@@ -139,7 +139,7 @@ def _update_ansible_roles():
 
 def _generate_bootstrap_command(action, env, hosts, vars):
     private_key = '%s/%s' % (os.environ['KEY_HOME'], env)
-    cmd = './bootstrap -p %s.yml -i %s -o \'["-l %s", "--private-key %s.pem"]\'' % (
+    cmd = './bootstrap -p %s.yaml -i %s -o \'["-l %s", "--private-key %s.pem"]\'' % (
         action, hosts, hosts, private_key)
     if vars is not None:
         cmd = '%s -v \'%s\'' % (cmd, vars)

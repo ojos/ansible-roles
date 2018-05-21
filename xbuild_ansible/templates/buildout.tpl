@@ -6,4 +6,4 @@
     - timezone
     - devtools
     - project
-- include: "{{ lookup('env', 'ANSIBLE_HOME') }}/deploy.yml"
+- include: "{{ lookup('env', 'ANSIBLE_HOME') }}/deploy.yaml"
