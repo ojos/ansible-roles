@@ -1,0 +1,31 @@
+---
+  keygen_bits: 2048
+  keygen_type: rsa
+  keygen_passphrase: ''
+  keygen_ssh_user: 'ec2-user'
+  keygen_ssh_port: 22
+  keygen_Identity_file: yes
+  keygen_ssh_host_config: |
+    Host {{ item }}
+    HostName xxx.xxx.xxx.xxx
+    User {{ keygen_ssh_user }}
+    Port {{ keygen_ssh_port }}
+    UserKnownHostsFile /dev/null
+    StrictHostKeyChecking no
+    PasswordAuthentication no
+    IdentityFile {{ project_dir }}/.ssh/{{ item }}.pem
+    IdentitiesOnly yes
+    LogLevel FATAL
+  keygen_environments: 
+    - "current"
+    - "develop"
+    - "staging"
+    - "production"
+  keygen_envrc_directory: "{{ direnv_envrc_directory }}"
+  keygen_environment_variables:
+    - value: "# ssh_key"
+      regexp: "^# ssh_key$"
+    - value: |
+        export KEY_HOME=$PROJECT_HOME/.ssh
+
+      regexp: "^export KEY_HOME"

@@ -1,1 +1,0 @@
-exec ssh -oIdentityFile={{ git_ssh_identity_file }} "$@"

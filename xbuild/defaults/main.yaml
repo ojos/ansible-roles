@@ -1,3 +1,0 @@
----
-  xbuild_repository: https://github.com/tagomoris/xbuild.git
-  xbuild_install_directory: "{{ project_directory }}/xbuild"

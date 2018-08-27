@@ -1,4 +1,0 @@
----
-  crond_task_user: "{{ ansible_user_id }}"
-  crond_tasks:
-    - "0       4       *       *       *       /usr/bin/sudo /sbin/service nginx restart"

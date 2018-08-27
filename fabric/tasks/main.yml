@@ -1,0 +1,16 @@
+---
+- name: Install ansible.
+  become:      yes
+  become_user: "{{ project_user }}"
+  with_items:  "{{ python_install_versions }}"
+  pip:
+    name:       "ansible"
+    executable: "{{ project_dir }}/python/versions/{{ item.version }}/bin/pip"
+
+
+- name: Download task file.
+  become:      yes
+  become_user: "{{ project_user }}"
+  get_url:
+    url:  "{{ fabric_tasks_file_url }}"
+    dest: "{{ project_dir }}"

@@ -1,0 +1,7 @@
+---
+  direnv_version:               2.17.0
+  direnv_install_directory:     "/usr/local/bin"
+  direnv_envrc_directory:       "{{ project_dir }}"
+  direnv_git_ssh_file:          ""
+  direnv_environment_variables: []
+

@@ -1,8 +1,0 @@
----
-- name: Install mecab-python3 packages.
-  pip: >
-    name=mecab-python3
-    state=latest
-    executable={{ mecab_python_bin_directory }}/pip
-  environment:
-    PATH: "{{ mecab_bin_directory }}:{{ ansible_env.PATH }}"

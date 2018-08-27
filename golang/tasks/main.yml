@@ -1,0 +1,88 @@
+- name: Install dependent packages(RedHat).
+  become:     yes
+  when:       
+    - "ansible_os_family == 'RedHat'"
+    - "golang_dependent_packages|length > 0"
+  with_items: "{{ golang_dependent_packages }}"
+  yum:
+    name:  "{{ item.name | default(item) }}"
+    state: "{{ item.state | default('latest') }}"
+
+- name: Install dependent packages(Darwin).
+  when:
+    - "ansible_os_family == 'Darwin'"
+    - "golang_dependent_packages|length > 0"
+  with_items: "{{ golang_dependent_packages }}"
+  homebrew:
+    name:            "{{ item.name | default(item) }}"
+    state:           "{{ item.state | default(omit) }}"
+    install_options: "{{ item.install_option | default(omit) }}"
+
+- name: Clone xbuild directory.
+  become:      yes
+  become_user: "{{ project_user }}"
+  git:
+    repo:          "{{ golang_xbuild_repository }}"
+    dest:          "{{ project_dir }}/xbuild"
+    update:         yes
+    accept_hostkey: yes
+
+- name: Install golang in xbuild.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        "golang_install_versions|length > 0"
+  with_items:  "{{ golang_install_versions }}"
+  command:     "{{ project_dir }}/xbuild/go-install -f {{ item.version }} {{ project_dir }}/go/versions/{{ item.version }} {{ golang_os }} {{ golang_arch }}"
+
+- name: Install golang packages.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        "golang_install_versions|length > 0"
+  with_subelements:
+    - "{{ golang_install_versions }}"
+    - "packages"
+  environment:
+    GOROOT: "{{ project_dir }}/go/versions/{{ item.0.version }}"
+    GOPATH: "{{ item.0.app_directory }}"
+  command: "{{ project_dir }}/go/versions/{{ item.0.version }}/bin/go get {{ item.1 }}"
+
+- name: Create alias directory.
+  become: yes
+  file:
+    path:  "{{ project_dir }}/go/alias"
+    owner: "{{ project_user }}"
+    state: "directory"
+
+- name: Create a default version of an alias.
+  become: yes
+  file:
+    src:   "{{ project_dir }}/go/versions/{{ golang_default_version }}"
+    dest:  "{{ project_dir }}/go/alias/default"
+    owner: "{{ project_user }}"
+    state: "link"
+
+- name: Insert env in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        "golang_environment_variables|length > 0"
+  with_items:  "{{ golang_environment_variables }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    insertafter: "EOF"
+    state:       "present"
+    regexp:      "{{ item.regexp }}"
+
+- name: direnv allow.
+  become: yes
+  become_user: "{{ project_user }}"
+  command: "direnv allow ./"
+  args:
+    chdir: "{{ project_dir }}"
+
+- name: Remove xbuild directory.
+  become: yes
+  become_user: "{{ project_user }}"
+  file:
+    path:  "{{ project_dir }}/xbuild"
+    state: "absent"

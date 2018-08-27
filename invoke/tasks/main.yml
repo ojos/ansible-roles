@@ -1,0 +1,15 @@
+---
+- name: Install invoke.
+  become:      yes
+  become_user: "{{ project_user }}"
+  with_items:  "{{ python_install_versions }}"
+  pip:
+    name:       "invoke"
+    executable: "{{ project_dir }}/python/versions/{{ item.version }}/bin/pip"
+
+- name: Download task file.
+  become:      yes
+  become_user: "{{ project_user }}"
+  get_url:
+    url:  "{{ invoke_tasks_file_url }}"
+    dest: "{{ project_dir }}"

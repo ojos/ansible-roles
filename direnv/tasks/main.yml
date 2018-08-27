@@ -1,0 +1,156 @@
+---
+- name: direnv binary.
+  command:       which direnv
+  register:      direnv_bin
+  ignore_errors: yes
+  changed_when:  no
+  check_mode:    no
+
+- name: Download direnv (Windows 32bit).
+  become: yes
+  when:   
+    - "direnv_bin.rc == 1"
+    - "ansible_os_family == 'Windows'"
+    - "ansible_userspace_bits == 32"
+  get_url:
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.windows-386.exe"
+    dest: "{{ direnv_install_directory }}/direnv"
+    mode: 0775
+  
+- name: Download direnv (Windows 64bit).
+  become: yes
+  when:   
+    - "direnv_bin.rc == 1"
+    - "ansible_os_family == 'Windows'"
+    - "ansible_userspace_bits == 64"
+  get_url:
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.windows-amd64.exe"
+    dest: "{{ direnv_install_directory }}/direnv"
+    mode: 0775
+
+- name: Download direnv (Darwin 32bit).
+  become: yes
+  when:   
+    - "direnv_bin.rc == 1"
+    - "ansible_os_family == 'Darwin'"
+    - "ansible_userspace_bits == 32"
+  get_url:
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.darwin-386"
+    dest: "{{ direnv_install_directory }}/direnv"
+    mode: 0775
+
+- name: Download direnv (Darwin 64bit).
+  become: yes
+  when:   
+    - "direnv_bin.rc == 1"
+    - "ansible_os_family == 'Darwin'"
+    - "ansible_userspace_bits == 64"
+  get_url:
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.darwin-amd64"
+    dest: "{{ direnv_install_directory }}/direnv"
+    mode: 0775
+
+- name: Download direnv (Linux 32bit).
+  become: yes
+  when:   
+    - "direnv_bin.rc == 1"
+    - "ansible_os_family != 'Windows'"
+    - "ansible_os_family != 'Darwin'"
+    - "ansible_userspace_bits == 32"
+  get_url:
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.linux-386"
+    dest: "{{ direnv_install_directory }}/direnv"
+    mode: 0775
+
+- name: Download direnv (Linux 64bit).
+  become: yes
+  when:   
+    - "direnv_bin.rc == 1"
+    - "ansible_os_family != 'Windows'"
+    - "ansible_os_family != 'Darwin'"
+    - "ansible_userspace_bits == 64"
+  get_url:
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.linux-amd64"
+    dest: "{{ direnv_install_directory }}/direnv"
+    mode: 0775
+
+- name: .bashrc file.
+  when:     "ansible_env.SHELL is match('bash')"
+  register: bash_file
+  stat:
+    path: "{{ ansible_user_dir }}/.bashrc"
+  
+
+- name: Create .bashrc file.
+  when: 
+    - "ansible_env.SHELL is match('bash')"
+    - "not bash_file.stat.exists"
+  file:
+    path:  "{{ project_user_dir }}/.bashrc"
+    owner: "{{ project_user }}"
+    state: touch
+    mode:  0644
+
+- name: Insert direnv in .bashrc.
+  when: "ansible_env.SHELL is match('bash')"
+  lineinfile:
+    dest:        "{{ project_user_dir }}/.bashrc"
+    line:        'eval "$(direnv hook bash)"'
+    regexp:      "direnv hook bash"
+    insertafter: "EOF"
+    state:       "present"
+
+- name: Create XDG config directory.
+  become: yes
+  file:
+    path:    "{{ project_dir }}/.config/direnv"
+    owner:   "{{ project_user }}"
+    state:   "directory"
+    recurse: yes
+  
+- name: Create .envrc.
+  become:      yes
+  template:
+    src:   ".envrc.tpl"
+    dest:  "{{ project_dir }}/.envrc"
+    owner: "{{ project_user }}"
+    force: no
+    mode:  0644
+
+
+- name: Insert GIT_SSH in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        "direnv_git_ssh_file != ''"
+  with_items:  
+    - value:  "# git"
+      regexp: "^# git$"
+    - value: |
+        export GIT_SSH={{ direnv_git_ssh_file }}
+
+      regexp: "^export GIT_SSH"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    regexp:      "{{ item.regexp }}"
+    insertafter: EOF
+    state:       present
+
+- name: Insert env in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        "direnv_environment_variables|length > 0"
+  with_items:  "{{ direnv_environment_variables }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    regexp:      "{{ item.regexp }}"
+    insertafter: EOF
+    state:       present
+
+- name: direnv allow.
+  become:      yes
+  become_user: "{{ project_user }}"
+  command: "direnv allow ./"
+  args:
+    chdir: "{{ project_dir }}"

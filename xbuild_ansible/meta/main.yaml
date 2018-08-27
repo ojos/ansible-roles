@@ -1,5 +1,0 @@
----
-dependencies:
-  - { role: keygen }
-  - { role: orchestration }
-  - { role: xbuild_python }

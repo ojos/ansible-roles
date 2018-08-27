@@ -1,5 +1,0 @@
----
-  fabric_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
-  fabric_tasks_file_directory: "{{ project_directory }}"
-  fabric_user: "{{ xbuild_ansible_user }}"
-  fabric_group: "{{ xbuild_ansible_group }}"

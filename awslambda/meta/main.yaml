@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: awsenv }
-  - { role: xbuild_ansible }

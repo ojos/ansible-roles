@@ -1,4 +1,0 @@
----
-  mecab_python_bin_directory: "{{ xbuild_python_install_directory }}/bin"
-  mecab_bin_directory: "{{ mecab_prefix }}/bin"
-  

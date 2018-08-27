@@ -1,1 +1,0 @@
-{{ imagemagick_prefix }}/lib

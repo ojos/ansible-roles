@@ -1,8 +1,0 @@
----
-- name: Clone xbuild directory.
-  git: >
-    repo={{ xbuild_repository }}
-    dest={{ xbuild_install_directory }}
-    update=yes
-    accept_hostkey=yes
-  become: yes

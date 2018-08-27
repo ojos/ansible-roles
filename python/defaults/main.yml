@@ -1,0 +1,45 @@
+---
+  python_default_version:        3.7.0
+  python_configure_opts:         "--enable-shared"
+  python_cflags:                 "-fPIC"
+  python_dependent_packages:
+    - "@Development tools"
+    - "expat-devel"
+    - "db4-devel"
+    - "gdbm-devel"
+    - "sqlite-devel"
+    - "mysql-devel"
+    - "readline-devel"
+    - "zlib-devel"
+    - "bzip2-devel"
+    - "openssl-devel"
+    - "ncurses-devel"
+    - "libjpeg-turbo-devel"
+    - "libpng-devel"
+    - "glibc-devel"
+    - "libffi-devel"
+    - "valgrind-devel"
+    - "systemtap-sdt-devel"
+  python_install_versions:
+    - version: "{{ python_default_version }}"
+      packages:
+        - "pip"
+        - name:    "ipython"
+          # version: 5.8.0
+          state: "latest"
+    # - version: 2.7.15
+    #   packages:
+    #     - "pip"
+    #     - name:    "ipython"
+    #       version: 5.8.0
+  
+  python_environment_variables:
+    - value:  "# python"
+      regexp: "^# python$"
+    - value:  "export PYTHON_HOME=$PROJECT_HOME/python/alias/default"
+      regexp: "^export PYTHON_HOME"
+    - value: |
+        export PATH=$PYTHON_HOME/bin:$PATH
+
+      regexp: PATH=\$PYTHON_HOME/bin\:\$PATH
+  

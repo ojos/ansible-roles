@@ -1,0 +1,85 @@
+---
+- name: user list.
+  shell:        "cut -d: -f1 /etc/passwd"
+  register:     "user_list"
+  changed_when: false
+  check_mode:   no
+  when: ansible_os_family != 'Darwin'
+
+- name: Create project user.
+  become: yes
+  when:
+    - "ansible_os_family != 'Darwin'"
+    - "user_list.stdout_lines.count(project_user) < 1"
+  user:
+    name:  "{{ project_user }}"
+    shell: "/bin/false"
+    home:  "{{ project_user_dir }}"
+    system: yes
+    createhome: no
+  
+
+- name: Create key directory.
+  become: yes
+  when:   "project_local_private_key != ''"
+  file:
+    path:    "{{ project_key_dir }}"
+    owner:   "{{ project_user }}"
+    state:   "directory"
+    recurse: yes
+  
+
+- name: Copy private key for git.
+  when: "project_local_private_key != ''"
+  copy:
+    src:  "{{ project_local_private_key }}"
+    dest: "{{ project_private_key }}"
+    mode: 0400
+
+- name: Create git_ssh file.
+  when: "project_local_private_key != ''"
+  template:
+    src:   git_ssh.tpl
+    dest:  "{{ project_git_ssh_file }}"
+    owner: "{{ project_user }}"
+    mode:  0755
+
+- name: Clone repository.
+  become:        yes
+  ignore_errors: yes
+  when:          "project_repository != ''"
+  git:
+    repo:             "{{ project_repository }}"
+    dest:             "{{ project_dir }}"
+    version:          "{{ project_repository_version }}"
+    force:            "{{ project_repository_force }}"
+    track_submodules: yes
+    accept_hostkey:   yes
+  environment:
+    GIT_SSH: "{{ project_git_ssh_file }}"
+
+- name: Remove private key.
+  when: "project_local_private_key != ''"
+  file:
+    path:  "{{ project_private_key }}"
+    state: absent
+  
+- name: Change project directory owner.
+  become: yes
+  file:
+    path:    "{{ project_dir }}"
+    owner:   "{{ project_user }}"
+    state:   "directory"
+    recurse: yes
+
+- name: Remove .git.
+  when: "project_repository_disconnect"
+  file:
+    path:  "{{ project_dir }}/.git"
+    state: absent
+
+- name: git init.
+  when:        "project_repository_disconnect"
+  become:      yes
+  become_user: "{{ project_user }}"
+  command:     "git init {{ project_dir }}"

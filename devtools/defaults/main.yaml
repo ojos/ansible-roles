@@ -1,6 +1,0 @@
----
-  devtools_repositories: []
-  devtools_packages:
-    - name: "@Development tools"
-      state: present
-  devtools_amzn_main_priority: 99

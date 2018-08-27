@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: supervisor }
-  - { role: xbuild_ruby }

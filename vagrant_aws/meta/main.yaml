@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: terraform_aws }
-  - { role: vagrant }

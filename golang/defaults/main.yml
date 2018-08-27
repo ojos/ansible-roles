@@ -1,0 +1,29 @@
+---
+  golang_default_version:       1.10.3
+  golang_os:                    "linux"
+  golang_arch:                  "amd64"
+  golang_dependent_packages:
+    - "@Development tools"
+  golang_install_versions:
+    - version:       "{{ golang_default_version }}"
+      app_directory: "{{ golang_default_app_directory }}"
+      packages:
+        - "golang.org/x/tools/cmd/goimports"
+        - "golang.org/x/tools/cmd/godoc"
+        - "golang.org/x/tools/cmd/gorename"
+        - "golang.org/x/tools/cmd/guru"
+        - "github.com/golang/lint/golint"
+        - "github.com/nsf/gocode"
+        - "github.com/rogpeppe/godef"
+        - "github.com/jstemmer/gotags"
+  golang_environment_variables:
+    - value:  "# go"
+      regexp: "^# go$"
+    - value:  "export GOROOT=$PROJECT_HOME/go/alias/default"
+      regexp: "^export GOROOT"
+    - value:  "export GOPATH=$PROJECT_HOME/app"
+      regexp: "^export GOPATH"
+    - value: |
+        export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+
+      regexp: PATH=\$GOROOT/bin\:\$GOPATH/bin\:\$PATH

@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: xbuild_python }
-  - { role: ffmpeg }

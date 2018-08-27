@@ -1,1 +1,0 @@
-{{ mecab_prefix }}/lib

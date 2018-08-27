@@ -1,7 +1,0 @@
----
-  awsconfig_user: "{{ ansible_user_uid }}"
-  awsconfig_group: "{{ ansible_user_gid }}"
-  awsconfig_access_key_id: AWS_ACCESS_KEY_ID
-  awsconfig_secret_access_key: AWS_SECRET_ACCESS_KEY
-  awsconfig_output: json
-  awsconfig_region: AWS_DEFAULT_REGION

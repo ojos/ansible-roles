@@ -1,6 +1,0 @@
----
-- name: Install Amazon SSM Agent.
-  yum: >
-    name={{ awsssm_agent_rpm_url }}
-    state=latest
-  become: yes

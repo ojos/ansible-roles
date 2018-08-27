@@ -1,0 +1,5 @@
+---
+  os_limit_value:            1006500
+  os_sysconfig_init_file:    "/etc/sysconfig/init"
+  os_systemd_conf_directory: "/etc/systemd/system.conf.d"
+  os_systemd_limit_file:     "{{ os_systemd_conf_directory }}/limits.conf"

@@ -1,0 +1,72 @@
+---
+- name: Change timezone.
+  become: yes
+  timezone:
+    name: "{{ os_timezone_name }}"
+
+- name: Change file descriptor(via pam).
+  become:      yes
+  when:        
+    - "ansible_os_family != 'Darwin'"
+    - "os_limit_variables|length > 0"
+  with_items:  "{{ os_limit_variables }}"
+  pam_limits:
+    domain:     "{{ items.domain }}"
+    limit_type: "{{ items.limit_type }}"
+    limit_item: "{{ items.limit_item }}"
+    value:      "{{ os_limit_value }}"
+
+- name: sysconf init file(for CentOS6.x).
+  when: 
+    - "ansible_distribution == 'CentOS'"
+    - "ansible_distribution_major_version == '6'"
+  stat:
+    path: "{{ os_sysconfig_init_file }}"
+  register: sysconf_init
+  changed_when: no
+  check_mode: no
+
+- name: Change file descriptor(via non-pam for CentOS6.x).
+  become: yes
+  when: 
+    - "ansible_distribution == 'CentOS'"
+    - "ansible_distribution_major_version == '6'"
+    - "sysconf_init.stat.exists"
+  lineinfile:
+    dest:        "{{ os_sysconfig_init_file }}"
+    line:        "ulimit -n {{ os_limit_value }}"
+    insertafter: "EOF"
+    state:       "present"
+    regexp:      "^ulimit -n .+"
+
+- name: Create systemd conf directory(via non-pam for CentOS7.x).
+  become: yes
+  when: 
+    - "ansible_distribution == 'CentOS'"
+    - "ansible_distribution_major_version == '7'"
+  file:
+    path:  "{{ os_systemd_conf_directory }}"
+    state: "directory"
+
+- name: Create systemd limits.conf(via non-pam for CentOS7.x).
+  become: yes
+  when: 
+    - "ansible_distribution == 'CentOS'"
+    - "ansible_distribution_major_version == '7'"
+  template:
+    src:  "limits.tpl"
+    dest: "{{ os_systemd_limit_file }}"
+
+- name: Change sysctl variables.
+  become:     yes
+  when:
+    - "ansible_os_family != 'Darwin'"
+    - "os_sysctl_variables|length > 0"
+  with_items: "{{ os_sysctl_variables }}"
+  sysctl:
+    name:   "{{ item.name }}"
+    value:  "{{ item.value }}"
+    reload: yes
+    state:  "present"
+
+

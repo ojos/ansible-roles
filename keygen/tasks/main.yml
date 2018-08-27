@@ -1,0 +1,69 @@
+---
+- name: Create key directory.
+  become:      yes
+  become_user: "{{ project_user }}"
+  file:
+    path:    "{{ project_dir }}/.ssh"
+    state:   "directory"
+    recurse: yes
+
+- name: Generate ssh key.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        "keygen_environments|length > 0"
+  with_items:  "{{ keygen_environments }}"
+  args:
+    creates: "{{ project_dir }}/.ssh/{{ item }}.pem"
+  command:     "ssh-keygen -t {{ keygen_type }} -b {{ keygen_bits }} -f {{ project_dir }}/.ssh/{{ item }}.pem -N '{{ keygen_passphrase }}'"
+  
+
+- name: SSH config.
+  become:       yes
+  become_user:  "{{ project_user }}"
+  when:         "keygen_environments|length > 0"
+  register:     ssh_config
+  changed_when: no
+  check_mode:   no
+  stat:
+    path: "{{ project_dir }}/.ssh/ssh_config"
+
+- name: Touch ssh_config.
+  become: yes
+  when:   "not ssh_config.stat.exists"
+  file:
+    path:  "{{ project_dir }}/.ssh/ssh_config"
+    owner: "{{ project_user }}"
+    state: "touch"
+
+- name: Insert hosts in ssh_config.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:
+    - "not ssh_config.stat.exists"
+    - "keygen_environments|length > 0"
+  with_items: "{{ keygen_environments }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.ssh/ssh_config"
+    line:        "{{ keygen_ssh_host_config }}"
+    regexp:      '^Host current\nHostName xxx.xxx.xxx.xxx\n'
+    insertafter: "EOF"
+    state:       "present"
+
+- name: Insert env in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        "keygen_environment_variables|length > 0"
+  with_items:  "{{ keygen_environment_variables }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    regexp:      "{{ item.regexp }}"
+    insertafter: "EOF"
+    state:       "present"
+
+- name: direnv allow.
+  become:      yes
+  become_user: "{{ project_user }}"
+  command:     "direnv allow ./"
+  args:
+    chdir: "{{ project_dir }}"

@@ -1,0 +1,36 @@
+---
+  nodejs_default_version:    "8.11.4"
+  nodejs_arch:               "linux-x64"
+  nodejs_dependent_packages: 
+    - "@Development tools"
+  nodejs_install_versions:
+    - version: "{{ nodejs_default_version }}"
+      path: "{{ project_dir }}/lib"
+      packages:
+        - name:      "gulp-cli"
+          production: yes
+          global:    yes 
+        - name:      "gulp"
+          state:     "latest"
+        - name:      "coffeescript"
+          version:   2.3.1
+    - version: 10.9.0
+      path: "{{ project_dir }}/lib2"
+      packages:
+        - name:      "gulp-cli"
+          production: yes
+          global:     yes 
+        - name:      "gulp"
+          state:     "latest"
+        - name:      "coffeescript"
+          version:   2.3.1
+  nodejs_environment_variables:
+    - value:  "# nodejs"
+      regexp: "^# nodejs$"
+    - value:  "export NODEJS_HOME=$PROJECT_HOME/node/alias/default"
+      regexp: "^export NODEJS_HOME"
+    - value: |
+        export PATH=$NODEJS_HOME/bin:$PATH
+
+      regexp: PATH=\$NODEJS_HOME/bin\:\$PATH
+  
