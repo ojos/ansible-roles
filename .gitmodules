@@ -1,3 +1,0 @@
-[submodule "terraform_aws/files"]
-	path = terraform_aws/files
-	url = https://github.com/ojos/terraform-aws.git
