@@ -27,12 +27,26 @@
     update:         yes
     accept_hostkey: yes
 
+- name: i386.
+  when: 
+    - "direnv_bin.rc == 1"
+    - "ansible_architecture == 'i386'"
+  set_fact:
+    _arch: '386'
+
+- name: x86_64.
+  when: 
+    - "direnv_bin.rc == 1"
+    - "ansible_architecture == 'x86_64'"
+  set_fact:
+    _arch: 'amd64'
+
 - name: Install golang in xbuild.
   become:      yes
   become_user: "{{ project_user }}"
   when:        "golang_install_versions|length > 0"
   with_items:  "{{ golang_install_versions }}"
-  command:     "{{ project_dir }}/xbuild/go-install -f {{ item.version }} {{ project_dir }}/go/versions/{{ item.version }} {{ golang_os }} {{ golang_arch }}"
+  command:     "{{ project_dir }}/xbuild/go-install -f {{ item.version }} {{ project_dir }}/go/versions/{{ item.version }} {{ ansible_system|lower }} {{ _arch }}"
 
 - name: Install golang packages.
   become:      yes
@@ -64,7 +78,6 @@
 - name: Insert env in .envrc.
   become:      yes
   become_user: "{{ project_user }}"
-  when:        "golang_environment_variables|length > 0"
   with_items:  "{{ golang_environment_variables }}"
   lineinfile:
     dest:        "{{ project_dir }}/.envrc"

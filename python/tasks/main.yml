@@ -68,7 +68,6 @@
 - name: Insert env in .envrc.
   become:      yes
   become_user: "{{ project_user }}"
-  when:        "python_environment_variables|length > 0"
   with_items:  "{{ python_environment_variables }}"
   lineinfile:
     dest:        "{{ project_dir }}/.envrc"

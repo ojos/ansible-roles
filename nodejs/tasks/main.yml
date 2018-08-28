@@ -27,12 +27,39 @@
     update:         yes
     accept_hostkey: yes
 
+- name: Windows.
+  when: ansible_system == 'Windows'
+  set_fact:
+    _os: 'win'
+
+- name: Mac.
+  when: ansible_system == 'Darwin'
+  set_fact:
+    _os: 'darwin'
+
+- name: Linux.
+  when: ansible_system == 'Linux'
+  set_fact:
+    _os: 'linux'
+
+- name: i386.
+  when: 
+    - "ansible_architecture == 'i386'"
+  set_fact:
+    _arch: 'x86'
+
+- name: x86_64.
+  when: 
+    - "ansible_architecture == 'x86_64'"
+  set_fact:
+    _arch: 'x64'
+
 - name: Install nodejs in xbuild.
   become:      yes
   become_user: "{{ project_user }}"
   when:        "nodejs_install_versions|length > 0"
   with_items:  "{{ nodejs_install_versions }}"
-  command:     "{{ project_dir }}/xbuild/node-install -f v{{ item.version }} {{ project_dir }}/node/versions/{{ item.version }} {{ nodejs_arch }}"
+  command:     "{{ project_dir }}/xbuild/node-install -f v{{ item.version }} {{ project_dir }}/node/versions/{{ item.version }} {{ _os }}-{{ _arch }}"
 
 - name: Install nodejs packages.
   become:      yes
@@ -71,7 +98,6 @@
 - name: Insert env in .envrc.
   become:      yes
   become_user: "{{ project_user }}"
-  when:        "nodejs_environment_variables|length > 0"
   with_items:  "{{ nodejs_environment_variables }}"
   lineinfile:
     dest:        "{{ project_dir }}/.envrc"

@@ -1,0 +1,8 @@
+---
+  keygen_environment_variables:
+    - value: "# ssh_key"
+      regexp: "^# ssh_key$"
+    - value: |
+        export KEY_HOME=$PROJECT_HOME/.ssh
+
+      regexp: "^export KEY_HOME"

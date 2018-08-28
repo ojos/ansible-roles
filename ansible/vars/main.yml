@@ -1,0 +1,12 @@
+---
+  ansible_skel_repository:  "https://github.com/ojos/ansible-skel"
+  ansible_roles_repository: "https://github.com/ojos/ansible-roles.git"
+  ansible_environment_variables:
+    - value:  "# ansible"
+      regexp: "^# ansible$"
+    - value:  "export ANSIBLE_HOME=$PROJECT_HOME/orchestration/ansible"
+      regexp: "^export ANSIBLE_HOME"
+    - value: |
+        export ANSIBLE_CONFIG=$ANSIBLE_HOME/ansible.cfg
+
+      regexp: "^export ANSIBLE_CONFIG"

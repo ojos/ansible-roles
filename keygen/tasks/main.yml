@@ -38,10 +38,8 @@
 - name: Insert hosts in ssh_config.
   become:      yes
   become_user: "{{ project_user }}"
-  when:
-    - "not ssh_config.stat.exists"
-    - "keygen_environments|length > 0"
-  with_items: "{{ keygen_environments }}"
+  when:        "not ssh_config.stat.exists"
+  with_items:  "{{ keygen_environments }}"
   lineinfile:
     dest:        "{{ project_dir }}/.ssh/ssh_config"
     line:        "{{ keygen_ssh_host_config }}"

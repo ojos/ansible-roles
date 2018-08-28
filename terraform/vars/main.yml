@@ -1,0 +1,37 @@
+---
+  terraform_download_url:    "https://releases.hashicorp.com/terraform"
+  terraform_skel_repository: "https://github.com/ojos/terraform-skel"
+  terraform_environment_variables:
+    - value:  "# terraform"
+      regexp: "^# terraform$"
+    - value:  |
+        export TERRAFORM_HOME=$PROJECT_HOME/orchestration/terraform
+
+      regexp: "^export TERRAFORM_HOME"
+  terraform_aws_environment_variables:
+    - value: "# terraform-aws"
+      regexp: "^# terraform-aws$"
+    - value: "export TF_VAR_owner={{ project_user }}"
+      regexp: "^export TF_VAR_owner"
+    - value: "export TF_VAR_aws_access_key_id=$AWS_ACCESS_KEY_ID"
+      regexp: "^export TF_VAR_aws_access_key_id"
+    - value: "export TF_VAR_aws_secret_access_key=$AWS_SECRET_ACCESS_KEY"
+      regexp: "^export TF_VAR_aws_secret_access_key"
+    - value: "export TF_VAR_aws_default_region=$AWS_DEFAULT_REGION"
+      regexp: "^export TF_VAR_aws_default_region"
+    - value: "export TF_VAR_aws_default_availability_zone=ap-northeast-1c"
+      regexp: "^export TF_VAR_aws_default_availability_zone"
+    - value: "export TF_VAR_aws_default_security_group="
+      regexp: "^export TF_VAR_aws_default_security_group"
+    - value: "export TF_VAR_aws_default_subnet_id="
+      regexp: "^export TF_VAR_aws_default_subnet_id"
+    - value: "export TF_VAR_aws_default_vpc_id="
+      regexp: "^export TF_VAR_aws_default_vpc_id"
+    - value: "export TF_VAR_aws_default_username=ec2-user"
+      regexp: "^export TF_VAR_aws_default_username"
+    - value: "export TF_VAR_aws_default_instance_type=t3.nano"
+      regexp: "^export TF_VAR_aws_default_instance_type"
+    - value: |
+        export TF_VAR_aws_default_ec2_ami=
+
+      regexp: "^export TF_VAR_aws_default_ec2_ami"

@@ -1,0 +1,91 @@
+---
+- name: packer binary.
+  command:       which packer
+  register:      packer_bin
+  ignore_errors: yes
+  changed_when:  no
+  check_mode:    no
+
+- name: i386.
+  when: 
+    - "packer_bin.rc == 1"
+    - "ansible_architecture == 'i386'"
+  set_fact:
+    _arch: '386'
+
+- name: x86_64.
+  when: 
+    - "packer_bin.rc == 1"
+    - "ansible_architecture == 'x86_64'"
+  set_fact:
+    _arch: 'amd64'
+
+- name: Download packer.
+  become: yes
+  when:   "packer_bin.rc == 1"
+  unarchive:
+    src:        "{{ packer_download_url }}/{{ packer_version }}/packer_{{ packer_version }}_{{ ansible_system|lower }}_{{ _arch }}.zip"
+    dest:       "{{ packer_install_directory }}"
+    remote_src: yes
+
+- name: Create orchestration directory.
+  become: yes
+  file:
+    path:  "{{ project_dir }}/orchestration/packer"
+    owner: "{{ project_user }}"
+    state: "directory"
+
+- name: Clone skel repository.
+  become:        yes
+  become_user:   "{{ project_user }}"
+  ignore_errors: yes
+  git:
+    repo:             "{{ packer_skel_repository }}"
+    dest:             "{{ project_dir }}/orchestration/packer"
+    version:          "{{ packer_repository_version }}"
+    force:            "{{ packer_repository_force }}"
+    track_submodules: yes
+    accept_hostkey:   yes
+
+- name: Remove .git.
+  become:     yes
+  file:
+    path:  "{{ project_dir }}/orchestration/packer/.git"
+    state: absent
+
+- name: Insert env in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  with_items:  "{{ packer_environment_variables }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    regexp:      "{{ item.regexp }}"
+    insertafter: EOF
+    state:       present
+
+- name: aws part
+  command:       'grep "^# packer-aws$" {{ project_dir }}/.envrc'
+  register:      packer_aws
+  ignore_errors: yes
+  changed_when:  no
+  check_mode:    no
+
+- name: Insert aws env in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        packer_aws.rc == 1
+  with_items:  "{{ packer_aws_environment_variables }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    regexp:      "{{ item.regexp }}"
+    insertafter: EOF
+    state:       present
+
+- name: direnv allow.
+  become:      yes
+  become_user: "{{ project_user }}"
+  command: "direnv allow ./"
+  args:
+    chdir: "{{ project_dir }}"

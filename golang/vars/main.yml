@@ -1,3 +1,14 @@
 ---
   golang_xbuild_repository:     "https://github.com/tagomoris/xbuild.git"
   golang_default_app_directory: "{{ project_dir }}/app"
+  golang_environment_variables:
+    - value:  "# go"
+      regexp: "^# go$"
+    - value:  "export GOROOT=$PROJECT_HOME/go/alias/default"
+      regexp: "^export GOROOT"
+    - value:  "export GOPATH=$PROJECT_HOME/app"
+      regexp: "^export GOPATH"
+    - value: |
+        export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+
+      regexp: PATH=\$GOROOT/bin\:\$GOPATH/bin\:\$PATH

@@ -6,71 +6,37 @@
   changed_when:  no
   check_mode:    no
 
-- name: Download direnv (Windows 32bit).
+- name: i386.
+  when: 
+    - "direnv_bin.rc == 1"
+    - "ansible_architecture == 'i386'"
+  set_fact:
+    _arch: '386'
+
+- name: x86_64.
+  when: 
+    - "direnv_bin.rc == 1"
+    - "ansible_architecture == 'x86_64'"
+  set_fact:
+    _arch: 'amd64'
+
+- name: Download direnv(Windows).
   become: yes
   when:   
     - "direnv_bin.rc == 1"
     - "ansible_os_family == 'Windows'"
-    - "ansible_userspace_bits == 32"
   get_url:
-    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.windows-386.exe"
-    dest: "{{ direnv_install_directory }}/direnv"
-    mode: 0775
-  
-- name: Download direnv (Windows 64bit).
-  become: yes
-  when:   
-    - "direnv_bin.rc == 1"
-    - "ansible_os_family == 'Windows'"
-    - "ansible_userspace_bits == 64"
-  get_url:
-    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.windows-amd64.exe"
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.{{ ansible_system|lower }}-{{ _arch }}"
     dest: "{{ direnv_install_directory }}/direnv"
     mode: 0775
 
-- name: Download direnv (Darwin 32bit).
-  become: yes
-  when:   
-    - "direnv_bin.rc == 1"
-    - "ansible_os_family == 'Darwin'"
-    - "ansible_userspace_bits == 32"
-  get_url:
-    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.darwin-386"
-    dest: "{{ direnv_install_directory }}/direnv"
-    mode: 0775
-
-- name: Download direnv (Darwin 64bit).
-  become: yes
-  when:   
-    - "direnv_bin.rc == 1"
-    - "ansible_os_family == 'Darwin'"
-    - "ansible_userspace_bits == 64"
-  get_url:
-    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.darwin-amd64"
-    dest: "{{ direnv_install_directory }}/direnv"
-    mode: 0775
-
-- name: Download direnv (Linux 32bit).
+- name: Download direnv(exclude Windows).
   become: yes
   when:   
     - "direnv_bin.rc == 1"
     - "ansible_os_family != 'Windows'"
-    - "ansible_os_family != 'Darwin'"
-    - "ansible_userspace_bits == 32"
   get_url:
-    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.linux-386"
-    dest: "{{ direnv_install_directory }}/direnv"
-    mode: 0775
-
-- name: Download direnv (Linux 64bit).
-  become: yes
-  when:   
-    - "direnv_bin.rc == 1"
-    - "ansible_os_family != 'Windows'"
-    - "ansible_os_family != 'Darwin'"
-    - "ansible_userspace_bits == 64"
-  get_url:
-    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.linux-amd64"
+    url:  "{{ direnv_download_url }}/v{{ direnv_version }}/direnv.{{ ansible_system|lower }}-{{ _arch }}.exe"
     dest: "{{ direnv_install_directory }}/direnv"
     mode: 0775
 
@@ -117,29 +83,9 @@
     force: no
     mode:  0644
 
-
-- name: Insert GIT_SSH in .envrc.
-  become:      yes
-  become_user: "{{ project_user }}"
-  when:        "direnv_git_ssh_file != ''"
-  with_items:  
-    - value:  "# git"
-      regexp: "^# git$"
-    - value: |
-        export GIT_SSH={{ direnv_git_ssh_file }}
-
-      regexp: "^export GIT_SSH"
-  lineinfile:
-    dest:        "{{ project_dir }}/.envrc"
-    line:        "{{ item.value }}"
-    regexp:      "{{ item.regexp }}"
-    insertafter: EOF
-    state:       present
-
 - name: Insert env in .envrc.
   become:      yes
   become_user: "{{ project_user }}"
-  when:        "direnv_environment_variables|length > 0"
   with_items:  "{{ direnv_environment_variables }}"
   lineinfile:
     dest:        "{{ project_dir }}/.envrc"

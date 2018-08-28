@@ -1,0 +1,3 @@
+---
+  ansible_skel_repository_version:  "HEAD"
+  ansible_skel_repository_force:    no

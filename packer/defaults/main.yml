@@ -1,0 +1,5 @@
+---
+  packer_version:            1.2.5
+  packer_install_directory:  "/usr/local/bin"
+  packer_repository_version: "HEAD"
+  packer_repository_force:   no

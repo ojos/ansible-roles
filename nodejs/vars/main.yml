@@ -1,2 +1,11 @@
 ---
   nodejs_xbuild_repository: "https://github.com/tagomoris/xbuild.git"
+  nodejs_environment_variables:
+    - value:  "# nodejs"
+      regexp: "^# nodejs$"
+    - value:  "export NODEJS_HOME=$PROJECT_HOME/node/alias/default"
+      regexp: "^export NODEJS_HOME"
+    - value: |
+        export PATH=$NODEJS_HOME/bin:$PATH
+
+      regexp: PATH=\$NODEJS_HOME/bin\:\$PATH

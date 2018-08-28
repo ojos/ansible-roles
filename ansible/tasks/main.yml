@@ -1,0 +1,96 @@
+---
+- name: Install ansible.
+  become:      yes
+  become_user: "{{ project_user }}"
+  with_items:  "{{ python_install_versions }}"
+  pip:
+    name:       "ansible"
+    executable: "{{ project_dir }}/python/versions/{{ item.version }}/bin/pip"
+
+- name: Create orchestration directory.
+  become: yes
+  file:
+    path:  "{{ project_dir }}/orchestration"
+    owner: "{{ project_user }}"
+    state: "directory"
+
+- name: Clone skel repository.
+  become:        yes
+  become_user:   "{{ project_user }}"
+  ignore_errors: yes
+  git:
+    repo:             "{{ ansible_skel_repository }}"
+    dest:             "{{ project_dir }}/orchestration/ansible"
+    version:          "{{ ansible_skel_repository_version }}"
+    force:            "{{ ansible_skel_repository_force }}"
+    track_submodules: yes
+    accept_hostkey:   yes
+
+- name: Remove .git.
+  file:
+    path:  "{{ project_dir }}/orchestration/ansible/.git"
+    state: absent
+
+- name: Insert hosts in inventory.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:
+    - "keygen_environments|length > 0"
+  with_items: "{{ keygen_environments }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/orchestration/ansible/inventories/default"
+    line:        "[{{ item }}]\n{{ item }}\n"
+    regexp:      '^[{{ item }}]\n{{ item }}\n'
+    insertafter: "EOF"
+    state:       "present"
+
+- name: Create group_vars inventory file.
+  become:      yes
+  when:        "keygen_environments|length > 0"
+  with_items:  "{{ keygen_environments }}"
+  file:
+    path:  "{{ project_dir }}/orchestration/ansible/inventories/group_vars/{{ item }}.yml"
+    owner: "{{ project_user }}"
+    state: touch
+
+- name: Create host_vars inventory file.
+  become:      yes
+  when:        "keygen_environments|length > 0"
+  with_items:  "{{ keygen_environments }}"
+  file:
+    path:  "{{ project_dir }}/orchestration/ansible/inventories/host_vars/{{ item }}.yml"
+    owner: "{{ project_user }}"
+    state: touch
+
+- name: Add roles repository as submodule.
+  ignore_errors: yes
+  args:
+    chdir: "{{ project_dir }}/orchestration/ansible"
+  command: "git submodule add --force {{ ansible_roles_repository }} roles"
+
+- name: Create a symbolic link of ssh_config
+  become:      yes
+  become_user: "{{ ansible_user_id }}"
+  file:
+    src:   "../../.ssh/ssh_config"
+    dest:  "{{ project_dir }}/orchestration/ansible/ssh_config"
+    state: "link"
+
+- name: Insert env in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  with_items:  "{{ ansible_environment_variables }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    insertafter: "EOF"
+    state:       "present"
+    regexp:      "{{ item.regexp }}"
+
+- name: direnv allow.
+  become: yes
+  become_user: "{{ project_user }}"
+  args:
+    chdir: "{{ project_dir }}"
+  command: "direnv allow ./"
+  

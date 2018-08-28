@@ -1,2 +1,9 @@
 ---
   direnv_download_url: https://github.com/direnv/direnv/releases/download
+  direnv_environment_variables:
+    - value:  "# git"
+      regexp: "^# git$"
+    - value: |
+        export GIT_SSH={{ direnv_git_ssh_file }}
+
+      regexp: "^export GIT_SSH"

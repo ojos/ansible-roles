@@ -1,0 +1,26 @@
+---
+- name: aws part
+  command:       'grep "^# aws$" {{ project_dir }}/.envrc'
+  register:      aws_env
+  ignore_errors: yes
+  changed_when:  no
+  check_mode:    no
+
+- name: Insert env in .envrc.
+  become:      yes
+  become_user: "{{ project_user }}"
+  when:        aws_env.rc == 1
+  with_items:  "{{ aws_environment_variables }}"
+  lineinfile:
+    dest:        "{{ project_dir }}/.envrc"
+    line:        "{{ item.value }}"
+    insertafter: "EOF"
+    state:       "present"
+    regexp:      "{{ item.regexp }}"
+
+- name: direnv allow.
+  become: yes
+  become_user: "{{ project_user }}"
+  command: "direnv allow ./"
+  args:
+    chdir: "{{ project_dir }}"

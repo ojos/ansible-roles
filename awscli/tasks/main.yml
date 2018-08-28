@@ -1,0 +1,8 @@
+---
+- name: Install awscli.
+  become:      yes
+  become_user: "{{ project_user }}"
+  with_items:  "{{ python_install_versions }}"
+  pip:
+    name:       "awscli"
+    executable: "{{ project_dir }}/python/versions/{{ item.version }}/bin/pip"

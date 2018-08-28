@@ -1,5 +1,5 @@
 ---
 dependencies:
   - { role: keygen }
-  - { role: python }
+  - { role: aws }
   

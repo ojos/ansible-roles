@@ -1,0 +1,33 @@
+---
+  packer_download_url:    "https://releases.hashicorp.com/packer"
+  packer_skel_repository: "https://github.com/ojos/packer-skel"
+  packer_environment_variables:
+    - value:  "# packer"
+      regexp: "^# packer$"
+    - value:  |
+        export PACKER_HOME=$PROJECT_HOME/orchestration/packer
+
+      regexp: "^export PACKER_HOME"
+  packer_aws_environment_variables:
+    - value: "# packer-aws"
+      regexp: "^# packer-aws$"
+    - value: "export PACKER_AWS_AMI="
+      regexp: "^export PACKER_AWS_AMI"
+    - value: "export PACKER_AWS_INSTANCE_TYPE=t3.nano"
+      regexp: "^export PACKER_AWS_INSTANCE_TYPE"
+    - value: "export PACKER_AWS_SUBNET_ID="
+      regexp: "^export PACKER_AWS_SUBNET_ID"
+    - value: "export PACKER_AWS_SECURITY_GROUP="
+      regexp: "^export PACKER_AWS_SECURITY_GROUP"
+    - value: "export PACKER_AWS_USERNAME=ec2-user"
+      regexp: "^export PACKER_AWS_USERNAME"
+    - value: "export PACKER_ANSIBLE_STAGING_DIRECTORY=/tmp/ansible-local"
+      regexp: "^export PACKER_ANSIBLE_STAGING_DIRECTORY"
+    - value: "export PACKER_ANSIBLE_ROLES_SOURCE="
+      regexp: "^export PACKER_ANSIBLE_ROLES_SOURCE"
+    - value: "export PACKER_ANSIBLE_ROLES_DIRECTORY=$PACKER_ANSIBLE_STAGING_DIRECTORY/roles"
+      regexp: "^export PACKER_ANSIBLE_ROLES_DIRECTORY"
+    - value: |
+        export PACKER_PLAYBOOK=$ANSIBLE_HOME/playbooks/buildout.yml
+
+      regexp: "^export PACKER_PLAYBOOK"
